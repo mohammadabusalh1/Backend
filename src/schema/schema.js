@@ -281,7 +281,7 @@ const typeDefs = gql`
     getAIChat(chatId: Int!, page: Int, limit: Int): AIChat
     getUser(userId: Int!, page: Int, limit: Int): User
     deleteTeam(teamId: Int!): Boolean
-    deleteCompany(companyId: Int!): Boolean
+    deleteCompany(companyId: Int!, userId: Int!): Boolean
     deleteSkill(skillId: Int!): Boolean
     filterMyCompanies(
       userId: Int!
@@ -347,6 +347,7 @@ const typeDefs = gql`
     getTeam(teamId: Int!): Team
     deleteMessage(messageId: Int!): Boolean
     deleteEducation(educationId: Int!): Boolean
+    deleteUserFromTeam(userId: Int!, teamId: Int!): Boolean
   }
 
   type Mutation {
@@ -397,7 +398,7 @@ const typeDefs = gql`
     updateTask(taskId: Int!, task: TaskInput!): Task
     updateTaskStep(taskStepId: Int!, taskStep: TaskStepInput!): TaskStep
     createCompanyComment(comment: CommentInput!, companyId: Int!): Comment
-    updateCompany(companyId: Int!, company: CompanyInput!): Company
+    updateCompany(companyId: Int!, company: CompanyInput!, userId: Int!): Company
     updateProject(projectId: Int!, project: ProjectInput!): Project
     createTaskStep(taskStep: TaskStepInput!, taskId: Int!): TaskStep
     replayContactMessage(contactMessageId: Int!, message: String!): Boolean

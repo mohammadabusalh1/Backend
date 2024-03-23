@@ -1,36 +1,104 @@
+{"level":"error","message":"Sat Mar 23 2024 19:55:33 GMT+0200 (Eastern European Standard Time), in resolvers.js => filterMyCompanies, TypeError: Invalid argument type","service":"user-service"}
 {"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
-{"level":"error","message":"Mon Mar 18 2024 19:16:59 GMT+0200 (Eastern European Standard Time), in resolvers.js => updateTaskStep, Error: TaskStep not found","service":"user-service"}
-{"level":"error","message":"Mon Mar 18 2024 19:16:59 GMT+0200 (Eastern European Standard Time), in resolvers.js => updatePositionPost, Error: Are you send postId? postId is required, postId value is undefined. please check postId value before send","service":"user-service"}
+{"level":"error","message":"Sat Mar 23 2024 19:56:11 GMT+0200 (Eastern European Standard Time), in resolvers.js => filterMyCompanies, TypeError: Invalid argument type","service":"user-service"}
 {"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
-{"level":"error","message":"Mon Mar 18 2024 19:17:22 GMT+0200 (Eastern European Standard Time), in resolvers.js => updateTaskStep, Error: TaskStep not found","service":"user-service"}
-{"level":"error","message":"Mon Mar 18 2024 19:17:22 GMT+0200 (Eastern European Standard Time), in resolvers.js => updatePositionPost, Error: Are you send postId? postId is required, postId value is undefined. please check postId value before send","service":"user-service"}
-{"level":"error","message":"Mon Mar 18 2024 19:22:26 GMT+0200 (Eastern European Standard Time), in resolvers.js => getCompany, TypeError: Cannot read properties of undefined (reading 'get')","service":"user-service"}
-{"level":"error","message":"Mon Mar 18 2024 19:23:27 GMT+0200 (Eastern European Standard Time), in resolvers.js => getCompany, TypeError: Cannot read properties of undefined (reading 'get')","service":"user-service"}
-{"level":"error","message":"Mon Mar 18 2024 19:23:41 GMT+0200 (Eastern European Standard Time), in resolvers.js => getCompany, TypeError: Cannot read properties of undefined (reading 'get')","service":"user-service"}
-{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
-{"level":"error","message":"Mon Mar 18 2024 19:23:50 GMT+0200 (Eastern European Standard Time), in resolvers.js => getCompany, TypeError: Cannot read properties of undefined (reading 'get')","service":"user-service"}
+{"level":"error","message":"Sat Mar 23 2024 19:56:28 GMT+0200 (Eastern European Standard Time), in resolvers.js => filterMyCompanies, TypeError: Invalid argument type","service":"user-service"}
 {"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
 {"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
-{"level":"error","message":"Mon Mar 18 2024 19:24:48 GMT+0200 (Eastern European Standard Time), in resolvers.js => getCompany, TypeError: Cannot read properties of undefined (reading 'get')","service":"user-service"}
-{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
-{"level":"error","message":"Mon Mar 18 2024 19:25:13 GMT+0200 (Eastern European Standard Time), in resolvers.js => getCompany, TypeError: Cannot read properties of undefined (reading 'get')","service":"user-service"}
-{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
-{"level":"error","message":"Mon Mar 18 2024 19:25:24 GMT+0200 (Eastern European Standard Time), in resolvers.js => getCompany, TypeError: Cannot read properties of undefined (reading 'get')","service":"user-service"}
-{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
-{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
-{"level":"error","message":"Mon Mar 18 2024 19:27:27 GMT+0200 (Eastern European Standard Time), in resolvers.js => getCompany, Error: Company not found","service":"user-service"}
-{"level":"error","message":"Mon Mar 18 2024 19:27:48 GMT+0200 (Eastern European Standard Time), in resolvers.js => getCompany, Error: Company not found","service":"user-service"}
+{"level":"error","message":"Sat Mar 23 2024 19:56:52 GMT+0200 (Eastern European Standard Time), in resolvers.js => filterMyCompanies, TypeError: Invalid argument type","service":"user-service"}
 {"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
 {"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
 {"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
 {"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
 {"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"error","message":"Sat Mar 23 2024 19:57:54 GMT+0200 (Eastern European Standard Time), in resolvers.js => filterMyCompanies, TypeError: companies.map is not a function","service":"user-service"}
+{"level":"error","message":"Sat Mar 23 2024 19:57:58 GMT+0200 (Eastern European Standard Time), in resolvers.js => filterMyCompanies, TypeError: companies.map is not a function","service":"user-service"}
 {"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
-{"level":"error","message":"Mon Mar 18 2024 19:41:02 GMT+0200 (Eastern European Standard Time), in resolvers.js => getCompany, Error: Company not found","service":"user-service"}
+{"level":"error","message":"Sat Mar 23 2024 19:58:13 GMT+0200 (Eastern European Standard Time), in resolvers.js => filterMyCompanies, TypeError: companies.map is not a function","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"error","message":"Sat Mar 23 2024 19:58:48 GMT+0200 (Eastern European Standard Time), in resolvers.js => filterMyCompanies, TypeError: Invalid argument type","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"error","message":"Sat Mar 23 2024 20:01:46 GMT+0200 (Eastern European Standard Time), in resolvers.js => filterMyCompanies, TypeError: JSON.parse(...).slice is not a function","service":"user-service"}
 {"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
 {"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
 {"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
 {"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
 {"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
-{"level":"error","message":"Mon Mar 18 2024 19:43:07 GMT+0200 (Eastern European Standard Time), in resolvers.js => updateTaskStep, Error: TaskStep not found","service":"user-service"}
-{"level":"error","message":"Mon Mar 18 2024 19:43:07 GMT+0200 (Eastern European Standard Time), in resolvers.js => updatePositionPost, Error: Are you send postId? postId is required, postId value is undefined. please check postId value before send","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"error","message":"Sat Mar 23 2024 20:26:14 GMT+0200 (Eastern European Standard Time), in resolvers.js => createNewCompany, SyntaxError: Unexpected token 'o', \"[object Promise]\" is not valid JSON","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"error","message":"Sat Mar 23 2024 20:37:35 GMT+0200 (Eastern European Standard Time), in resolvers.js => getProjects, TypeError: cachedProjects.then is not a function","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}

@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable object-curly-newline */
 /* eslint-disable consistent-return */
@@ -6,6 +7,7 @@ const axios = require("axios");
 const base64 = require("base-64");
 const bcrypt = require("bcrypt");
 const nodemailer = require("nodemailer");
+const { createClient } = require("redis");
 const Logging = require("../config/Logging");
 const backup = require("../config/Backup");
 // this is a website company email to send emails for users.
@@ -160,11 +162,17 @@ const resolvers = {
     deleteCompany: async (parent, args) => {
       try {
         // int args from client
-        const { companyId } = args;
+        const { companyId, userId } = args;
 
         if (!companyId) {
           throw new Error(
             `Are you send companyId? companyId is required, companyId value is ${companyId}. please check companyId value before send`
+          );
+        }
+
+        if (!userId) {
+          throw new Error(
+            `Are you send userId? userId is required, userId value is ${userId}. please check userId value before send`
           );
         }
 
@@ -175,6 +183,14 @@ const resolvers = {
         }
 
         await company.delete();
+
+        const redisClient = await createClient({
+          url: process.env.Redis_URL,
+        })
+          .on("error", (err) => Logging.error("Redis Client Error", err))
+          .connect();
+
+        redisClient.del(`companies_${userId}`);
 
         return true;
       } catch (error) {
@@ -242,22 +258,45 @@ const resolvers = {
           );
         }
 
+        const redisClient = await createClient({
+          url: process.env.Redis_URL,
+        })
+          .on("error", (err) => Logging.error("Redis Client Error", err))
+          .connect();
+
+        const cachedData = await redisClient.get(`companies_${userId}`);
+
+        if (cachedData) {
+          return JSON.parse(cachedData).slice(page * limit, limit);
+        }
+
         // this query filter companies on Neo4j database
         // its return object of 2 value {records: array of result objects, summary}
         const companies = await NeodeObject?.cypher(
-          `MATCH (user:User) -[r:ADMIN_OF]-> (companies:Company) return companies ORDER BY companies.${filterType} ${
-            desc ? "desc" : "asc"
-          }`
+          `MATCH (user:User) -[r:ADMIN_OF]-> (companies:Company) 
+           where ID(user) = $userId return companies 
+           ORDER BY companies.${filterType} ${desc ? "desc" : "asc"}`,
+          { userId }
+        );
+
+        // Store the fetched data in Redis cache
+        await redisClient.set(
+          `companies_${userId}`,
+          JSON.stringify(
+            companies?.records?.map((record) => ({
+              ...record.get("companies").properties,
+              _id: `${record.get("companies").identity}`,
+            }))
+          )
         );
 
         // I make map because result is not as a schema type.
-        return companies.records
-          .slice((page - 1) * limit, limit)
-          .map((record) => ({
-            ...record.get("companies").properties,
-            _id: `${record.get("companies").identity}`,
-          }));
+        return companies.records.slice(page * limit, limit).map((record) => ({
+          ...record.get("companies").properties,
+          _id: `${record.get("companies").identity}`,
+        }));
       } catch (error) {
+        console.log(error);
         Logging.error(
           `${new Date()}, in resolvers.js => filterMyCompanies, ${error}`
         );
@@ -290,12 +329,10 @@ const resolvers = {
           OR companies.Domain CONTAINS '${word}') return companies`
         );
 
-        return companies.records
-          .slice((page - 1) * limit, limit)
-          .map((record) => ({
-            ...record.get("companies").properties,
-            _id: `${record.get("companies").identity}`,
-          }));
+        return companies.records.slice(page * limit, limit).map((record) => ({
+          ...record.get("companies").properties,
+          _id: `${record.get("companies").identity}`,
+        }));
       } catch (error) {
         Logging.error(
           `${new Date()}, in resolvers.js => searchInMyCompanies, ${error}`
@@ -327,25 +364,43 @@ const resolvers = {
           );
         }
 
+        const redisClient = await createClient({
+          url: process.env.Redis_URL,
+        })
+          .on("error", (err) => Logging.error("Redis Client Error", err))
+          .connect();
+
+        const cachedData = await redisClient.get(`worksCompanies_${userId}`);
+
+        if (cachedData) {
+          return JSON.parse(cachedData).slice(page * limit, limit);
+        }
+
         const companies = await NeodeObject?.cypher(
           `
           MATCH (u:User) - [:IN_TEAM] -> (t:Team) WHERE ID(u) = $userId
           MATCH (c:Company) -[:has_a_team]-> (t) RETURN c ORDER BY companies.${filterType} ${
-            // eslint-disable-next-line indent
             desc ? "desc" : "asc"
-            // eslint-disable-next-line indent
           }
           `,
           { userId }
         );
 
+        await redisClient.set(
+          `worksCompanies_${userId}`,
+          JSON.stringify(
+            companies?.records?.map((record) => ({
+              ...record.get("c").properties,
+              _id: `${record.get("c").identity}`,
+            }))
+          )
+        );
+
         // I make map because result is not as a schema type.
-        return companies.records
-          .slice((page - 1) * limit, limit)
-          .map((record) => ({
-            ...record.get("c").properties,
-            _id: `${record.get("c").identity}`,
-          }));
+        return companies.records.slice(page * limit, limit).map((record) => ({
+          ...record.get("c").properties,
+          _id: `${record.get("c").identity}`,
+        }));
       } catch (error) {
         Logging.error(
           `${new Date()}, in resolvers.js => filterWorksCompanies, ${error}`
@@ -383,12 +438,10 @@ const resolvers = {
           { userId }
         );
 
-        return companies.records
-          .slice((page - 1) * limit, limit)
-          .map((record) => ({
-            ...record.get("c").properties,
-            _id: `${record.get("c").identity}`,
-          }));
+        return companies.records.slice(page * limit, limit).map((record) => ({
+          ...record.get("c").properties,
+          _id: `${record.get("c").identity}`,
+        }));
       } catch (error) {
         Logging.error(
           `${new Date()}, in resolvers.js => searchInWorksCompanies, ${error}`
@@ -504,7 +557,27 @@ const resolvers = {
       try {
         const { page = 0, limit = 6 } = args;
 
+        const redisClient = await createClient({
+          url: process.env.Redis_URL,
+        })
+          .on("error", (err) => Logging.error("Redis Client Error", err))
+          .connect();
+
+        const cachedProjects = await redisClient.get("allProjects");
+
+        if (cachedProjects) {
+          return JSON.parse(cachedProjects).slice(
+            page * limit,
+            (page + 1) * limit
+          );
+        }
+
         const allProjects = await NeodeObject?.all("Project");
+
+        await redisClient.set(
+          "allProjects",
+          JSON.stringify(await allProjects.toJson())
+        );
 
         return allProjects
           .toJson()
@@ -1093,6 +1166,45 @@ const resolvers = {
         throw new Error(`Error in deleteEducation: ${error.message}`);
       }
     },
+    deleteUserFromTeam: async (parent, args) => {
+      try {
+        const { userId, teamId } = args;
+
+        if (!userId) {
+          throw new Error(
+            `Are you send userId? userId is required, userId value is ${userId}. please check userId value before send`
+          );
+        }
+
+        if (!teamId) {
+          throw new Error(
+            `Are you send teamId? teamId is required, teamId value is ${teamId}. please check teamId value before send`
+          );
+        }
+
+        await NeodeObject?.writeCypher(
+          `MATCH (u:User) -[r:IN_TEAM]-> (t:Team) WHERE ID(u) = $userId AND ID(t) = $teamId
+           DETACH DELETE r`,
+          { userId, teamId }
+        );
+
+        // create redis
+        const redisClient = await createClient({
+          url: process.env.Redis_URL,
+        })
+          .on("error", (err) => Logging.error("Redis Client Error", err))
+          .connect();
+
+        redisClient.del(`worksCompanies_${userId}`);
+
+        return true;
+      } catch (error) {
+        Logging.error(
+          `${new Date()}, in resolvers.js => deleteUserFromTeam, ${error}`
+        );
+        throw new Error(`Error in deleteUserFromTeam: ${error.message}`);
+      }
+    },
   },
   Mutation: {
     /* this to send message to AI module and get answer about a project from
@@ -1373,6 +1485,15 @@ const resolvers = {
           ...project,
         });
 
+        // create redis
+        const redisClient = await createClient({
+          url: process.env.Redis_URL,
+        })
+          .on("error", (err) => Logging.error("Redis Client Error", err))
+          .connect();
+
+        redisClient.del("allProjects");
+
         backup.info(
           `CREATE (project:Project {createdDate: datetime(), ${Object.keys(
             project
@@ -1620,6 +1741,14 @@ const resolvers = {
           RETURN company`
         );
 
+        const redisClient = await createClient({
+          url: process.env.Redis_URL,
+        })
+          .on("error", (err) => Logging.error("Redis Client Error", err))
+          .connect();
+
+        redisClient.del(`companies_${userId}`);
+
         return {
           ...companyCreated.properties(),
         };
@@ -1798,6 +1927,14 @@ const resolvers = {
            CREATE (n) -[r:IN_TEAM {role: $role}] -> (t)`,
           { userId, teamId, role }
         );
+
+        const redisClient = await createClient({
+          url: process.env.Redis_URL,
+        })
+          .on("error", (err) => Logging.error("Redis Client Error", err))
+          .connect();
+
+        await redisClient.del(`worksCompanies_${userId}`);
 
         backup.info(
           `MATCH (n:User) WHERE ID(n) = ${userId}
@@ -2260,7 +2397,7 @@ const resolvers = {
      */
     updateCompany: async (parent, args) => {
       try {
-        const { companyId, company } = args;
+        const { companyId, company, userId } = args;
 
         if (!companyId) {
           throw new Error(
@@ -2276,6 +2413,14 @@ const resolvers = {
         if (!updatedCompany) {
           throw new Error("Company not found");
         }
+
+        const redisClient = await createClient({
+          url: process.env.Redis_URL,
+        })
+          .on("error", (err) => Logging.error("Redis Client Error", err))
+          .connect();
+
+        redisClient.del(`companies_${userId}`);
 
         backup.info(
           `MATCH (c:Company) WHERE ID(c) = ${companyId}
