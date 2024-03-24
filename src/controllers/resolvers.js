@@ -7,9 +7,13 @@ const axios = require("axios");
 const base64 = require("base-64");
 const bcrypt = require("bcrypt");
 const nodemailer = require("nodemailer");
-const { createClient } = require("redis");
 const Logging = require("../config/Logging");
 const backup = require("../config/Backup");
+const {
+  redisClientGet,
+  redisClientSet,
+  redisClientDel,
+} = require("../config/Redis");
 // this is a website company email to send emails for users.
 const myEmail = "202007723@bethlehem.edu";
 
@@ -184,13 +188,7 @@ const resolvers = {
 
         await company.delete();
 
-        const redisClient = await createClient({
-          url: process.env.Redis_URL,
-        })
-          .on("error", (err) => Logging.error("Redis Client Error", err))
-          .connect();
-
-        redisClient.del(`companies_${userId}`);
+        redisClientDel(`companies_${userId}`);
 
         return true;
       } catch (error) {
@@ -258,13 +256,7 @@ const resolvers = {
           );
         }
 
-        const redisClient = await createClient({
-          url: process.env.Redis_URL,
-        })
-          .on("error", (err) => Logging.error("Redis Client Error", err))
-          .connect();
-
-        const cachedData = await redisClient.get(`companies_${userId}`);
+        const cachedData = await redisClientGet(`companies_${userId}`);
 
         if (cachedData) {
           return JSON.parse(cachedData).slice(page * limit, limit);
@@ -280,7 +272,7 @@ const resolvers = {
         );
 
         // Store the fetched data in Redis cache
-        await redisClient.set(
+        await redisClientSet(
           `companies_${userId}`,
           JSON.stringify(
             companies?.records?.map((record) => ({
@@ -364,13 +356,7 @@ const resolvers = {
           );
         }
 
-        const redisClient = await createClient({
-          url: process.env.Redis_URL,
-        })
-          .on("error", (err) => Logging.error("Redis Client Error", err))
-          .connect();
-
-        const cachedData = await redisClient.get(`worksCompanies_${userId}`);
+        const cachedData = redisClientGet(`worksCompanies_${userId}`);
 
         if (cachedData) {
           return JSON.parse(cachedData).slice(page * limit, limit);
@@ -386,7 +372,7 @@ const resolvers = {
           { userId }
         );
 
-        await redisClient.set(
+        await redisClientSet(
           `worksCompanies_${userId}`,
           JSON.stringify(
             companies?.records?.map((record) => ({
@@ -557,13 +543,7 @@ const resolvers = {
       try {
         const { page = 0, limit = 6 } = args;
 
-        const redisClient = await createClient({
-          url: process.env.Redis_URL,
-        })
-          .on("error", (err) => Logging.error("Redis Client Error", err))
-          .connect();
-
-        const cachedProjects = await redisClient.get("allProjects");
+        const cachedProjects = await redisClientGet("allProjects");
 
         if (cachedProjects) {
           return JSON.parse(cachedProjects).slice(
@@ -574,7 +554,7 @@ const resolvers = {
 
         const allProjects = await NeodeObject?.all("Project");
 
-        await redisClient.set(
+        await redisClientSet(
           "allProjects",
           JSON.stringify(await allProjects.toJson())
         );
@@ -833,11 +813,22 @@ const resolvers = {
       try {
         const { page = 0, limit = 6 } = args;
 
+        const cachedMessages = await redisClientGet("contactMessages");
+
+        if (cachedMessages) {
+          return JSON.parse(cachedMessages).slice(
+            page * limit,
+            (page + 1) * limit
+          );
+        }
+
         const messages = await NeodeObject?.all("ContactMessage");
 
         if (!messages) {
           throw new Error("Messages not found");
         }
+
+        await redisClientSet("contactMessages", JSON.stringify(messages));
 
         return messages
           .toJson()
@@ -867,6 +858,15 @@ const resolvers = {
           );
         }
 
+        const cachedPosts = await redisClientGet(`posts_${userId}`);
+
+        if (cachedPosts) {
+          return JSON.parse(cachedPosts).slice(
+            page * limit,
+            (page + 1) * limit
+          );
+        }
+
         const posts = await NeodeObject?.cypher(
           `MATCH (c:Company) -[:HAS_A_POST]-> (p:PositionPost)
            MATCH (u:User) -[:ADMIN_OF] -> (c1:Company)
@@ -878,6 +878,8 @@ const resolvers = {
         if (!posts) {
           throw new Error("Posts not found");
         }
+
+        await redisClientSet(`posts_${userId}`, JSON.stringify(posts.records));
 
         return posts.records
           .slice(page * limit, (page + 1) * limit)
@@ -962,6 +964,15 @@ const resolvers = {
           );
         }
 
+        const cachedPosts = await redisClientGet(`posts_${userId}`);
+
+        if (cachedPosts) {
+          return JSON.parse(cachedPosts).slice(
+            page * limit,
+            (page + 1) * limit
+          );
+        }
+
         const posts = await NeodeObject?.cypher(
           `MATCH (c:Company) -[:HAS_A_POST]-> (p:PositionPost)
            MATCH (u:User) -[:ADMIN_OF] -> (c1:Company)
@@ -969,6 +980,12 @@ const resolvers = {
            RETURN p ORDER BY p.CreatedDate ${isDESC ? "DESC" : "ASC"}`,
           { userId }
         );
+
+        if (!posts) {
+          throw new Error("Posts not found");
+        }
+
+        await redisClientSet(`posts_${userId}`, JSON.stringify(posts.records));
 
         return posts.records
           .slice(page * limit, (page + 1) * limit)
@@ -1044,12 +1061,30 @@ const resolvers = {
           );
         }
 
+        const cachedPosts = await redisClientGet(`myPosts_${userId}`);
+
+        if (cachedPosts) {
+          return JSON.parse(cachedPosts).slice(
+            page * limit,
+            (page + 1) * limit
+          );
+        }
+
         const posts = await NeodeObject?.cypher(
           `MATCH (u:User) -[:ADMIN_OF] -> (c:Company)
           MATCH (c:Company) -[:HAS_A_POST]-> (p:PositionPost)
           WHERE ID(u) = $userId
           RETURN p ORDER BY p.CreatedDate ${isDESC ? "DESC" : "ASC"}`,
           { userId }
+        );
+
+        if (!posts) {
+          throw new Error("Posts not found");
+        }
+
+        await redisClientSet(
+          `myPosts_${userId}`,
+          JSON.stringify(posts.records)
         );
 
         return posts.records
@@ -1112,7 +1147,7 @@ const resolvers = {
      */
     deleteMessage: async (parent, args) => {
       try {
-        const { messageId } = args;
+        const { messageId, chatId } = args;
 
         if (!messageId) {
           throw new Error(
@@ -1129,6 +1164,8 @@ const resolvers = {
         }
 
         await NeodeObject?.delete(message);
+
+        await redisClientDel(`messages_${chatId}`);
 
         return true;
       } catch (error) {
@@ -1188,14 +1225,7 @@ const resolvers = {
           { userId, teamId }
         );
 
-        // create redis
-        const redisClient = await createClient({
-          url: process.env.Redis_URL,
-        })
-          .on("error", (err) => Logging.error("Redis Client Error", err))
-          .connect();
-
-        redisClient.del(`worksCompanies_${userId}`);
+        redisClientDel(`worksCompanies_${userId}`);
 
         return true;
       } catch (error) {
@@ -1203,6 +1233,61 @@ const resolvers = {
           `${new Date()}, in resolvers.js => deleteUserFromTeam, ${error}`
         );
         throw new Error(`Error in deleteUserFromTeam: ${error.message}`);
+      }
+    },
+    deletePost: async (parent, args) => {
+      try {
+        const { postId, userId } = args;
+
+        if (!postId) {
+          throw new Error(
+            `Are you send postId? postId is required, postId value is ${postId}. please check postId value before send`
+          );
+        }
+
+        const post = await NeodeObject?.find("Post", postId);
+
+        if (!post) {
+          throw new Error(
+            `Are you send postId? postId is required, postId value is ${postId}. please check postId value before send`
+          );
+        }
+
+        await NeodeObject?.delete(`posts_${userId}`);
+        await NeodeObject?.delete(`myPosts_${userId}`);
+
+        await redisClientDel("allPosts");
+
+        return true;
+      } catch (error) {
+        Logging.error(`${new Date()}, in resolvers.js => deletePost, ${error}`);
+        throw new Error(`Error in deletePost: ${error.message}`);
+      }
+    },
+    deleteUser: async (parent, args) => {
+      try {
+        const { userId } = args;
+
+        if (!userId) {
+          throw new Error(
+            `Are you send userId? userId is required, userId value is ${userId}. please check userId value before send`
+          );
+        }
+
+        const user = await NeodeObject?.find("User", userId);
+
+        if (!user) {
+          throw new Error(
+            `Are you send userId? userId is required, userId value is ${userId}. please check userId value before send`
+          );
+        }
+
+        await NeodeObject?.delete(user);
+
+        return true;
+      } catch (error) {
+        Logging.error(`${new Date()}, in resolvers.js => deleteUser, ${error}`);
+        throw new Error(`Error in deleteUser: ${error.message}`);
       }
     },
   },
@@ -1485,14 +1570,7 @@ const resolvers = {
           ...project,
         });
 
-        // create redis
-        const redisClient = await createClient({
-          url: process.env.Redis_URL,
-        })
-          .on("error", (err) => Logging.error("Redis Client Error", err))
-          .connect();
-
-        redisClient.del("allProjects");
+        redisClientDel("allProjects");
 
         backup.info(
           `CREATE (project:Project {createdDate: datetime(), ${Object.keys(
@@ -1682,6 +1760,8 @@ const resolvers = {
 
         await chat.relateTo(messageCreated, "has_a");
 
+        await redisClientDel(`messages_${chatId}`);
+
         backup.info(
           `CREATE (message:Message {createdDate: datetime(), ${Object.keys(
             message
@@ -1730,6 +1810,8 @@ const resolvers = {
 
         await user.relateTo(companyCreated, "admin_of");
 
+        await redisClientDel(`companies_${userId}`);
+
         backup.info(
           `CREATE (company:Company {createdDate: datetime(), ${Object.keys(
             company
@@ -1741,13 +1823,7 @@ const resolvers = {
           RETURN company`
         );
 
-        const redisClient = await createClient({
-          url: process.env.Redis_URL,
-        })
-          .on("error", (err) => Logging.error("Redis Client Error", err))
-          .connect();
-
-        redisClient.del(`companies_${userId}`);
+        redisClientDel(`companies_${userId}`);
 
         return {
           ...companyCreated.properties(),
@@ -1832,6 +1908,8 @@ const resolvers = {
 
         await user.relateTo(newContactMessage, "contact_us");
 
+        await redisClientDel("contactMessages");
+
         backup.info(
           `CREATE (contactMessage:ContactMessage {createdDate: datetime(), ${Object.keys(
             contactMessage
@@ -1860,7 +1938,7 @@ const resolvers = {
      */
     createPositionPost: async (parent, args) => {
       try {
-        const { post, companyId } = args;
+        const { post, companyId, userId } = args;
 
         if (!post) {
           throw new Error(
@@ -1875,6 +1953,8 @@ const resolvers = {
         }
 
         const newPost = await NeodeObject?.create("PositionPost", { ...post });
+
+        await redisClientDel(`myPosts_${userId}`);
 
         await company.relateTo(newPost, "has_a_post");
 
@@ -1924,17 +2004,14 @@ const resolvers = {
         await NeodeObject.writeCypher(
           `MATCH (n:User) WHERE ID(n) = $userId
            MATCH (t:Team) WHERE ID(t) = $teamId
-           CREATE (n) -[r:IN_TEAM {role: $role}] -> (t)`,
+           MATCH (c:Company)-[r:HAS_A_TEAM]->(t)
+           CREATE (n) -[r:IN_TEAM {role: $role}] -> (t)
+           CREATE (n) -[r:WORK_ON] -> (c)
+           RETURN t`,
           { userId, teamId, role }
         );
 
-        const redisClient = await createClient({
-          url: process.env.Redis_URL,
-        })
-          .on("error", (err) => Logging.error("Redis Client Error", err))
-          .connect();
-
-        await redisClient.del(`worksCompanies_${userId}`);
+        await redisClientDel(`worksCompanies_${userId}`);
 
         backup.info(
           `MATCH (n:User) WHERE ID(n) = ${userId}
@@ -2414,13 +2491,7 @@ const resolvers = {
           throw new Error("Company not found");
         }
 
-        const redisClient = await createClient({
-          url: process.env.Redis_URL,
-        })
-          .on("error", (err) => Logging.error("Redis Client Error", err))
-          .connect();
-
-        redisClient.del(`companies_${userId}`);
+        redisClientDel(`companies_${userId}`);
 
         backup.info(
           `MATCH (c:Company) WHERE ID(c) = ${companyId}
@@ -2462,6 +2533,8 @@ const resolvers = {
         if (!updatedProject) {
           throw new Error("Project not found");
         }
+
+        redisClientDel("allProjects");
 
         backup.info(
           `MATCH (p:Project) WHERE ID(p) = ${projectId}
@@ -2574,7 +2647,7 @@ const resolvers = {
      */
     updatePositionPost: async (parent, args) => {
       try {
-        const { postId, positionPost } = args;
+        const { postId, positionPost, userId } = args;
 
         if (!postId) {
           throw new Error(
@@ -2590,6 +2663,8 @@ const resolvers = {
         if (!updatedPositionPost) {
           throw new Error("Position post not found");
         }
+
+        await redisClientDel(`myPosts_${userId}`);
 
         backup.info(
           `MATCH (pp:PositionPost)
@@ -2722,12 +2797,32 @@ const resolvers = {
           throw new Error("ChatID is null");
         }
 
+        const cache = await redisClientGet(`messages_${chatId}`);
+
+        if (cache) {
+          return JSON.parse(cache)?.slice(page * limit, (page + 1) * limit);
+        }
+
         // this query get chat by chatId with all messages.
         const cypherQuery = `
            MATCH (chat:AIChat)-[:HAS_A]->(messages:AIMessage) 
            WHERE ID(chat) = $chatId 
            RETURN messages`;
         const result = await NeodeObject.cypher(cypherQuery, { chatId });
+
+        if (!result) {
+          return [];
+        }
+
+        await redisClientSet(
+          `messages_${chatId}`,
+          JSON.stringify(
+            result?.records?.map((record) => ({
+              ...record.get("messages").properties,
+              _id: record.get("messages").identity.low,
+            }))
+          )
+        );
 
         return result?.records
           ?.slice(page * limit, (page + 1) * limit)
@@ -2751,12 +2846,32 @@ const resolvers = {
           throw new Error("UserID is null");
         }
 
+        const cache = await redisClientGet(`companies_${userId}`);
+
+        if (cache) {
+          return JSON.parse(cache)?.slice(page * limit, (page + 1) * limit);
+        }
+
         const cypherQuery = `
            MATCH (user:User)-[:ADMIN_OF]->(companies:Company)
            WHERE ID(user) = $userId
            RETURN companies`;
 
         const result = await NeodeObject.cypher(cypherQuery, { userId });
+
+        if (!result) {
+          return [];
+        }
+
+        await redisClientSet(
+          `companies_${userId}`,
+          JSON.stringify(
+            result?.records?.map((record) => ({
+              ...record.get("companies").properties,
+              _id: record.get("companies").identity.low,
+            }))
+          )
+        );
 
         return result?.records
           ?.slice(page * limit, (page + 1) * limit)
@@ -2780,12 +2895,32 @@ const resolvers = {
           throw new Error("UserID is null");
         }
 
+        const cache = await redisClientGet(`worksCompanies_${userId}`);
+
+        if (cache) {
+          return JSON.parse(cache)?.slice(page * limit, (page + 1) * limit);
+        }
+
         const cypherQuery = `
            MATCH (user:User)-[:WORK_ON]-> (companies:Company)
            WHERE ID(user) = $userId
            RETURN companies`;
 
         const result = await NeodeObject.cypher(cypherQuery, { userId });
+
+        if (!result) {
+          return [];
+        }
+
+        await redisClientSet(
+          `worksCompanies_${userId}`,
+          JSON.stringify(
+            result?.records?.map((record) => ({
+              ...record.get("companies").properties,
+              _id: record.get("companies").identity.low,
+            }))
+          )
+        );
 
         return result?.records
           ?.slice(page * limit, (page + 1) * limit)

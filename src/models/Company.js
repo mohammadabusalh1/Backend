@@ -6,10 +6,6 @@ module.exports = {
     default: 0,
   },
   Domain: "string",
-  IsDeleted: {
-    type: "boolean",
-    default: false,
-  },
   CreateDate: {
     type: "string",
     default: () => new Date().toString(),

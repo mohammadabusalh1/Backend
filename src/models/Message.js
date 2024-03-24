@@ -5,8 +5,4 @@ module.exports = {
     type: "string",
     default: () => new Date().toString(),
   },
-  IsDeleted: {
-    type: "boolean",
-    default: false,
-  },
 };

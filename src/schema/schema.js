@@ -32,13 +32,11 @@ const typeDefs = gql`
 
   type Chat {
     _id: ID
-    IsDeleted: Boolean
     CreatedDate: String
     Messages: [Message]
   }
 
   input ChatInput {
-    IsDeleted: Boolean
     CreatedDate: String
   }
 
@@ -48,7 +46,6 @@ const typeDefs = gql`
     CompanyDescription: String
     Rate: Float
     Domain: String
-    IsDeleted: Boolean
     CreateDate: String
     Teams: [Team]
     Project: Project
@@ -92,7 +89,6 @@ const typeDefs = gql`
     userId: Int
     MessageContent: String
     CreatedDate: String
-    IsDeleted: Boolean
   }
 
   input MessageInput {
@@ -104,7 +100,6 @@ const typeDefs = gql`
     _id: ID
     Content: String
     CreatedDate: String
-    IsDeleted: Boolean
   }
 
   input PositionPostInput {
@@ -215,7 +210,6 @@ const typeDefs = gql`
   type Team {
     _id: ID
     TeamName: String
-    IsDeleted: Boolean
     TeamRole: String
     CreateDate: String
     Tasks: [Task]
@@ -224,7 +218,6 @@ const typeDefs = gql`
 
   input TeamInput {
     TeamName: String!
-    IsDeleted: Boolean
     TeamRole: String!
     CreateDate: String
   }
@@ -345,9 +338,11 @@ const typeDefs = gql`
       userId: Int!
     ): [PositionPost]
     getTeam(teamId: Int!): Team
-    deleteMessage(messageId: Int!): Boolean
+    deleteMessage(messageId: Int!, chatId: Int!): Boolean
     deleteEducation(educationId: Int!): Boolean
     deleteUserFromTeam(userId: Int!, teamId: Int!): Boolean
+    deletePost(postId: Int!, userId: Int!): Boolean
+    deleteUser(userId: Int!): Boolean
   }
 
   type Mutation {
@@ -374,7 +369,11 @@ const typeDefs = gql`
       contactMessage: ContactMessageInput!
       userId: Int!
     ): ContactMessage
-    createPositionPost(post: PositionPostInput!, companyId: Int!): PositionPost
+    createPositionPost(
+      post: PositionPostInput!
+      companyId: Int!
+      userId: Int!
+    ): PositionPost
     addUserToTeam(teamId: Int!, userId: Int!, role: String!): Boolean
     createProjectNote(
       projectNote: ProjectNoteInput!
@@ -398,13 +397,18 @@ const typeDefs = gql`
     updateTask(taskId: Int!, task: TaskInput!): Task
     updateTaskStep(taskStepId: Int!, taskStep: TaskStepInput!): TaskStep
     createCompanyComment(comment: CommentInput!, companyId: Int!): Comment
-    updateCompany(companyId: Int!, company: CompanyInput!, userId: Int!): Company
+    updateCompany(
+      companyId: Int!
+      company: CompanyInput!
+      userId: Int!
+    ): Company
     updateProject(projectId: Int!, project: ProjectInput!): Project
     createTaskStep(taskStep: TaskStepInput!, taskId: Int!): TaskStep
     replayContactMessage(contactMessageId: Int!, message: String!): Boolean
     updatePositionPost(
       positionPostId: Int!
       positionPost: PositionPostInput!
+      userId: Int!
     ): PositionPost
     applyToPost(postId: Int!, userId: Int!): Boolean
     createEducation(education: EducationInput!, userId: Int!): Education
