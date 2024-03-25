@@ -275,7 +275,7 @@ const typeDefs = gql`
     getUser(userId: Int!, page: Int, limit: Int): User
     deleteTeam(teamId: Int!): Boolean
     deleteCompany(companyId: Int!, userId: Int!): Boolean
-    deleteSkill(skillId: Int!): Boolean
+    deleteSkill(skillId: Int!, userId: Int!): Boolean
     filterMyCompanies(
       userId: Int!
       filterType: String!
@@ -307,10 +307,8 @@ const typeDefs = gql`
     getProjects(page: Int, limit: Int): [Project]
     getProject(projectId: Int!): Project
     searchInProjects(page: Int, limit: Int, word: String!): [Project]
-    applyForProject(projectId: Int!, companyId: Int!): Boolean
     getTask(taskId: Int!): Task
     getCompany(companyId: Int!): Company
-    takeProjectByCompany(companyId: Int!, projectId: Int!): Boolean
     getContactMessages(page: Int, limit: Int): [ContactMessage]
     getAllPosts(userId: Int!, page: Int, limit: Int): [PositionPost]
     searchInPositionPosts(
@@ -343,6 +341,13 @@ const typeDefs = gql`
     deleteUserFromTeam(userId: Int!, teamId: Int!): Boolean
     deletePost(postId: Int!, userId: Int!): Boolean
     deleteUser(userId: Int!): Boolean
+    getChat(chatId: Int!): Chat
+    deleteChat(chatId: Int!): Boolean
+    deleteAIChat(AIchatId: Int!): Boolean
+    deleteTask(taskId: Int!): Boolean
+    deleteTaskStep(taskStepId: Int!): Boolean
+    deleteCompanyComment(commentId: Int!): Boolean
+    deleteProjectRequirement(projectRequirementId: Int!): Boolean
   }
 
   type Mutation {
@@ -412,6 +417,10 @@ const typeDefs = gql`
     ): PositionPost
     applyToPost(postId: Int!, userId: Int!): Boolean
     createEducation(education: EducationInput!, userId: Int!): Education
+    applyForProject(projectId: Int!, companyId: Int!): Boolean
+    updateEducation(educationId: Int!, education: EducationInput!): Education
+    updateTeam(teamId: Int!, team: TeamInput!): Team
+    takeProjectByCompany(companyId: Int!, projectId: Int!): Boolean
   }
 `;
 
