@@ -22,9 +22,11 @@
     "express": "^4.18.2",
     "express-async-errors": "^3.1.1",
     "express-graphql": "^0.12.0",
+    "express-rate-limit": "^7.2.0",
     "express-session": "^1.17.3",
     "firebase-admin": "^12.0.0",
     "google-auth-library": "^9.4.2",
+    "helmet": "^7.1.0",
     "neo4j": "^2.0.0-RC2",
     "neode": "^0.4.9",
     "nodemailer": "^6.9.8",
@@ -35,9 +37,10 @@
   },
   "devDependencies": {
     "chai": "^5.1.0",
-    "eslint": "^8.56.0",
+    "eslint": "^8.57.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-security": "^2.1.1",
     "graphql": "^16.8.1",
     "mocha": "^10.3.0",
     "supertest": "^6.3.4"

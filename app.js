@@ -4,10 +4,13 @@ const express = require("express");
 const { ApolloServer } = require("apollo-server-express");
 const compression = require("compression");
 const cors = require("cors");
+const helmet = require("helmet");
+const rateLimit = require("express-rate-limit");
 const { typeDefs } = require("./src/schema/schema");
 const { resolvers } = require("./src/controllers/resolvers");
 const Logging = require("./src/config/Logging");
-require("dotenv").config();
+
+//express-validator
 
 // fixed variable to save this server port, so sever run in this port
 const PORT = 3000;
@@ -17,6 +20,25 @@ const app = express();
 // this to compression data when request and response
 app.use(compression());
 app.use(cors());
+// to save all headers from cross-site injections
+app.use(helmet());
+
+const limiter = rateLimit({
+  windowMs: 10 * 60 * 1000, // 10 minutes
+  limit: 100, // Limit each IP to 100 requests per `window` (here, per 10 minutes).
+  standardHeaders: "draft-7", // draft-6: `RateLimit-*` headers; draft-7: combined `RateLimit` header
+  legacyHeaders: false, // Disable the `X-RateLimit-*` headers.
+  // store: ... , // Redis, Memcached, etc. See below.
+});
+
+app.use(limiter);
+
+// app.use((req, res, next) => {
+//   if (!req.secure) {
+//     return res.redirect(`https://${req.headers.host}${req.url}`);
+//   }
+//   next();
+// });
 
 const server = new ApolloServer({
   typeDefs,
