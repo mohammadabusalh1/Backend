@@ -25,6 +25,7 @@ module.exports = {
   Gender: "string",
   Work: "string",
   Bio: "string",
+  ImageUrl: "string",
   LastTimeOnline: "string",
   chat_with_AI: {
     type: "relationship",

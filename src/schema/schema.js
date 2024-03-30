@@ -238,6 +238,7 @@ const typeDefs = gql`
     Work: String!
     Bio: String!
     LastTimeOnline: String
+    ImageUrl: String
   }
 
   type User {
@@ -257,6 +258,7 @@ const typeDefs = gql`
     Work: String
     Bio: String
     LastTimeOnline: String
+    ImageUrl: String
     MyCompanies: [Company]
     WorkCompanies: [Company]
     Skills: [Skill]
@@ -274,8 +276,8 @@ const typeDefs = gql`
     getAIChat(chatId: Int!, page: Int, limit: Int): AIChat
     getUser(userId: Int!, page: Int, limit: Int): User
     deleteTeam(teamId: Int!): Boolean
-    deleteCompany(companyId: Int!, userId: Int!): Boolean
-    deleteSkill(skillId: Int!, userId: Int!): Boolean
+    deleteCompany(companyId: Int!): Boolean
+    deleteSkill(skillId: Int!): Boolean
     filterMyCompanies(
       userId: Int!
       filterType: String!
@@ -336,13 +338,10 @@ const typeDefs = gql`
       userId: Int!
     ): [PositionPost]
     getTeam(teamId: Int!): Team
-    deleteMessage(messageId: Int!, chatId: Int!): Boolean
     deleteEducation(educationId: Int!): Boolean
     deleteUserFromTeam(userId: Int!, teamId: Int!): Boolean
-    deletePost(postId: Int!, userId: Int!): Boolean
+    deletePost(postId: Int!): Boolean
     deleteUser(userId: Int!): Boolean
-    getChat(chatId: Int!): Chat
-    deleteChat(chatId: Int!): Boolean
     deleteAIChat(AIchatId: Int!): Boolean
     deleteTask(taskId: Int!): Boolean
     deleteTaskStep(taskStepId: Int!): Boolean
@@ -366,8 +365,6 @@ const typeDefs = gql`
       requirement: ProjectRequirementInput!
     ): ProjectRequirement
     createNewTeam(team: TeamInput!, companyId: Int!): Team
-    createNewChat(userId: Int!, chat: ChatInput!): Chat
-    sendMessage(message: MessageInput!, chatId: Int!): Message
     createNewCompany(company: CompanyInput!, userId: Int!): Company
     createNewSkill(skill: SkillInput!, userId: Int!): Skill
     createNewContactMessage(
@@ -377,7 +374,6 @@ const typeDefs = gql`
     createPositionPost(
       post: PositionPostInput!
       companyId: Int!
-      userId: Int!
     ): PositionPost
     addUserToTeam(teamId: Int!, userId: Int!, role: String!): Boolean
     createProjectNote(
@@ -405,7 +401,6 @@ const typeDefs = gql`
     updateCompany(
       companyId: Int!
       company: CompanyInput!
-      userId: Int!
     ): Company
     updateProject(projectId: Int!, project: ProjectInput!): Project
     createTaskStep(taskStep: TaskStepInput!, taskId: Int!): TaskStep
@@ -413,14 +408,12 @@ const typeDefs = gql`
     updatePositionPost(
       positionPostId: Int!
       positionPost: PositionPostInput!
-      userId: Int!
     ): PositionPost
     applyToPost(postId: Int!, userId: Int!): Boolean
     createEducation(education: EducationInput!, userId: Int!): Education
     applyForProject(projectId: Int!, companyId: Int!): Boolean
     updateEducation(educationId: Int!, education: EducationInput!): Education
     updateTeam(teamId: Int!, team: TeamInput!): Team
-    takeProjectByCompany(companyId: Int!, projectId: Int!): Boolean
   }
 `;
 
