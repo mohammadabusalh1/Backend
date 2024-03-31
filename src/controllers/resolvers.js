@@ -440,10 +440,10 @@ const resolvers = {
         );
 
         return {
-          numberOfProjects: numberOfProjects.records[0].get("count(p)"),
-          numberOfTeams: numberOfTeams.records[0].get("count(t)"),
-          numberOfTasks: numberOfTasks.records[0].get("count(t)"),
-          numberOfMyCompanies:
+          NumberOfProjects: numberOfProjects.records[0].get("count(p)"),
+          NumberOfTeams: numberOfTeams.records[0].get("count(t)"),
+          NumberOfTasks: numberOfTasks.records[0].get("count(t)"),
+          NumberOfMyCompanies:
             numberOfMyCompanies.records[0].get("myCompaniesCount"),
         };
       } catch (error) {

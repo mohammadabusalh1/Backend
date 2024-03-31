@@ -272,6 +272,13 @@ const typeDefs = gql`
     CreatedTasks: [Task]
   }
 
+  type UserStatistics {
+    NumberOfProjects: Int
+    NumberOfTeams: Int
+    NumberOfTasks: Int
+    NumberOfMyCompanies: Int
+  }
+
   type Query {
     getAIChat(chatId: Int!, page: Int, limit: Int): AIChat
     getUser(userId: Int!, page: Int, limit: Int): User
@@ -304,7 +311,7 @@ const typeDefs = gql`
       page: Int
       limit: Int
     ): [Company]
-    getProfileStatistics(userId: Int!): User
+    getProfileStatistics(userId: Int!): UserStatistics
     deleteSocialMediaAccounts(id: Int!): Boolean
     getProjects(page: Int, limit: Int): [Project]
     getProject(projectId: Int!): Project
