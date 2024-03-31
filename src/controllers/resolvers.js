@@ -1604,9 +1604,7 @@ const resolvers = {
           RETURN company`
         );
 
-        return {
-          ...companyCreated.properties(),
-        };
+        return companyCreated.toJson();
       } catch (error) {
         Logging.error(
           `${new Date()}, in resolvers.js => createNewCompany, ${error}`
@@ -1779,9 +1777,9 @@ const resolvers = {
         await NeodeObject.writeCypher(
           `MATCH (n:User) WHERE ID(n) = $userId
            MATCH (t:Team) WHERE ID(t) = $teamId
-           MATCH (c:Company)-[r:HAS_A_TEAM]->(t)
-           CREATE (n) -[r:IN_TEAM {role: $role}] -> (t)
-           CREATE (n) -[r:WORK_ON] -> (c)
+           MATCH (c:Company)-[cr:HAS_A_TEAM]->(t)
+           CREATE (n) -[tr:IN_TEAM {role: $role}] -> (t)
+           CREATE (n) -[wr:WORK_ON] -> (c)
            RETURN t`,
           { userId, teamId, role }
         );
@@ -2887,35 +2885,6 @@ const resolvers = {
           }));
       } catch (error) {
         Logging.error(`${new Date()}, in resolvers.js => Tasks, ${error}`);
-        throw error;
-      }
-    },
-    Chats: async (parent) => {
-      try {
-        const userId = parent._id;
-        const { page, limit } = parent;
-
-        if (!userId) {
-          throw new Error("UserID is null");
-        }
-
-        const cypherQuery = `
-           MATCH (user:User)-[:CHAT_WITH]->(chats:Chat)
-           WHERE ID(user) = $userId
-           RETURN chats`;
-
-        const result = await NeodeObject.cypher(cypherQuery, { userId });
-
-        return result?.records
-          ?.slice(page * limit, (page + 1) * limit)
-          ?.map((record) => ({
-            ...record.get("chats").properties(),
-            _id: record.get("chats").identity().low,
-            page,
-            limit,
-          }));
-      } catch (error) {
-        Logging.error(`${new Date()}, in resolvers.js => Chats, ${error}`);
         throw error;
       }
     },
