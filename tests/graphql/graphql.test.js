@@ -14,12 +14,13 @@ let companyId = 0;
 let teamId = 0;
 let skillId = 0;
 let projectNoteId = 0;
-const userCreateTaskId = 0;
+let userCreateTaskId = 0;
 let taskId = 0;
 let teamTaskId = 0;
 let taskStepId = 0;
 let postId = 0;
 let accountId = 0;
+let educationId = 0;
 const message = "can tell me about this project?";
 const company = {
   CompanyName: "Test Company",
@@ -164,7 +165,10 @@ describe("Create User API Tests (create)", () => {
 
         assert.notStrictEqual(data?.createNewUser, null || undefined);
         assert.notStrictEqual(data?.createNewUser?._id, null || undefined);
-        assert.notStrictEqual(data?.createNewUser?.CreateDate, null || undefined);
+        assert.notStrictEqual(
+          data?.createNewUser?.CreateDate,
+          null || undefined
+        );
         assert.strictEqual(data?.createNewUser?.Username, user.Username);
         assert.strictEqual(data?.createNewUser?.FirstName, user.FirstName);
         assert.strictEqual(data?.createNewUser?.LastName, user.LastName);
@@ -188,7 +192,7 @@ describe("Create User API Tests (create)", () => {
   });
 });
 
-describe("Create User API Tests (create)", () => {
+describe("Second Create User API Tests (create)", () => {
   it("Should create a new user with valid input data", (done) => {
     const mutation = `
     mutation Mutation($user: UserInput!) {
@@ -243,12 +247,15 @@ describe("Create User API Tests (create)", () => {
 
         const { data } = res.body;
         if (userCreateTaskId === 0) {
-          userId = data?.createNewUser?._id;
+          userCreateTaskId = data?.createNewUser?._id;
         }
 
         assert.notStrictEqual(data?.createNewUser, null || undefined);
         assert.notStrictEqual(data?.createNewUser?._id, null || undefined);
-        assert.notStrictEqual(data?.createNewUser?.CreateDate, null || undefined);
+        assert.notStrictEqual(
+          data?.createNewUser?.CreateDate,
+          null || undefined
+        );
         assert.strictEqual(data?.createNewUser?.Username, user.Username);
         assert.strictEqual(data?.createNewUser?.FirstName, user.FirstName);
         assert.strictEqual(data?.createNewUser?.LastName, user.LastName);
@@ -273,7 +280,7 @@ describe("Create User API Tests (create)", () => {
 });
 
 describe("Create AIChat API Tests", () => {
-  it("Should create a new AI chat for a valid user ID", () => {
+  it("Should create a new AI chat for a valid user ID", (done) => {
     const mutation = `
       mutation {
         createNewAIChat(userId: ${userId}) {
@@ -288,7 +295,7 @@ describe("Create AIChat API Tests", () => {
       .send({ query: mutation })
       .expect(200)
       .end((err, res) => {
-        if (err) return assert.fail(err);
+        if (err) return done(err);
         const aiChat = res?.body?.data?.createNewAIChat;
         if (AIchatId === 0) {
           AIchatId = aiChat?._id;
@@ -296,6 +303,7 @@ describe("Create AIChat API Tests", () => {
         assert.notStrictEqual(aiChat, null || undefined);
         assert.notStrictEqual(aiChat._id, null || undefined);
         assert.notStrictEqual(aiChat.CreatedDate, null || undefined);
+        done();
       });
   });
 });
@@ -369,8 +377,14 @@ describe("Create Project Requirement API Test", () => {
       .end((err, res) => {
         if (err) return done(err);
         const { data } = res.body;
-        assert.notStrictEqual(data?.createProjectRequirement, null || undefined);
-        assert.notStrictEqual(data?.createProjectRequirement?._id, null || undefined);
+        assert.notStrictEqual(
+          data?.createProjectRequirement,
+          null || undefined
+        );
+        assert.notStrictEqual(
+          data?.createProjectRequirement?._id,
+          null || undefined
+        );
         assert.strictEqual(
           data?.createProjectRequirement?.Value,
           projectRequirement?.Value
@@ -461,7 +475,7 @@ describe("Create Company API Tests", () => {
   });
 });
 
-describe("Create Company API Tests", () => {
+describe("Second Create Company API Tests", () => {
   it("Should create a new company with valid input data", (done) => {
     const mutation = `
     mutation{
@@ -483,13 +497,14 @@ describe("Create Company API Tests", () => {
 
     request(app)
       .post("/graphql")
-      .send({ query: mutation })
+      .send({
+        query: mutation,
+      })
       .expect(200)
       .end((err, res) => {
         if (err) return done(err);
 
         const { data } = res.body;
-
         assert.notStrictEqual(data?.createNewCompany, null || undefined);
         assert.notStrictEqual(data?.createNewCompany?._id, null || undefined);
         if (companyId === 0) {
@@ -505,6 +520,41 @@ describe("Create Company API Tests", () => {
         );
         assert.strictEqual(data?.createNewCompany?.Domain, company?.Domain);
         assert.strictEqual(data?.createNewCompany?.Rate, company?.Rate);
+
+        done();
+      });
+  });
+});
+
+describe("Create Company Comment API Tests", () => {
+  it("Should create a new comment for a company with valid input data", (done) => {
+    const mutation = `
+        mutation {
+          createCompanyComment(comment: {
+            Value: "${commentInput.Value}",
+            CreatedDate: "${commentInput.CreatedDate}",
+          }, companyId: ${companyId}) {
+            _id
+            Value
+            CreatedDate
+          }
+        }
+      `;
+
+    request(app)
+      .post("/graphql")
+      .send({ query: mutation })
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+
+        const { data } = res.body;
+        assert.ok(data.createCompanyComment._id);
+        assert.strictEqual(data.createCompanyComment.Value, commentInput.Value);
+        assert.strictEqual(
+          data.createCompanyComment.CreatedDate,
+          commentInput.CreatedDate
+        );
 
         done();
       });
@@ -609,7 +659,10 @@ describe("Create Contact Message API Tests", () => {
         const { data } = res.body;
 
         assert.notStrictEqual(data?.createNewContactMessage, null || undefined);
-        assert.notStrictEqual(data?.createNewContactMessage?._id, null || undefined);
+        assert.notStrictEqual(
+          data?.createNewContactMessage?._id,
+          null || undefined
+        );
 
         assert.strictEqual(
           data?.createNewContactMessage?.Message,
@@ -652,6 +705,27 @@ describe("Create Position Post API Tests", () => {
           data?.createPositionPost?.Content,
           positionPostInput.Content
         );
+        done();
+      });
+  });
+});
+
+describe("apply for project", () => {
+  it("Should apply for project and return true", (done) => {
+    const mutation = `
+    mutation{
+      applyForProject(projectId: ${projectId}, companyId: ${companyId})
+        }
+        `;
+
+    request(app)
+      .post("/graphql")
+      .send({ query: mutation })
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        const { data } = res.body;
+        assert.strictEqual(data.applyForProject, true);
         done();
       });
   });
@@ -744,7 +818,10 @@ describe("Create Project Note Task API Tests", () => {
 
         const { data } = res.body;
         assert.notStrictEqual(data?.createProjectNoteTask, null || undefined);
-        assert.notStrictEqual(data?.createProjectNoteTask?._id, null || undefined);
+        assert.notStrictEqual(
+          data?.createProjectNoteTask?._id,
+          null || undefined
+        );
         assert.strictEqual(
           data?.createProjectNoteTask?.Title,
           projectNoteTaskInput.Title
@@ -782,8 +859,14 @@ describe("Create Account API Tests", () => {
         if (err) return done(err);
 
         const { data } = res.body;
-        assert.notStrictEqual(data?.createNewSocialMediaLink, null || undefined);
-        assert.notStrictEqual(data?.createNewSocialMediaLink?._id, null || undefined);
+        assert.notStrictEqual(
+          data?.createNewSocialMediaLink,
+          null || undefined
+        );
+        assert.notStrictEqual(
+          data?.createNewSocialMediaLink?._id,
+          null || undefined
+        );
         if (accountId === 0) {
           accountId = data?.createNewSocialMediaLink?._id;
         }
@@ -999,41 +1082,6 @@ describe("Create Team Task Step API Tests", () => {
   });
 });
 
-describe("Create Company Comment API Tests", () => {
-  it("Should create a new comment for a company with valid input data", (done) => {
-    const mutation = `
-        mutation {
-          createCompanyComment(comment: {
-            Value: "${commentInput.Value}",
-            CreatedDate: "${commentInput.CreatedDate}",
-          }, companyId: ${companyId}) {
-            _id
-            Value
-            CreatedDate
-          }
-        }
-      `;
-
-    request(app)
-      .post("/graphql")
-      .send({ query: mutation })
-      .expect(200)
-      .end((err, res) => {
-        if (err) return done(err);
-
-        const { data } = res.body;
-        assert.ok(data.createCompanyComment._id);
-        assert.strictEqual(data.createCompanyComment.Value, commentInput.Value);
-        assert.strictEqual(
-          data.createCompanyComment.CreatedDate,
-          commentInput.CreatedDate
-        );
-
-        done();
-      });
-  });
-});
-
 describe("Create Education API Tests", () => {
   it("Should create a new education with valid input data", (done) => {
     const educationInput = {
@@ -1067,6 +1115,9 @@ describe("Create Education API Tests", () => {
         const { data } = res.body;
         assert.notStrictEqual(data?.createEducation, null || undefined);
         assert.notStrictEqual(data?.createEducation._id, null || undefined);
+        if (educationId === 0) {
+          educationId = data?.createEducation._id;
+        }
         assert.strictEqual(data?.createEducation.Title, educationInput.Title);
         assert.strictEqual(
           data?.createEducation.Description,
@@ -1105,11 +1156,487 @@ describe("Apply To a Post API Tests", () => {
   });
 });
 
-describe("apply for project", () => {
-  it("Should apply for project and return true", (done) => {
+describe("Filter My Companies API Tests", () => {
+  it("Should filter my companies with valid input data", (done) => {
     const query = `
     query{
-      applyForProject(projectId: ${projectId}, companyId: ${companyId})
+      filterMyCompanies(userId: ${userId}, desc: true) {
+        _id
+        CompanyName
+        CompanyDescription
+        Domain
+        Rate
+      }
+    }`;
+
+    request(app)
+      .post("/graphql")
+      .send({ query })
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+
+        const { data } = res.body;
+
+        assert.notStrictEqual(data?.filterMyCompanies, null || undefined);
+        assert.notStrictEqual(
+          data?.filterMyCompanies[0]?._id,
+          null || undefined
+        );
+        assert.strictEqual(
+          data?.filterMyCompanies[0]?.CompanyName,
+          company.CompanyName
+        );
+        assert.strictEqual(
+          data?.filterMyCompanies[0]?.CompanyDescription,
+          company.CompanyDescription
+        );
+        assert.strictEqual(data?.filterMyCompanies[0]?.Domain, company.Domain);
+        assert.strictEqual(data?.filterMyCompanies[0]?.Rate, company.Rate);
+
+        done();
+      });
+  });
+});
+
+describe("Search In My Companies API Tests", () => {
+  it("Should search in my companies with valid input data", (done) => {
+    const query = `
+    query{
+      searchInMyCompanies(userId: ${userId}, word: "Company") {
+        _id
+        CompanyName
+        CompanyDescription
+        Domain
+        Rate
+      }
+    }`;
+
+    request(app)
+      .post("/graphql")
+      .send({
+        query,
+      })
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+
+        const { data } = res.body;
+
+        assert.notStrictEqual(data?.searchInMyCompanies, null || undefined);
+        assert.notStrictEqual(
+          data?.searchInMyCompanies[0]?._id,
+          null || undefined
+        );
+        assert.strictEqual(
+          data?.searchInMyCompanies[0]?.CompanyName,
+          company.CompanyName
+        );
+        assert.strictEqual(
+          data?.searchInMyCompanies[0]?.CompanyDescription,
+          company.CompanyDescription
+        );
+        assert.strictEqual(
+          data?.searchInMyCompanies[0]?.Domain,
+          company.Domain
+        );
+        assert.strictEqual(data?.searchInMyCompanies[0]?.Rate, company.Rate);
+
+        done();
+      });
+  });
+});
+
+describe("Filter Works Companies API Tests", () => {
+  it("Should filter works companies with valid input data", (done) => {
+    const query = `
+    query{
+      filterWorksCompanies(userId: ${userId}, desc: true) {
+        _id
+        CompanyName
+        CompanyDescription
+        Domain
+        Rate
+      }
+    }`;
+
+    request(app)
+      .post("/graphql")
+      .send({ query })
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+
+        const { data } = res.body;
+
+        assert.notStrictEqual(data?.filterWorksCompanies, null || undefined);
+        assert.notStrictEqual(
+          data?.filterWorksCompanies[0]?._id,
+          null || undefined
+        );
+        assert.strictEqual(
+          data?.filterWorksCompanies[0]?.CompanyName,
+          company.CompanyName
+        );
+        assert.strictEqual(
+          data?.filterWorksCompanies[0]?.CompanyDescription,
+          company.CompanyDescription
+        );
+        assert.strictEqual(
+          data?.filterWorksCompanies[0]?.Domain,
+          company.Domain
+        );
+        assert.strictEqual(data?.filterWorksCompanies[0]?.Rate, company.Rate);
+
+        done();
+      });
+  });
+});
+
+describe("Search In Works Companies API Tests", () => {
+  it("Should search in works companies with valid input data", (done) => {
+    const query = `
+    query{
+      searchInWorksCompanies(userId: ${userId}, word: "Company") {
+        _id
+        CompanyName
+        CompanyDescription
+        Domain
+        Rate
+      }
+    }`;
+
+    request(app)
+      .post("/graphql")
+      .send({
+        query,
+      })
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+
+        const { data } = res.body;
+        assert.notStrictEqual(data?.searchInWorksCompanies, null || undefined);
+        assert.notStrictEqual(
+          data?.searchInWorksCompanies[0]?._id,
+          null || undefined
+        );
+        assert.strictEqual(
+          data?.searchInWorksCompanies[0]?.CompanyName,
+          company.CompanyName
+        );
+        assert.strictEqual(
+          data?.searchInWorksCompanies[0]?.CompanyDescription,
+          company.CompanyDescription
+        );
+        assert.strictEqual(
+          data?.searchInWorksCompanies[0]?.Domain,
+          company.Domain
+        );
+        assert.strictEqual(data?.searchInWorksCompanies[0]?.Rate, company.Rate);
+
+        done();
+      });
+  });
+});
+
+describe("getProfileStatistics API Test", () => {
+  it("Should get profile statistics with valid user ID", (done) => {
+    const query = `
+    query{
+      getProfileStatistics(userId: ${userId}) {
+        NumberOfProjects
+        NumberOfTeams
+        NumberOfTasks
+        NumberOfMyCompanies
+      }
+    }`;
+
+    console.log(query);
+
+    request(app)
+      .post("/graphql")
+      .send({ query })
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+
+        const { data } = res.body;
+        console.log(data);
+        assert.notStrictEqual(data?.getProfileStatistics, null || undefined);
+        assert.strictEqual(data?.getProfileStatistics.NumberOfProjects, 1);
+        assert.strictEqual(data?.getProfileStatistics.NumberOfTeams, 1);
+        assert.strictEqual(data?.getProfileStatistics.NumberOfTasks, 1);
+        assert.strictEqual(data?.getProfileStatistics.NumberOfMyCompanies, 1);
+
+        done();
+      });
+  });
+});
+
+// describe("get AiChat API Test", () => {
+//   it("Should get an AI chat with valid chat ID", (done) => {
+//     const query = `
+//     query GetAIChat($chatId: Int!) {
+//       getAIChat(chatId: $chatId) {
+//         CreatedDate
+//         Messages {
+//           Answer
+//           CreatedDate
+//           Question
+//           _id
+//         }
+//         _id
+//       }
+//     }`;
+
+//     request(app)
+//       .post("/graphql")
+//       .send({ query, variables: { chatId: AIchatId } })
+//       .expect(200)
+//       .end((err, res) => {
+//         if (err) return done(err);
+
+//         const { data } = res.body;
+
+//         assert.ok(data?.getAIChat?._id);
+//         assert.equal(data?.getAIChat?._id, AIchatId);
+//         assert.notStrictEqual(data?.getAIChat?.CreateDate, null || undefined);
+//         assert.notStrictEqual(data?.getAIChat?.Messages.length, 0);
+//         assert.notStrictEqual(
+//           data?.getAIChat?.Messages[0]._id,
+//           null || undefined
+//         );
+//         assert.notStrictEqual(
+//           data?.getAIChat?.Messages[0].Question,
+//           null || undefined
+//         );
+//         assert.notStrictEqual(
+//           data?.getAIChat?.Messages[0].Answer,
+//           null || undefined
+//         );
+//         assert.notStrictEqual(
+//           data?.getAIChat?.Messages[0].CreatedDate,
+//           null || undefined
+//         );
+//         assert.strictEqual(data?.getAIChat?.Messages[0].Question, message);
+//         done();
+//       });
+//   });
+// });
+
+describe("get User API Test", () => {
+  it("Should get a user with valid user ID", (done) => {
+    const query = `
+    query{
+      getUser(userId: ${userId}) {
+        AIChats {
+          _id
+          CreatedDate
+          Messages {
+            _id
+            Question
+            Answer
+            CreatedDate
+          }
+        }
+        Accounts {
+          _id
+          PlatformName
+          Link
+        }
+        Bio
+        Country
+        CreateDate
+        CreatedBy
+        CreatedTasks {
+          _id
+        }
+        DateOfBirth
+        Educations {
+          _id
+          Title
+          Description
+          FileName
+        }
+        Email
+        FirstName
+        Gender
+        ImageUrl
+        IsActive
+        LastName
+        LastTimeOnline
+        MyCompanies {
+          _id
+        }
+        Password
+        Posts {
+          _id
+          Content
+          CreatedDate
+        }
+        Rate
+        Skills {
+          _id
+          Skill
+        }
+        Tasks {
+          _id
+        }
+        Username
+        Work
+        WorkCompanies {
+          _id
+        }
+        _id
+      }
+    }`;
+
+    request(app)
+      .post("/graphql")
+      .send({ query })
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+
+        const { data } = res.body;
+        assert.notStrictEqual(data?.getUser, null || undefined);
+        assert.strictEqual(data?.getUser?._id, userId);
+        assert.strictEqual(data?.getUser?.Email, user.Email);
+        assert.strictEqual(data?.getUser?.Username, user.Username);
+        assert.strictEqual(data?.getUser?.FirstName, user.FirstName);
+        assert.strictEqual(data?.getUser?.LastName, user.LastName);
+        assert.strictEqual(data?.getUser?.Rate, user.Rate);
+        assert.strictEqual(data?.getUser?.Gender, user.Gender);
+        assert.strictEqual(data?.getUser?.Bio, user.Bio);
+        assert.strictEqual(data?.getUser?.Country, user.Country);
+        assert.strictEqual(data?.getUser?.DateOfBirth, user.DateOfBirth);
+        assert.strictEqual(data?.getUser?.Work, user.Work);
+        assert.strictEqual(data?.getUser?.Rate, user.Rate);
+        assert.strictEqual(data?.getUser?.IsActive, true);
+        assert.strictEqual(data?.getUser?.LastTimeOnline, user.LastTimeOnline);
+        assert.notStrictEqual(data?.getUser?.Password, null);
+        assert.strictEqual(data?.getUser?.ImageUrl, user.ImageUrl);
+        assert.strictEqual(data?.getUser?.Gender, user.Gender);
+        assert.strictEqual(data?.getUser?.Rate, user.Rate);
+        assert.notStrictEqual(data?.getUser?.MyCompanies, null || undefined);
+        assert.strictEqual(data?.getUser?.MyCompanies[0]?._id, myCompany);
+        assert.strictEqual(data?.getUser?.CreatedTasks[0]?._id, teamTaskId);
+        assert.notStrictEqual(data?.getUser?.AIChats, null || undefined);
+        assert.strictEqual(data?.getUser?.AIChats[0]?._id, AIchatId);
+        // assert.notStrictEqual(
+        //   data?.getUser?.AIChats[0]?.Messages[0]?._id,
+        //   null || undefined
+        // );
+        // assert.strictEqual(
+        //   data?.getUser?.AIChats[0]?.Messages[0]?.Question,
+        //   message
+        // );
+        // assert.strictEqual(
+        //   data?.getUser?.AIChats[0]?.Messages[0]?.Answer,
+        //   null || undefined
+        // );
+        // assert.strictEqual(
+        //   data?.getUser?.AIChats[0]?.Messages[0]?.CreatedDate,
+        //   null || undefined
+        // );
+        assert.notStrictEqual(data?.getUser?.Accounts, null || undefined);
+        assert.strictEqual(data?.getUser?.Accounts[0]?._id, accountId);
+        assert.strictEqual(
+          data?.getUser?.Accounts[0]?.PlatformName,
+          socialMediaLinkInput.PlatformName
+        );
+        assert.strictEqual(
+          data?.getUser?.Accounts[0]?.Link,
+          socialMediaLinkInput.Link
+        );
+        assert.notStrictEqual(data?.getUser?.Posts, null || undefined);
+        assert.strictEqual(data?.getUser?.Posts[0]?._id, postId);
+        assert.strictEqual(
+          data?.getUser?.Posts[0]?.Content,
+          positionPostInput.Content
+        );
+        assert.notStrictEqual(data?.getUser?.Skills, null || undefined);
+        assert.strictEqual(data?.getUser?.Skills[0]?._id, skillId);
+        assert.strictEqual(data?.getUser?.Skills[0]?.Skill, skillInput.Skill);
+        assert.notStrictEqual(data?.getUser?.WorkCompanies, null || undefined);
+        assert.strictEqual(data?.getUser?.WorkCompanies[0]?._id, companyId);
+        done();
+      });
+  });
+});
+
+describe("get Team API Test", () => {
+  it("Should get a team with valid team ID", (done) => {
+    const query = `
+    query{
+      getTeam(teamId: ${teamId}) {
+        _id
+        TeamName
+        TeamRole
+        CreateDate
+        Tasks {
+          _id
+        }
+        Members {
+          _id
+        }
+      }
+    }`;
+
+    request(app)
+      .post("/graphql")
+      .send({ query })
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+
+        const { data } = res.body;
+        assert.notStrictEqual(data?.getTeam, null || undefined);
+        assert.notStrictEqual(data?.getTeam?._id, null || undefined);
+        assert.strictEqual(data?.getTeam?._id, teamId);
+        assert.strictEqual(data?.getTeam?.TeamName, team.TeamName);
+        assert.strictEqual(data?.getTeam?.TeamRole, team.TeamRole);
+        assert.notStrictEqual(data?.getTeam?.Members, null || undefined);
+        assert.strictEqual(data?.getTeam?.Members[0]?._id, userId);
+        assert.strictEqual(data?.getTeam?.Tasks[0]?._id, teamTaskId);
+        assert.notStrictEqual(data?.getTeam?.CreateDate, null || undefined);
+        done();
+      });
+  });
+});
+
+describe("get all projects", () => {
+  it("Should get all projects", (done) => {
+    const query = `
+        query Query {
+          getProjects {
+            _id
+            ProjectName
+            ProjectDescription
+            FileName
+            Requirements {
+              _id
+              Value
+            }
+            Applies {
+              _id
+              CompanyName
+              CompanyDescription
+              Rate
+              Domain
+              CreateDate
+            }
+            Notes {
+              _id
+              Title
+              Tasks {
+                _id
+                Title
+                Description
+              }
+            }
+          }
         }
         `;
 
@@ -1120,7 +1647,777 @@ describe("apply for project", () => {
       .end((err, res) => {
         if (err) return done(err);
         const { data } = res.body;
-        assert.strictEqual(data.applyForProject, true);
+        assert.notStrictEqual(data?.getProjects, null || undefined);
+        assert.notStrictEqual(data?.getProjects[0]?._id, null || undefined);
+        assert.strictEqual(
+          data?.getProjects[0]?.ProjectName,
+          project.ProjectName
+        );
+        assert.strictEqual(
+          data?.getProjects[0]?.ProjectDescription,
+          project.ProjectDescription
+        );
+        assert.strictEqual(data?.getProjects[0]?.FileName, project.FileName);
+        assert.notStrictEqual(
+          data?.getProjects[0]?.Requirements,
+          null || undefined
+        );
+        assert.notStrictEqual(
+          data?.getProjects[0]?.Requirements[0]?._id,
+          null || undefined
+        );
+        assert.strictEqual(
+          data?.getProjects[0]?.Requirements[0].Value,
+          projectRequirement.Value
+        );
+        assert.notStrictEqual(data?.getProjects[0]?.Applies, null || undefined);
+        assert.notStrictEqual(
+          data?.getProjects[0]?.Applies[0]?._id,
+          null || undefined
+        );
+        assert.strictEqual(
+          data?.getProjects[0]?.Applies[0]?.CompanyName,
+          company.CompanyName
+        );
+        assert.strictEqual(
+          data?.getProjects[0]?.Applies[0]?.Rate,
+          company.Rate
+        );
+        assert.strictEqual(
+          data?.getProjects[0]?.Applies[0]?.Domain,
+          company.Domain
+        );
+        assert.notStrictEqual(
+          data?.getProjects[0]?.Applies[0]?.CreateDate,
+          null || undefined
+        );
+        assert.notStrictEqual(data?.getProjects[0]?.Notes, null || undefined);
+        assert.notStrictEqual(
+          data?.getProjects[0]?.Notes[0]?._id,
+          null || undefined
+        );
+        assert.strictEqual(
+          data?.getProjects[0]?.Notes[0]?.Title,
+          projectNoteInput.Title
+        );
+        assert.notStrictEqual(
+          data?.getProjects[0]?.Notes[0]?.Tasks,
+          null || undefined
+        );
+        assert.notStrictEqual(
+          data?.getProjects[0]?.Notes[0]?.Tasks[0]._id,
+          null || undefined
+        );
+        assert.strictEqual(
+          data?.getProjects[0]?.Notes[0]?.Tasks[0].Title,
+          projectNoteTaskInput.Title
+        );
+        assert.strictEqual(
+          data?.getProjects[0]?.Notes[0]?.Tasks[0].Description,
+          projectNoteTaskInput.Description
+        );
+        done();
+      });
+  });
+});
+
+describe("get project by id", () => {
+  it("Should get project by id", (done) => {
+    const query = `
+    query{
+      getProject(projectId: ${projectId}) {
+        _id
+        ProjectName
+        ProjectDescription
+        FileName
+        Notes {
+          _id
+          Title
+          Tasks {
+            _id
+            Title
+            Description
+          }
+        }
+        Requirements {
+          _id
+          Value
+        }
+        Applies {
+          _id
+          CompanyName
+          CompanyDescription
+          Domain
+          CreateDate
+          Rate
+        }
+      }
+    }
+        `;
+
+    request(app)
+      .post("/graphql")
+      .send({ query })
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        const { data } = res.body;
+        assert.notStrictEqual(data?.getProject, null || undefined);
+        assert.notStrictEqual(data?.getProject?._id, null || undefined);
+        assert.strictEqual(data?.getProject?.ProjectName, project.ProjectName);
+        assert.strictEqual(
+          data?.getProject?.ProjectDescription,
+          project.ProjectDescription
+        );
+        assert.strictEqual(data?.getProject?.FileName, project.FileName);
+        assert.notStrictEqual(data?.getProject?.Notes, null || undefined);
+        assert.notStrictEqual(
+          data?.getProject?.Notes[0]?._id,
+          null || undefined
+        );
+        assert.strictEqual(
+          data?.getProject?.Notes[0]?.Title,
+          projectNoteInput.Title
+        );
+        assert.notStrictEqual(
+          data?.getProject?.Notes[0]?.Tasks,
+          null || undefined
+        );
+        assert.notStrictEqual(
+          data?.getProject?.Notes[0]?.Tasks[0]._id,
+          null || undefined
+        );
+        assert.strictEqual(
+          data?.getProject?.Notes[0]?.Tasks[0].Title,
+          projectNoteTaskInput.Title
+        );
+        assert.strictEqual(
+          data?.getProject?.Notes[0]?.Tasks[0].Description,
+          projectNoteTaskInput.Description
+        );
+        assert.notStrictEqual(
+          data?.getProject?.Requirements,
+          null || undefined
+        );
+        assert.notStrictEqual(
+          data?.getProject?.Requirements[0]?._id,
+          null || undefined
+        );
+        assert.strictEqual(
+          data?.getProject?.Requirements[0].Value,
+          projectRequirement.Value
+        );
+        assert.notStrictEqual(data?.getProject?.Applies, null || undefined);
+        assert.notStrictEqual(
+          data?.getProject?.Applies[0]?._id,
+          null || undefined
+        );
+        assert.strictEqual(
+          data?.getProject?.Applies[0]?.CompanyName,
+          company.CompanyName
+        );
+        assert.strictEqual(data?.getProject?.Applies[0]?.Rate, company.Rate);
+        assert.strictEqual(
+          data?.getProject?.Applies[0]?.Domain,
+          company.Domain
+        );
+        assert.notStrictEqual(
+          data?.getProject?.Applies[0]?.CreateDate,
+          null || undefined
+        );
+        done();
+      });
+  });
+});
+
+describe("Search In Projects", () => {
+  it("Should search in projects", (done) => {
+    const query = `
+    query{
+      searchInProjects(word: "Project") {
+        _id
+        ProjectName
+        ProjectDescription
+        FileName
+        Notes {
+          _id
+          Title
+          Tasks {
+            _id
+            Title
+            Description
+          }
+        }
+        Requirements {
+          _id
+          Value
+        }
+        Applies {
+          _id
+          CompanyName
+          CompanyDescription
+          Domain
+          CreateDate
+          Rate
+        }
+      }
+    }
+        `;
+
+    request(app)
+      .post("/graphql")
+      .send({ query })
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        const { data } = res.body;
+        assert.notStrictEqual(data?.searchInProjects, null || undefined);
+        assert.notStrictEqual(
+          data?.searchInProjects[0]?._id,
+          null || undefined
+        );
+        assert.strictEqual(
+          data?.searchInProjects[0]?.ProjectName,
+          project.ProjectName
+        );
+        assert.strictEqual(
+          data?.searchInProjects[0]?.ProjectDescription,
+          project.ProjectDescription
+        );
+        assert.strictEqual(
+          data?.searchInProjects[0]?.FileName,
+          project.FileName
+        );
+        assert.notStrictEqual(
+          data?.searchInProjects[0]?.Notes,
+          null || undefined
+        );
+        assert.notStrictEqual(
+          data?.searchInProjects[0]?.Notes[0]?._id,
+          null || undefined
+        );
+        assert.strictEqual(
+          data?.searchInProjects[0]?.Notes[0]?.Title,
+          projectNoteInput.Title
+        );
+        assert.notStrictEqual(
+          data?.searchInProjects[0]?.Notes[0]?.Tasks,
+          null || undefined
+        );
+        assert.notStrictEqual(
+          data?.searchInProjects[0]?.Notes[0]?.Tasks[0]._id,
+          null || undefined
+        );
+        assert.strictEqual(
+          data?.searchInProjects[0]?.Notes[0]?.Tasks[0].Title,
+          projectNoteTaskInput.Title
+        );
+        assert.strictEqual(
+          data?.searchInProjects[0]?.Notes[0]?.Tasks[0].Description,
+          projectNoteTaskInput.Description
+        );
+        assert.notStrictEqual(
+          data?.searchInProjects[0]?.Requirements,
+          null || undefined
+        );
+        assert.notStrictEqual(
+          data?.searchInProjects[0]?.Requirements[0]?._id,
+          null || undefined
+        );
+        assert.strictEqual(
+          data?.searchInProjects[0]?.Requirements[0].Value,
+          projectRequirement.Value
+        );
+        assert.notStrictEqual(
+          data?.searchInProjects[0]?.Applies,
+          null || undefined
+        );
+        assert.notStrictEqual(
+          data?.searchInProjects[0]?.Applies[0]?._id,
+          null || undefined
+        );
+        assert.strictEqual(
+          data?.searchInProjects[0]?.Applies[0]?.CompanyName,
+          company.CompanyName
+        );
+        assert.strictEqual(
+          data?.searchInProjects[0]?.Applies[0]?.Rate,
+          company.Rate
+        );
+        assert.strictEqual(
+          data?.searchInProjects[0]?.Applies[0]?.Domain,
+          company.Domain
+        );
+        assert.notStrictEqual(
+          data?.searchInProjects[0]?.Applies[0]?.CreateDate,
+          null || undefined
+        );
+        done();
+      });
+  });
+});
+
+describe("get task by id", () => {
+  it("Should get task by id", (done) => {
+    const query = `
+    query{
+      getTask(taskId: ${taskId}) {
+        _id
+    TaskName
+    TaskStatus
+    StartDate
+    EndDate
+    Priority
+    Comments
+    IsMarked
+    CreateDate
+    Steps {
+      _id
+      Description
+      Number
+    }
+      }
+    }
+        `;
+
+    request(app)
+      .post("/graphql")
+      .send({ query })
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        const { data } = res.body;
+        assert.notStrictEqual(data?.getTask, null || undefined);
+        assert.strictEqual(data?.getTask?._id, taskId);
+        assert.strictEqual(data?.getTask?.TaskName, taskInput.TaskName);
+        assert.strictEqual(data?.getTask?.TaskStatus, taskInput.TaskStatus);
+        assert.strictEqual(data?.getTask?.StartDate, taskInput.StartDate);
+        assert.strictEqual(data?.getTask?.EndDate, taskInput.EndDate);
+        assert.strictEqual(data?.getTask?.Priority, taskInput.Priority);
+        assert.strictEqual(data?.getTask?.Comments, taskInput.Comments);
+        assert.strictEqual(data?.getTask?.IsMarked, taskInput.IsMarked);
+        assert.notStrictEqual(data?.getTask?.CreateDate, null);
+        assert.notStrictEqual(data?.getTask?.Steps, null || undefined);
+        assert.notStrictEqual(data?.getTask?.Steps[0]?._id, null || undefined);
+        assert.strictEqual(
+          data?.getTask?.Steps[0]?.Description,
+          taskStepInput.Description
+        );
+        assert.strictEqual(
+          data?.getTask?.Steps[0]?.Number,
+          taskStepInput.Number
+        );
+        done();
+      });
+  });
+});
+
+describe("get company by id", () => {
+  it("Should get company by id", (done) => {
+    const query = `
+    query{
+      getCompany(companyId: ${companyId}) {
+      _id
+        CompanyName
+        CompanyDescription
+        Rate
+        Domain
+        CreateDate
+        Teams {
+          _id
+          TeamName
+          TeamRole
+          CreateDate
+          Tasks {
+            _id
+            TaskName
+            TaskStatus
+            StartDate
+            EndDate
+            Priority
+            Comments
+            IsMarked
+            CreateDate
+            Steps {
+              _id
+              Description
+              Number
+            }
+          }
+          Members {
+            _id
+          }
+        }
+        Project {
+          _id
+          ProjectName
+          ProjectDescription
+          FileName
+        }
+        Comments {
+          _id
+          Value
+          CreatedDate
+        }
+        Posts {
+          _id
+          Content
+          CreatedDate
+        }
+      }
+    }
+        `;
+
+    request(app)
+      .post("/graphql")
+      .send({ query })
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        const { data } = res.body;
+        assert.notStrictEqual(data?.getCompany, null || undefined);
+        assert.strictEqual(data?.getCompany?._id, companyId);
+        assert.strictEqual(data?.getCompany?.CompanyName, company.CompanyName);
+        assert.strictEqual(
+          data?.getCompany?.CompanyDescription,
+          company.CompanyDescription
+        );
+        assert.strictEqual(data?.getCompany?.Rate, company.Rate);
+        assert.strictEqual(data?.getCompany?.Domain, company.Domain);
+        assert.notStrictEqual(data?.getCompany?.CreateDate, null || undefined);
+        assert.notStrictEqual(data?.getCompany?.Teams, null || undefined);
+        assert.notStrictEqual(
+          data?.getCompany?.Teams[0]?._id,
+          null || undefined
+        );
+        assert.strictEqual(data?.getCompany?.Teams[0]?.TeamName, team.TeamName);
+        assert.strictEqual(data?.getCompany?.Teams[0]?.TeamRole, team.TeamRole);
+        assert.notStrictEqual(
+          data?.getCompany?.Teams[0]?.CreateDate,
+          null || undefined
+        );
+        assert.notStrictEqual(
+          data?.getCompany?.Teams[0]?.Tasks,
+          null || undefined
+        );
+        assert.notStrictEqual(
+          data?.getCompany?.Teams[0]?.Tasks[0]?._id,
+          null || undefined
+        );
+        assert.strictEqual(
+          data?.getCompany?.Teams[0]?.Tasks[0]?.TaskName,
+          taskInput.TaskName
+        );
+        assert.strictEqual(
+          data?.getCompany?.Teams[0]?.Tasks[0]?.TaskStatus,
+          taskInput.TaskStatus
+        );
+        assert.strictEqual(
+          data?.getCompany?.Teams[0]?.Tasks[0]?.StartDate,
+          taskInput.StartDate
+        );
+        assert.strictEqual(
+          data?.getCompany?.Teams[0]?.Tasks[0]?.EndDate,
+          taskInput.EndDate
+        );
+        assert.strictEqual(
+          data?.getCompany?.Teams[0]?.Tasks[0]?.Priority,
+          taskInput.Priority
+        );
+        assert.strictEqual(
+          data?.getCompany?.Teams[0]?.Tasks[0]?.Comments,
+          taskInput.Comments
+        );
+        assert.strictEqual(
+          data?.getCompany?.Teams[0]?.Tasks[0]?.IsMarked,
+          taskInput.IsMarked
+        );
+        assert.notStrictEqual(
+          data?.getCompany?.Teams[0]?.Tasks[0]?.CreateDate,
+          null
+        );
+        assert.notStrictEqual(
+          data?.getCompany?.Teams[0]?.Tasks[0]?.Steps,
+          null || undefined
+        );
+        assert.notStrictEqual(
+          data?.getCompany?.Teams[0]?.Tasks[0]?.Steps[0]?._id,
+          null || undefined
+        );
+        assert.strictEqual(
+          data?.getCompany?.Teams[0]?.Tasks[0]?.Steps[0]?.Description,
+          taskStepInput.Description
+        );
+        assert.strictEqual(
+          data?.getCompany?.Teams[0]?.Tasks[0]?.Steps[0]?.Number,
+          taskStepInput.Number
+        );
+        assert.strictEqual(
+          data?.getCompany?.Teams[0]?.Members[0]._id,
+          userId
+        );
+        assert.notStrictEqual(data?.getCompany?.Project, null || undefined);
+        assert.notStrictEqual(
+          data?.getCompany?.Project?._id,
+          null || undefined
+        );
+        assert.strictEqual(
+          data?.getCompany?.Project?.ProjectName,
+          project.ProjectName
+        );
+        assert.strictEqual(
+          data?.getCompany?.Project?.ProjectDescription,
+          project.ProjectDescription
+        );
+        assert.strictEqual(
+          data?.getCompany?.Project?.FileName,
+          project.FileName
+        );
+        assert.notStrictEqual(data?.getCompany?.Comments, null || undefined);
+        assert.notStrictEqual(
+          data?.getCompany?.Comments[0]?._id,
+          null || undefined
+        );
+        assert.strictEqual(
+          data?.getCompany?.Comments[0]?.Value,
+          commentInput.Value
+        );
+        assert.notStrictEqual(
+          data?.getCompany?.Comments[0]?.CreatedDate,
+          null || undefined
+        );
+        assert.notStrictEqual(data?.getCompany?.Posts, null || undefined);
+        assert.notStrictEqual(
+          data?.getCompany?.Posts[0]?._id,
+          null || undefined
+        );
+        assert.strictEqual(
+          data?.getCompany?.Posts[0]?.Content,
+          positionPostInput.Content
+        );
+        assert.notStrictEqual(
+          data?.getCompany?.Posts[0]?.CreatedDate,
+          null || undefined
+        );
+        done();
+      });
+  });
+});
+
+describe("get Contact Messages API Tests", () => {
+  it("Should get contact messages", (done) => {
+    const query = `
+    query GetContactMessages {
+      getContactMessages {
+        _id
+        Message
+        CreatedDate
+      }
+    }
+        `;
+
+    request(app)
+      .post("/graphql")
+      .send({ query })
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        const { data } = res.body;
+        assert.notStrictEqual(data?.getContactMessages, null || undefined);
+        assert.notStrictEqual(
+          data?.getContactMessages[0]?._id,
+          null || undefined
+        );
+        assert.strictEqual(
+          data?.getContactMessages[0]?.Message,
+          contactMessageInput.Message
+        );
+        assert.notStrictEqual(
+          data?.getContactMessages[0]?.CreatedDate,
+          null || undefined
+        );
+        done();
+      });
+  });
+});
+
+describe("get All Posts API Tests", () => {
+  it("Should get all posts", (done) => {
+    const query = `
+    query{
+      getAllPosts(userId: ${userId}) {
+        _id
+        Content
+        CreatedDate
+      }
+    }
+        `;
+
+    request(app)
+      .post("/graphql")
+      .send({ query })
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        const { data } = res.body;
+        assert.notStrictEqual(data?.getAllPosts, null || undefined);
+        assert.notStrictEqual(data?.getAllPosts[0]?._id, null || undefined);
+        assert.strictEqual(
+          data?.getAllPosts[0]?.Content,
+          positionPostInput.Content
+        );
+        assert.notStrictEqual(
+          data?.getAllPosts[0]?.CreatedDate,
+          null || undefined
+        );
+        done();
+      });
+  });
+});
+
+describe("searchInPositionPosts API Tests", () => {
+  it("Should search in position posts", (done) => {
+    const query = `
+    query{
+      searchInPositionPosts(word: "${positionPostInput.Content}", userId: ${userId}) {
+        _id
+        Content
+        CreatedDate
+      }
+    }
+        `;
+
+    request(app)
+      .post("/graphql")
+      .send({ query })
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        const { data } = res.body;
+        assert.notStrictEqual(data?.searchInPositionPosts, null || undefined);
+        assert.notStrictEqual(
+          data?.searchInPositionPosts[0]?._id,
+          null || undefined
+        );
+        assert.strictEqual(
+          data?.searchInPositionPosts[0]?.Content,
+          positionPostInput.Content
+        );
+        assert.notStrictEqual(
+          data?.searchInPositionPosts[0]?.CreatedDate,
+          null || undefined
+        );
+        done();
+      });
+  });
+});
+
+describe("getAllPostsSortedByDate API Tests", () => {
+  it("Should get all posts sorted by date", (done) => {
+    const query = `
+    query{
+      getAllPostsSortedByDate(userId: ${userId}) {
+        _id
+        Content
+        CreatedDate
+      }
+    }
+        `;
+
+    request(app)
+      .post("/graphql")
+      .send({ query })
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        const { data } = res.body;
+        assert.notStrictEqual(data?.getAllPostsSortedByDate, null || undefined);
+        assert.notStrictEqual(
+          data?.getAllPostsSortedByDate[0]?._id,
+          null || undefined
+        );
+        assert.strictEqual(
+          data?.getAllPostsSortedByDate[0]?.Content,
+          positionPostInput.Content
+        );
+        assert.notStrictEqual(
+          data?.getAllPostsSortedByDate[0]?.CreatedDate,
+          null || undefined
+        );
+        done();
+      });
+  });
+});
+
+describe("searchInMyPosts API Tests", () => {
+  it("Should search in my posts", (done) => {
+    const query = `
+    query{
+      searchInMyPosts(word: "${positionPostInput.Content}", userId: ${userId}) {
+        _id
+        Content
+        CreatedDate
+      }
+    }
+        `;
+
+    request(app)
+      .post("/graphql")
+      .send({ query })
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        const { data } = res.body;
+        assert.notStrictEqual(data?.searchInMyPosts, null || undefined);
+        assert.notStrictEqual(data?.searchInMyPosts[0]?._id, null || undefined);
+        assert.strictEqual(
+          data?.searchInMyPosts[0]?.Content,
+          positionPostInput.Content
+        );
+        assert.notStrictEqual(
+          data?.searchInMyPosts[0]?.CreatedDate,
+          null || undefined
+        );
+        done();
+      });
+  });
+});
+
+describe("getAllMyPostsSortedByDate API Tests", () => {
+  it("Should get all my posts sorted by date", (done) => {
+    const query = `
+    query{
+      getAllMyPostsSortedByDate(userId: ${userId}) {
+        _id
+        Content
+        CreatedDate
+      }
+    }
+        `;
+
+    request(app)
+      .post("/graphql")
+      .send({ query })
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        const { data } = res.body;
+        assert.notStrictEqual(
+          data?.getAllMyPostsSortedByDate,
+          null || undefined
+        );
+        assert.notStrictEqual(
+          data?.getAllMyPostsSortedByDate[0]?._id,
+          null || undefined
+        );
+        assert.strictEqual(
+          data?.getAllMyPostsSortedByDate[0]?.Content,
+          positionPostInput.Content
+        );
+        assert.notStrictEqual(
+          data?.getAllMyPostsSortedByDate[0]?.CreatedDate,
+          null || undefined
+        );
         done();
       });
   });
@@ -1203,17 +2500,6 @@ describe("Update User API Tests (update)", () => {
 
 describe("Update Task API Tests", () => {
   it("Should update a task with valid input data", (done) => {
-    const taskInput = {
-      TaskName: "Updated Task Name",
-      TaskStatus: "In Progress",
-      StartDate: "2024-02-23",
-      EndDate: "2024-03-15",
-      Priority: 3,
-      Comments: "This is a sample task for testing purposes.",
-      IsMarked: true,
-      CreateDate: "2024-02-23T10:00:00Z",
-    };
-
     const mutation = `
         mutation {
           updateTask(taskId: ${taskId}, task: {
@@ -1263,11 +2549,6 @@ describe("Update Task API Tests", () => {
 
 describe("Update Task Step API Tests", () => {
   it("Should update a task step with valid input data", (done) => {
-    const taskStepInput = {
-      Description: "Updated Task Step Description",
-      Number: 2,
-    };
-
     const mutation = `
         mutation {
           updateTaskStep(taskStepId: ${taskStepId}, taskStep:{
@@ -1395,10 +2676,6 @@ describe("Update Project API Tests", () => {
 
 describe("Update Position Post API Tests", () => {
   it("Should update a position post with valid input data", (done) => {
-    const positionPostInput = {
-      Content: "Updated post content",
-    };
-
     const mutation = `
         mutation {
           updatePositionPost(positionPostId: ${postId}, positionPost: {
@@ -1407,7 +2684,6 @@ describe("Update Position Post API Tests", () => {
             _id
             Content
             CreatedDate
-            IsDeleted
           }
         }
       `;
@@ -1425,7 +2701,6 @@ describe("Update Position Post API Tests", () => {
           data.updatePositionPost.Content,
           positionPostInput.Content
         );
-
         done();
       });
   });
@@ -1517,1410 +2792,275 @@ describe("Update Team API Tests", () => {
   });
 });
 
-describe("Filter My Companies API Tests", () => {
-  it("Should filter my companies with valid input data", (done) => {
-    const query = `
-    query FilterMyCompanies($userId: Int!, $desc: Boolean) {
-      filterMyCompanies(userId: $userId, desc: $desc) {
-        _id
-        CompanyName
-        CompanyDescription
-        Domain
-      }
-    }`;
-
-    request(app)
-      .post("/graphql")
-      .send({ query, variables: { userId, desc: true } })
-      .expect(200)
-      .end((err, res) => {
-        if (err) return done(err);
-
-        const { data } = res.body;
-
-        assert.notStrictEqual(data?.filterMyCompanies, null || undefined);
-        assert.notStrictEqual(data?.filterMyCompanies[0]?._id, null || undefined);
-        assert.strictEqual(
-          data?.filterMyCompanies[0]?.CompanyName,
-          company.CompanyName
-        );
-        assert.strictEqual(
-          data?.filterMyCompanies[0]?.CompanyDescription,
-          company.CompanyDescription
-        );
-        assert.strictEqual(data?.filterMyCompanies[0]?.Domain, company.Domain);
-        assert.strictEqual(data?.filterMyCompanies[0]?.Rate, company.Rate);
-
-        done();
-      });
-  });
-});
-
-describe("Search In My Companies API Tests", () => {
-  it("Should search in my companies with valid input data", (done) => {
-    const query = `
-    query SearchInMyCompanies($userId: Int!, $word: String!) {
-      searchInMyCompanies(userId: $userId, word: $word) {
-        _id
-        CompanyName
-        CompanyDescription
-        Domain
-      }
-    }`;
-
-    request(app)
-      .post("/graphql")
-      .send({
-        query,
-        variables: {
-          userId,
-          word: "Company",
-        },
-      })
-      .expect(200)
-      .end((err, res) => {
-        if (err) return done(err);
-
-        const { data } = res.body;
-
-        assert.notStrictEqual(data?.searchInMyCompanies, null || undefined);
-        assert.notStrictEqual(data?.searchInMyCompanies[0]?._id, null || undefined);
-        assert.strictEqual(
-          data?.searchInMyCompanies[0]?.CompanyName,
-          company.CompanyName
-        );
-        assert.strictEqual(
-          data?.searchInMyCompanies[0]?.CompanyDescription,
-          company.CompanyDescription
-        );
-        assert.strictEqual(
-          data?.searchInMyCompanies[0]?.Domain,
-          company.Domain
-        );
-        assert.strictEqual(data?.searchInMyCompanies[0]?.Rate, company.Rate);
-
-        done();
-      });
-  });
-});
-
-describe("Filter Works Companies API Tests", () => {
-  it("Should filter works companies with valid input data", (done) => {
-    const query = `
-    query FilterWorksCompanies($userId: Int!, $desc: Boolean) {
-      filterWorksCompanies(userId: $userId, desc: $desc) {
-        _id
-        CompanyName
-        CompanyDescription
-        Domain
-      }
-    }`;
-
-    request(app)
-      .post("/graphql")
-      .send({ query, variables: { userId, desc: true } })
-      .expect(200)
-      .end((err, res) => {
-        if (err) return done(err);
-
-        const { data } = res.body;
-
-        assert.notStrictEqual(data?.filterWorksCompanies, null || undefined);
-        assert.notStrictEqual(data?.filterWorksCompanies[0]?._id, null || undefined);
-        assert.strictEqual(
-          data?.filterWorksCompanies[0]?.CompanyName,
-          company.CompanyName
-        );
-        assert.strictEqual(
-          data?.filterWorksCompanies[0]?.CompanyDescription,
-          company.CompanyDescription
-        );
-        assert.strictEqual(
-          data?.filterWorksCompanies[0]?.Domain,
-          company.Domain
-        );
-        assert.strictEqual(data?.filterWorksCompanies[0]?.Rate, company.Rate);
-
-        done();
-      });
-  });
-});
-
-describe("Search In Works Companies API Tests", () => {
-  it("Should search in works companies with valid input data", (done) => {
-    const query = `
-    query SearchInWorksCompanies($userId: Int!, $word: String!) {
-      searchInWorksCompanies(userId: $userId, word: $word) {
-        _id
-        CompanyName
-        CompanyDescription
-        Domain
-      }
-    }`;
-
-    request(app)
-      .post("/graphql")
-      .send({
-        query,
-        variables: {
-          userId,
-          word: "Company",
-        },
-      })
-      .expect(200)
-      .end((err, res) => {
-        if (err) return done(err);
-
-        const { data } = res.body;
-
-        assert.notStrictEqual(data?.searchInWorksCompanies, null || undefined);
-        assert.notStrictEqual(data?.searchInWorksCompanies[0]?._id, null || undefined);
-        assert.strictEqual(
-          data?.searchInWorksCompanies[0]?.CompanyName,
-          company.CompanyName
-        );
-        assert.strictEqual(
-          data?.searchInWorksCompanies[0]?.CompanyDescription,
-          company.CompanyDescription
-        );
-        assert.strictEqual(
-          data?.searchInWorksCompanies[0]?.Domain,
-          company.Domain
-        );
-        assert.strictEqual(data?.searchInWorksCompanies[0]?.Rate, company.Rate);
-
-        done();
-      });
-  });
-});
-
-describe("getProfileStatistics API Test", () => {
-  it("Should get profile statistics with valid user ID", (done) => {
-    const query = `
-    query GetProfileStatistics($userId: Int!) {
-      getProfileStatistics(userId: $userId) {
-        NumberOfProjects
-        NumberOfTeams
-        NumberOfTasks
-        NumberOfMyCompanies
-      }
-    }`;
-
-    request(app)
-      .post("/graphql")
-      .send({ query, variables: { userId } })
-      .expect(200)
-      .end((err, res) => {
-        if (err) return done(err);
-
-        const { data } = res.body;
-
-        assert.notStrictEqual(data?.getProfileStatistics, null || undefined);
-        assert.strictEqual(data?.getProfileStatistics.NumberOfProjects, 1);
-        assert.strictEqual(data?.getProfileStatistics.NumberOfTeams, 1);
-        assert.strictEqual(data?.getProfileStatistics.NumberOfTasks, 1);
-        assert.strictEqual(data?.getProfileStatistics.NumberOfMyCompanies, 1);
-
-        done();
-      });
-  });
-});
-
-describe("get AiChat API Test", () => {
-  it("Should get an AI chat with valid chat ID", (done) => {
-    const query = `
-    query GetAIChat($chatId: Int!) {
-      getAIChat(chatId: $chatId) {
-        CreatedDate
-        Messages {
-          Answer
-          CreatedDate
-          Question
-          _id
-        }
-        _id
-      }
-    }`;
-
-    request(app)
-      .post("/graphql")
-      .send({ query, variables: { chatId: AIchatId } })
-      .expect(200)
-      .end((err, res) => {
-        if (err) return done(err);
-
-        const { data } = res.body;
-
-        assert.ok(data?.getAIChat?._id);
-        assert.equal(data?.getAIChat?._id, AIchatId);
-        assert.notStrictEqual(data?.getAIChat?.CreateDate, null || undefined);
-        assert.notStrictEqual(data?.getAIChat?.Messages.length, 0);
-        assert.notStrictEqual(data?.getAIChat?.Messages[0]._id, null || undefined);
-        assert.notStrictEqual(data?.getAIChat?.Messages[0].Question, null || undefined);
-        assert.notStrictEqual(data?.getAIChat?.Messages[0].Answer, null || undefined);
-        assert.notStrictEqual(data?.getAIChat?.Messages[0].CreatedDate, null || undefined);
-        assert.strictEqual(data?.getAIChat?.Messages[0].Question, message);
-        done();
-      });
-  });
-});
-
-describe("get User API Test", () => {
-  it("Should get a user with valid user ID", (done) => {
-    const query = `
-    query Query($userId: Int!) {
-      getUser(userId: $userId) {
-        AIChats {
-          _id
-          CreatedDate
-          Messages {
-            _id
-            Question
-            Answer
-            CreatedDate
-          }
-        }
-        Accounts {
-          _id
-          PlatformName
-          Link
-        }
-        Bio
-        Country
-        CreateDate
-        CreatedBy
-        CreatedTasks {
-          _id
-        }
-        DateOfBirth
-        Educations {
-          _id
-          Title
-          Description
-          FileName
-        }
-        Email
-        FirstName
-        Gender
-        ImageUrl
-        IsActive
-        LastName
-        LastTimeOnline
-        MyCompanies {
-          _id
-        }
-        Password
-        Posts {
-          _id
-          Content
-          CreatedDate
-        }
-        Rate
-        Skills {
-          _id
-          Skill
-        }
-        Tasks {
-          _id
-        }
-        Username
-        Work
-        WorkCompanies {
-          _id
-        }
-        _id
-      }
-    }`;
-
-    request(app)
-      .post("/graphql")
-      .send({ query, variables: { userId: 65 } })
-      .expect(200)
-      .end((err, res) => {
-        if (err) return done(err);
-
-        const { data } = res.body;
-
-        assert.notStrictEqual(data?.getUser, null || undefined);
-        assert.strictEqual(data?.getUser?._id, userId);
-        assert.strictEqual(data?.getUser?.Email, user.Email);
-        assert.strictEqual(data?.getUser?.Username, user.Username);
-        assert.strictEqual(data?.getUser?.FirstName, user.FirstName);
-        assert.strictEqual(data?.getUser?.LastName, user.LastName);
-        assert.strictEqual(data?.getUser?.Rate, user.Rate);
-        assert.strictEqual(data?.getUser?.Gender, user.Gender);
-        assert.strictEqual(data?.getUser?.Bio, user.Bio);
-        assert.strictEqual(data?.getUser?.Country, user.Country);
-        assert.strictEqual(data?.getUser?.DateOfBirth, user.DateOfBirth);
-        assert.strictEqual(data?.getUser?.Work, user.Work);
-        assert.strictEqual(data?.getUser?.Rate, user.Rate);
-        assert.strictEqual(data?.getUser?.IsActive, true);
-        assert.strictEqual(data?.getUser?.LastTimeOnline, user.LastTimeOnline);
-        assert.strictEqual(data?.getUser?.Password, user.Password);
-        assert.strictEqual(data?.getUser?.ImageUrl, user.ImageUrl);
-        assert.strictEqual(data?.getUser?.Gender, user.Gender);
-        assert.strictEqual(data?.getUser?.Rate, user.Rate);
-        assert.notStrictEqual(data?.getUser?.MyCompanies, null || undefined);
-        assert.strictEqual(data?.getUser?.MyCompanies[0]?._id, myCompany);
-        assert.strictEqual(data?.getUser?.CreatedTasks[0]?._id, taskId);
-        assert.notStrictEqual(data?.getUser?.AIChats, null || undefined);
-        assert.strictEqual(data?.getUser?.AIChats[0]?._id, AIchatId);
-        assert.notStrictEqual(
-          data?.getUser?.AIChats[0]?.Messages[0]?._id,
-          null || undefined
-        );
-        assert.strictEqual(
-          data?.getUser?.AIChats[0]?.Messages[0]?.Question,
-          message
-        );
-        assert.strictEqual(
-          data?.getUser?.AIChats[0]?.Messages[0]?.Answer,
-          null || undefined
-        );
-        assert.strictEqual(
-          data?.getUser?.AIChats[0]?.Messages[0]?.CreatedDate,
-          null || undefined
-        );
-        assert.notStrictEqual(data?.getUser?.Accounts, null || undefined);
-        assert.strictEqual(data?.getUser?.Accounts[0]?._id, accountId);
-        assert.strictEqual(
-          data?.getUser?.Accounts[0]?.PlatformName,
-          socialMediaLinkInput.PlatformName
-        );
-        assert.strictEqual(
-          data?.getUser?.Accounts[0]?.Link,
-          socialMediaLinkInput.Link
-        );
-        assert.notStrictEqual(data?.getUser?.Posts, null || undefined);
-        assert.strictEqual(data?.getUser?.Posts[0]?._id, postId);
-        assert.strictEqual(
-          data?.getUser?.Posts[0]?.Content,
-          positionPostInput.Content
-        );
-        assert.notStrictEqual(data?.getUser?.Skills, null || undefined);
-        assert.strictEqual(data?.getUser?.Skills[0]?._id, skillId);
-        assert.strictEqual(data?.getUser?.Skills[0]?.Skill, skillInput.Skill);
-        assert.notStrictEqual(data?.getUser?.WorkCompanies, null || undefined);
-        assert.strictEqual(data?.getUser?.WorkCompanies[0]?._id, workCompany);
-        done();
-      });
-  });
-});
-
-describe("get Team API Test", () => {
-  it("Should get a team with valid team ID", (done) => {
-    const query = `
-    query Query($teamId: Int!) {
-      getTeam(teamId: $teamId) {
-        _id
-        TeamName
-        TeamRole
-        CreateDate
-        Tasks {
-          _id
-        }
-        Members {
-          _id
-        }
-      }
-    }`;
-
-    request(app)
-      .post("/graphql")
-      .send({ query, variables: { teamId } })
-      .expect(200)
-      .end((err, res) => {
-        if (err) return done(err);
-
-        const { data } = res.body;
-        assert.notStrictEqual(data?.getTeam, null || undefined);
-        assert.notStrictEqual(data?.getTeam?._id, null || undefined);
-        assert.strictEqual(data?.getTeam?._id, teamId);
-        assert.strictEqual(data?.getTeam?.TeamName, team.TeamName);
-        assert.strictEqual(data?.getTeam?.TeamRole, team.TeamRole);
-        assert.notStrictEqual(data?.getTeam?.Members, null || undefined);
-        assert.strictEqual(data?.getTeam?.Members[0]?._id, userId);
-        assert.strictEqual(data?.getTeam?.Tasks[0]?._id, teamTaskId);
-        assert.notStrictEqual(data?.getTeam?.CreateDate, null || undefined);
-        done();
-      });
-  });
-});
-
-describe("get all projects", () => {
-  it("Should get all projects", (done) => {
-    const query = `
-    query{
-      getProjects {
-        query Query {
-          getProjects {
-            _id
-            ProjectName
-            ProjectDescription
-            FileName
-            Requirements {
-              _id
-              Value
-            }
-            Applies {
-              _id
-              CompanyName
-              CompanyDescription
-              Rate
-              Domain
-              CreateDate
-            }
-            Notes {
-              _id
-              Title
-              Tasks {
-                _id
-                Title
-                Description
-              }
-            }
-          }
-        }
-      }
-        }
-        `;
-
-    request(app)
-      .post("/graphql")
-      .send({ query })
-      .expect(200)
-      .end((err, res) => {
-        if (err) return done(err);
-        const { data } = res.body;
-        assert.notStrictEqual(data?.getProjects, null || undefined);
-        assert.notStrictEqual(data?.getProjects?._id, null || undefined);
-        assert.strictEqual(
-          data?.getProjects[0]?.ProjectName,
-          project.ProjectName
-        );
-        assert.strictEqual(
-          data?.getProjects[0]?.ProjectDescription,
-          project.ProjectDescription
-        );
-        assert.strictEqual(data?.getProjects[0]?.FileName, project.FileName);
-        assert.notStrictEqual(data?.getProjects[0]?.Requirements, null || undefined);
-        assert.notStrictEqual(data?.getProjects[0]?.Requirements[0]?._id, null || undefined);
-        assert.strictEqual(
-          data?.getProjects[0]?.Requirements[0].Value,
-          projectRequirement.Value
-        );
-        assert.notStrictEqual(data?.getProjects[0]?.Applies, null || undefined);
-        assert.notStrictEqual(data?.getProjects[0]?.Applies[0]?._id, null || undefined);
-        assert.strictEqual(
-          data?.getProjects[0]?.Applies[0]?.CompanyName,
-          company.CompanyName
-        );
-        assert.strictEqual(
-          data?.getProjects[0]?.Applies[0]?.Rate,
-          company.Rate
-        );
-        assert.strictEqual(
-          data?.getProjects[0]?.Applies[0]?.Domain,
-          company.Domain
-        );
-        assert.notStrictEqual(
-          data?.getProjects[0]?.Applies[0]?.CreateDate,
-          null || undefined
-        );
-        assert.notStrictEqual(data?.getProjects[0]?.Notes, null || undefined);
-        assert.notStrictEqual(data?.getProjects[0]?.Notes[0]?._id, null || undefined);
-        assert.strictEqual(
-          data?.getProjects[0]?.Notes[0]?.Title,
-          projectNoteInput.Title
-        );
-        assert.notStrictEqual(data?.getProjects[0]?.Notes[0]?.Tasks, null || undefined);
-        assert.notStrictEqual(
-          data?.getProjects[0]?.Notes[0]?.Tasks[0]._id,
-          null || undefined
-        );
-        assert.strictEqual(
-          data?.getProjects[0]?.Notes[0]?.Tasks[0].Title,
-          projectNoteTaskInput.Title
-        );
-        assert.strictEqual(
-          data?.getProjects[0]?.Notes[0]?.Tasks[0].Description,
-          projectNoteTaskInput.Description
-        );
-        done();
-      });
-  });
-});
-
-describe("get project by id", () => {
-  it("Should get project by id", (done) => {
-    const query = `
-    query Query($projectId: Int!) {
-      getProject(projectId: $projectId) {
-        _id
-        ProjectName
-        ProjectDescription
-        FileName
-        Notes {
-          _id
-          Title
-          Tasks {
-            _id
-            Title
-            Description
-          }
-        }
-        Requirements {
-          _id
-          Value
-        }
-        Applies {
-          _id
-          CompanyName
-          CompanyDescription
-          Domain
-          CreateDate
-        }
-      }
-    }
-        `;
-
-    request(app)
-      .post("/graphql")
-      .send({ query, variables: { projectId } })
-      .expect(200)
-      .end((err, res) => {
-        if (err) return done(err);
-        const { data } = res.body;
-        assert.notStrictEqual(data?.getProject, null || undefined);
-        assert.notStrictEqual(data?.getProject?._id, null || undefined);
-        assert.strictEqual(data?.getProject?.ProjectName, project.ProjectName);
-        assert.strictEqual(
-          data?.getProject?.ProjectDescription,
-          project.ProjectDescription
-        );
-        assert.strictEqual(data?.getProject?.FileName, project.FileName);
-        assert.notStrictEqual(data?.getProject?.Notes, null || undefined);
-        assert.notStrictEqual(data?.getProject?.Notes[0]?._id, null || undefined);
-        assert.strictEqual(
-          data?.getProject?.Notes[0]?.Title,
-          projectNoteInput.Title
-        );
-        assert.notStrictEqual(data?.getProject?.Notes[0]?.Tasks, null || undefined);
-        assert.notStrictEqual(data?.getProject?.Notes[0]?.Tasks[0]._id, null || undefined);
-        assert.strictEqual(
-          data?.getProject?.Notes[0]?.Tasks[0].Title,
-          projectNoteTaskInput.Title
-        );
-        assert.strictEqual(
-          data?.getProject?.Notes[0]?.Tasks[0].Description,
-          projectNoteTaskInput.Description
-        );
-        assert.notStrictEqual(data?.getProject?.Requirements, null || undefined);
-        assert.notStrictEqual(data?.getProject?.Requirements[0]?._id, null || undefined);
-        assert.strictEqual(
-          data?.getProject?.Requirements[0].Value,
-          projectRequirement.Value
-        );
-        assert.notStrictEqual(data?.getProject?.Applies, null || undefined);
-        assert.notStrictEqual(data?.getProject?.Applies[0]?._id, null || undefined);
-        assert.strictEqual(
-          data?.getProject?.Applies[0]?.CompanyName,
-          company.CompanyName
-        );
-        assert.strictEqual(data?.getProject?.Applies[0]?.Rate, company.Rate);
-        assert.strictEqual(
-          data?.getProject?.Applies[0]?.Domain,
-          company.Domain
-        );
-        assert.notStrictEqual(data?.getProject?.Applies[0]?.CreateDate, null || undefined);
-        done();
-      });
-  });
-});
-
-describe("Search In Projects", () => {
-  it("Should search in projects", (done) => {
-    const query = `
-    query Query($word: String!) {
-      searchInProjects(word: $word) {
-        _id
-        ProjectName
-        ProjectDescription
-        FileName
-        Notes {
-          _id
-          Title
-          Tasks {
-            _id
-            Title
-            Description
-          }
-        }
-        Requirements {
-          _id
-          Value
-        }
-        Applies {
-          _id
-          CompanyName
-          CompanyDescription
-          Domain
-          CreateDate
-        }
-      }
-    }
-        `;
-
-    request(app)
-      .post("/graphql")
-      .send({ query, variables: { word } })
-      .expect(200)
-      .end((err, res) => {
-        if (err) return done(err);
-        const { data } = res.body;
-        assert.notStrictEqual(data?.searchInProjects, null || undefined);
-        assert.notStrictEqual(data?.searchInProjects[0]?._id, null || undefined);
-        assert.strictEqual(
-          data?.searchInProjects[0]?.ProjectName,
-          project.ProjectName
-        );
-        assert.strictEqual(
-          data?.searchInProjects[0]?.ProjectDescription,
-          project.ProjectDescription
-        );
-        assert.strictEqual(
-          data?.searchInProjects[0]?.FileName,
-          project.FileName
-        );
-        assert.notStrictEqual(data?.searchInProjects[0]?.Notes, null || undefined);
-        assert.notStrictEqual(data?.searchInProjects[0]?.Notes[0]?._id, null || undefined);
-        assert.strictEqual(
-          data?.searchInProjects[0]?.Notes[0]?.Title,
-          projectNoteInput.Title
-        );
-        assert.notStrictEqual(data?.searchInProjects[0]?.Notes[0]?.Tasks, null || undefined);
-        assert.notStrictEqual(
-          data?.searchInProjects[0]?.Notes[0]?.Tasks[0]._id,
-          null || undefined
-        );
-        assert.strictEqual(
-          data?.searchInProjects[0]?.Notes[0]?.Tasks[0].Title,
-          projectNoteTaskInput.Title
-        );
-        assert.strictEqual(
-          data?.searchInProjects[0]?.Notes[0]?.Tasks[0].Description,
-          projectNoteTaskInput.Description
-        );
-        assert.notStrictEqual(data?.searchInProjects[0]?.Requirements, null || undefined);
-        assert.notStrictEqual(
-          data?.searchInProjects[0]?.Requirements[0]?._id,
-          null || undefined
-        );
-        assert.strictEqual(
-          data?.searchInProjects[0]?.Requirements[0].Value,
-          projectRequirement.Value
-        );
-        assert.notStrictEqual(data?.searchInProjects[0]?.Applies, null || undefined);
-        assert.notStrictEqual(data?.searchInProjects[0]?.Applies[0]?._id, null || undefined);
-        assert.strictEqual(
-          data?.searchInProjects[0]?.Applies[0]?.CompanyName,
-          company.CompanyName
-        );
-        assert.strictEqual(
-          data?.searchInProjects[0]?.Applies[0]?.Rate,
-          company.Rate
-        );
-        assert.strictEqual(
-          data?.searchInProjects[0]?.Applies[0]?.Domain,
-          company.Domain
-        );
-        assert.notStrictEqual(
-          data?.searchInProjects[0]?.Applies[0]?.CreateDate,
-          null || undefined
-        );
-        done();
-      });
-  });
-});
-
-describe("get task by id", () => {
-  it("Should get task by id", (done) => {
-    const query = `
-    query{
-      getTask(taskId: ${taskId}) {
-        _id
-    TaskName
-    TaskStatus
-    StartDate
-    EndDate
-    Priority
-    Comments
-    IsMarked
-    CreateDate
-    Steps {
-      _id
-      Description
-      Number
-    }
-      }
-    }
-        `;
-
-    request(app)
-      .post("/graphql")
-      .send({ query })
-      .expect(200)
-      .end((err, res) => {
-        if (err) return done(err);
-        const { data } = res.body;
-        assert.notStrictEqual(data?.getTask, null || undefined);
-        assert.strictEqual(data?.getTask?._id, taskId);
-        assert.strictEqual(data?.getTask?.TaskName, taskInput.TaskName);
-        assert.strictEqual(data?.getTask?.TaskStatus, taskInput.TaskStatus);
-        assert.strictEqual(data?.getTask?.StartDate, taskInput.StartDate);
-        assert.strictEqual(data?.getTask?.EndDate, taskInput.EndDate);
-        assert.strictEqual(data?.getTask?.Priority, taskInput.Priority);
-        assert.strictEqual(data?.getTask?.Comments, taskInput.Comments);
-        assert.strictEqual(data?.getTask?.IsMarked, taskInput.IsMarked);
-        assert.strictEqual(data?.getTask?.CreateDate, taskInput.CreateDate);
-        assert.notStrictEqual(data?.getTask?.Steps, null || undefined);
-        assert.notStrictEqual(data?.getTask?.Steps[0]?._id, null || undefined);
-        assert.strictEqual(
-          data?.getTask?.Steps[0]?.Description,
-          taskStepInput.Description
-        );
-        assert.strictEqual(
-          data?.getTask?.Steps[0]?.Number,
-          taskStepInput.Number
-        );
-        done();
-      });
-  });
-});
-
-describe("get company by id", () => {
-  it("Should get company by id", (done) => {
-    const query = `
-    query{
-      _id
-    CompanyName
-    CompanyDescription
-    Rate
-    Domain
-    CreateDate
-    Teams {
-      _id
-      TeamName
-      TeamRole
-      CreateDate
-      Tasks {
-        _id
-        TaskName
-        TaskStatus
-        StartDate
-        EndDate
-        Priority
-        Comments
-        IsMarked
-        CreateDate
-        Steps {
-          _id
-          Description
-          Number
-        }
-      }
-      Members {
-        _id
-      }
-    }
-    Project {
-      _id
-      ProjectName
-      ProjectDescription
-      FileName
-    }
-    Comments {
-      _id
-      Value
-      CreatedDate
-    }
-    Posts {
-      _id
-      Content
-      CreatedDate
-    }
-    }
-        `;
-
-    request(app)
-      .post("/graphql")
-      .send({ query })
-      .expect(200)
-      .end((err, res) => {
-        if (err) return done(err);
-        const { data } = res.body;
-        assert.notStrictEqual(data?.getCompany, null || undefined);
-        assert.strictEqual(data?.getCompany?._id, companyId);
-        assert.strictEqual(data?.getCompany?.CompanyName, company.CompanyName);
-        assert.strictEqual(
-          data?.getCompany?.CompanyDescription,
-          company.CompanyDescription
-        );
-        assert.strictEqual(data?.getCompany?.Rate, company.Rate);
-        assert.strictEqual(data?.getCompany?.Domain, company.Domain);
-        assert.notStrictEqual(data?.getCompany?.CreateDate, null || undefined);
-        assert.notStrictEqual(data?.getCompany?.Teams, null || undefined);
-        assert.notStrictEqual(data?.getCompany?.Teams[0]?._id, null || undefined);
-        assert.strictEqual(data?.getCompany?.Teams[0]?.TeamName, team.TeamName);
-        assert.strictEqual(data?.getCompany?.Teams[0]?.TeamRole, team.TeamRole);
-        assert.notStrictEqual(data?.getCompany?.Teams[0]?.CreateDate, null || undefined);
-        assert.notStrictEqual(data?.getCompany?.Teams[0]?.Tasks, null || undefined);
-        assert.notStrictEqual(data?.getCompany?.Teams[0]?.Tasks[0]?._id, null || undefined);
-        assert.strictEqual(
-          data?.getCompany?.Teams[0]?.Tasks[0]?.TaskName,
-          task.TaskName
-        );
-        assert.strictEqual(
-          data?.getCompany?.Teams[0]?.Tasks[0]?.TaskStatus,
-          task.TaskStatus
-        );
-        assert.strictEqual(
-          data?.getCompany?.Teams[0]?.Tasks[0]?.StartDate,
-          task.StartDate
-        );
-        assert.strictEqual(
-          data?.getCompany?.Teams[0]?.Tasks[0]?.EndDate,
-          task.EndDate
-        );
-        assert.strictEqual(
-          data?.getCompany?.Teams[0]?.Tasks[0]?.Priority,
-          task.Priority
-        );
-        assert.strictEqual(
-          data?.getCompany?.Teams[0]?.Tasks[0]?.Comments,
-          task.Comments
-        );
-        assert.strictEqual(
-          data?.getCompany?.Teams[0]?.Tasks[0]?.IsMarked,
-          task.IsMarked
-        );
-        assert.strictEqual(
-          data?.getCompany?.Teams[0]?.Tasks[0]?.CreateDate,
-          task.CreateDate
-        );
-        assert.notStrictEqual(
-          data?.getCompany?.Teams[0]?.Tasks[0]?.Steps,
-          null || undefined
-        );
-        assert.notStrictEqual(
-          data?.getCompany?.Teams[0]?.Tasks[0]?.Steps[0]?._id,
-          null || undefined
-        );
-        assert.strictEqual(
-          data?.getCompany?.Teams[0]?.Tasks[0]?.Steps[0]?.Description,
-          taskStep.Description
-        );
-        assert.strictEqual(
-          data?.getCompany?.Teams[0]?.Tasks[0]?.Steps[0]?.Number,
-          taskStep.Number
-        );
-        assert.strictEqual(
-          data?.getCompany?.Teams[0]?.Members[0]._id,
-          user._id
-        );
-        assert.notStrictEqual(data?.getCompany?.Project, null || undefined);
-        assert.notStrictEqual(data?.getCompany?.Project?._id, null || undefined);
-        assert.strictEqual(
-          data?.getCompany?.Project?.ProjectName,
-          project.ProjectName
-        );
-        assert.strictEqual(
-          data?.getCompany?.Project?.ProjectDescription,
-          project.ProjectDescription
-        );
-        assert.strictEqual(
-          data?.getCompany?.Project?.FileName,
-          project.FileName
-        );
-        assert.notStrictEqual(data?.getCompany?.Comments, null || undefined);
-        assert.notStrictEqual(data?.getCompany?.Comments[0]?._id, null || undefined);
-        assert.strictEqual(
-          data?.getCompany?.Comments[0]?.Value,
-          commentInput.Value
-        );
-        assert.notStrictEqual(data?.getCompany?.Comments[0]?.CreatedDate, null || undefined);
-        assert.notStrictEqual(data?.getCompany?.Posts, null || undefined);
-        assert.notStrictEqual(data?.getCompany?.Posts[0]?._id, null || undefined);
-        assert.strictEqual(
-          data?.getCompany?.Posts[0]?.Content,
-          positionPostInput.Content
-        );
-        assert.notStrictEqual(data?.getCompany?.Posts[0]?.CreatedDate, null || undefined);
-        done();
-      });
-  });
-});
-
-describe("get Contact Messages API Tests", () => {
-  it("Should get contact messages", (done) => {
-    const query = `
-    query{
-      getContactMessages
-    }
-        `;
-
-    request(app)
-      .post("/graphql")
-      .send({ query })
-      .expect(200)
-      .end((err, res) => {
-        if (err) return done(err);
-        const { data } = res.body;
-        assert.notStrictEqual(data?.getContactMessages, null || undefined);
-        assert.notStrictEqual(data?.getContactMessages[0]?._id, null || undefined);
-        assert.strictEqual(
-          data?.getContactMessages[0]?.Message,
-          contactMessageInput.Message
-        );
-        assert.notStrictEqual(data?.getContactMessages[0]?.CreatedDate, null || undefined);
-        done();
-      });
-  });
-});
-
-describe("get All Posts API Tests", () => {
-  it("Should get all posts", (done) => {
-    const query = `
-    query Query($userId: Int!) {
-      getAllPosts(userId: $userId) {
-        _id
-        Content
-        CreatedDate
-      }
-    }
-        `;
-
-    request(app)
-      .post("/graphql")
-      .send({ query, variables: { userId } })
-      .expect(200)
-      .end((err, res) => {
-        if (err) return done(err);
-        const { data } = res.body;
-        assert.notStrictEqual(data?.getAllPosts, null || undefined);
-        assert.notStrictEqual(data?.getAllPosts[0]?._id, null || undefined);
-        assert.strictEqual(
-          data?.getAllPosts[0]?.Content,
-          positionPostInput.Content
-        );
-        assert.notStrictEqual(data?.getAllPosts[0]?.CreatedDate, null || undefined);
-        done();
-      });
-  });
-});
-
-describe("searchInPositionPosts API Tests", () => {
-  it("Should search in position posts", (done) => {
-    const query = `
-    query Query($word: String!, $userId: Int!) {
-      searchInPositionPosts(word: $word, userId: $userId) {
-        _id
-        Content
-        CreatedDate
-      }
-    }
-        `;
-
-    request(app)
-      .post("/graphql")
-      .send({ query, variables: { userId, word: positionPostInput.Content } })
-      .expect(200)
-      .end((err, res) => {
-        if (err) return done(err);
-        const { data } = res.body;
-        assert.notStrictEqual(data?.searchInPositionPosts, null || undefined);
-        assert.notStrictEqual(data?.searchInPositionPosts[0]?._id, null || undefined);
-        assert.strictEqual(
-          data?.searchInPositionPosts[0]?.Content,
-          positionPostInput.Content
-        );
-        assert.notStrictEqual(
-          data?.searchInPositionPosts[0]?.CreatedDate,
-          null || undefined
-        );
-        done();
-      });
-  });
-});
-
-describe("getAllPostsSortedByDate API Tests", () => {
-  it("Should get all posts sorted by date", (done) => {
-    const query = `
-    query Query($userId: Int!) {
-      getAllPostsSortedByDate(userId: $userId) {
-        _id
-        Content
-        CreatedDate
-      }
-    }
-        `;
-
-    request(app)
-      .post("/graphql")
-      .send({ query, variables: { userId } })
-      .expect(200)
-      .end((err, res) => {
-        if (err) return done(err);
-        const { data } = res.body;
-        assert.notStrictEqual(data?.getAllPostsSortedByDate, null || undefined);
-        assert.notStrictEqual(data?.getAllPostsSortedByDate[0]?._id, null || undefined);
-        assert.strictEqual(
-          data?.getAllPostsSortedByDate[0]?.Content,
-          positionPostInput.Content
-        );
-        assert.notStrictEqual(
-          data?.getAllPostsSortedByDate[0]?.CreatedDate,
-          null || undefined
-        );
-        done();
-      });
-  });
-});
-
-describe("searchInMyPosts API Tests", () => {
-  it("Should search in my posts", (done) => {
-    const query = `
-    query Query($word: String!, $userId: Int!) {
-      searchInMyPosts(word: $word, userId: $userId) {
-        _id
-        Content
-        CreatedDate
-      }
-    }
-        `;
-
-    request(app)
-      .post("/graphql")
-      .send({ query, variables: { userId, word: positionPostInput.Content } })
-      .expect(200)
-      .end((err, res) => {
-        if (err) return done(err);
-        const { data } = res.body;
-        assert.notStrictEqual(data?.searchInMyPosts, null || undefined);
-        assert.notStrictEqual(data?.searchInMyPosts[0]?._id, null || undefined);
-        assert.strictEqual(
-          data?.searchInMyPosts[0]?.Content,
-          positionPostInput.Content
-        );
-        assert.notStrictEqual(data?.searchInMyPosts[0]?.CreatedDate, null || undefined);
-        done();
-      });
-  });
-});
-
-describe("getAllMyPostsSortedByDate API Tests", () => {
-  it("Should get all my posts sorted by date", (done) => {
-    const query = `
-    query Query($userId: Int!) {
-      getAllMyPostsSortedByDate(userId: $userId) {
-        _id
-        Content
-        CreatedDate
-      }
-    }
-        `;
-
-    request(app)
-      .post("/graphql")
-      .send({ query, variables: { userId } })
-      .expect(200)
-      .end((err, res) => {
-        if (err) return done(err);
-        const { data } = res.body;
-        assert.notStrictEqual(data?.getAllMyPostsSortedByDate, null || undefined);
-        assert.notStrictEqual(data?.getAllMyPostsSortedByDate[0]?._id, null || undefined);
-        assert.strictEqual(
-          data?.getAllMyPostsSortedByDate[0]?.Content,
-          positionPostInput.Content
-        );
-        assert.notStrictEqual(
-          data?.getAllMyPostsSortedByDate[0]?.CreatedDate,
-          null || undefined
-        );
-        done();
-      });
-  });
-});
-
-describe("delete AI Chat API Tests (create)", () => {
-  it("Should delete an AI chat with valid chat ID", (done) => {
-    const query = `
-    query {
-        deleteAIChat(AIchatId: ${AIchatId})
-      }
-    `;
-
-    request(app)
-      .post("/graphql")
-      .send({ query })
-      .expect(200)
-      .end((err, res) => {
-        if (err) return done(err);
-        const { data } = res.body;
-        assert.strictEqual(data?.deleteAIChat, true);
-        done();
-      });
-  });
-});
-
-describe("delete team", () => {
-  it("Should delete team", (done) => {
-    const query = `
-    query{
-      deleteTeam(teamId: ${teamId})
-    }
-        `;
-
-    request(app)
-      .post("/graphql")
-      .send({ query, variables: { userId } })
-      .expect(200)
-      .end((err, res) => {
-        if (err) return done(err);
-        const { data } = res.body;
-        assert.equal(data.deleteTeam, true);
-        done();
-      });
-  });
-});
-
-describe("delete company", () => {
-  it("Should delete company", (done) => {
-    const query = `
-    query{
-      deleteCompany(companyId: ${companyId})
-        }
-        `;
-
-    request(app)
-      .post("/graphql")
-      .send({ query, variables: { userId } })
-      .expect(200)
-      .end((err, res) => {
-        if (err) return done(err);
-        const { data } = res.body;
-        assert.equal(data.deleteCompany, true);
-        done();
-      });
-  });
-});
-
-describe("delete skill", () => {
-  it("Should delete skill", (done) => {
-    const query = `
-    query{
-      deleteSkill(skillId: ${skillId})
-        }
-        `;
-
-    request(app)
-      .post("/graphql")
-      .send({ query, variables: { userId } })
-      .expect(200)
-      .end((err, res) => {
-        if (err) return done(err);
-        const { data } = res.body;
-        assert.equal(data.deleteSkill, true);
-        done();
-      });
-  });
-});
-
-describe("delete Account", () => {
-  it("Should delete Account", (done) => {
-    const query = `
-    query{
-      deleteSocialMediaAccounts(id: ${accountId})
-        }
-        `;
-
-    request(app)
-      .post("/graphql")
-      .send({ query })
-      .expect(200)
-      .end((err, res) => {
-        if (err) return done(err);
-        const { data } = res.body;
-        assert.equal(data.deleteSocialMediaAccounts, true);
-        done();
-      });
-  });
-});
-
-describe("delete Education API Tests", () => {
-  it("Should delete an education with valid input data", (done) => {
-    const query = `
-    query {
-          deleteEducation(educationId: ${educationId})
-        }
-      `;
-
-    request(app)
-      .post("/graphql")
-      .send({ query })
-      .expect(200)
-      .end((err, res) => {
-        if (err) return done(err);
-        const { data } = res.body;
-        assert.strictEqual(data?.deleteEducation, true);
-        done();
-      });
-  });
-});
-
-describe("deleteUserFromTeam API Tests", () => {
-  it("Should delete user from team with valid input data", (done) => {
-    const query = `
-    query {
-          deleteUserFromTeam(userId: ${userId}, teamId: ${teamId})
-        }
-      `;
-
-    request(app)
-      .post("/graphql")
-      .send({ query })
-      .expect(200)
-      .end((err, res) => {
-        if (err) return done(err);
-        const { data } = res.body;
-        assert.strictEqual(data?.deleteUserFromTeam, true);
-        done();
-      });
-  });
-});
-
-describe("deletePost API Tests", () => {
-  it("Should delete a post with valid input data", (done) => {
-    const query = `
-    query {
-          deletePost(postId: ${postId})
-        }
-      `;
-
-    request(app)
-      .post("/graphql")
-      .send({ query })
-      .expect(200)
-      .end((err, res) => {
-        if (err) return done(err);
-        const { data } = res.body;
-        assert.strictEqual(data?.deletePost, true);
-        done();
-      });
-  });
-});
-
-describe("deleteUser API Tests", () => {
-  it("Should delete a user with valid input data", (done) => {
-    const query = `
-    query {
-          deleteUser(userId: ${userId})
-        }
-      `;
-
-    request(app)
-      .post("/graphql")
-      .send({ query })
-      .expect(200)
-      .end((err, res) => {
-        if (err) return done(err);
-        const { data } = res.body;
-        assert.strictEqual(data?.deleteUser, true);
-        done();
-      });
-  });
-});
-
-describe("deleteTask API Tests", () => {
-  it("Should delete a task with valid input data", (done) => {
-    const query = `
-    query {
-          deleteTask(taskId: ${taskId})
-        }
-      `;
-
-    request(app)
-      .post("/graphql")
-      .send({ query })
-      .expect(200)
-      .end((err, res) => {
-        if (err) return done(err);
-        const { data } = res.body;
-        assert.strictEqual(data?.deleteTask, true);
-        done();
-      });
-  });
-});
-
-describe("deleteTaskStep API Tests", () => {
-  it("Should delete a task step with valid input data", (done) => {
-    const query = `
-    query {
-          deleteTaskStep(taskStepId: ${taskStepId})
-        }
-      `;
-
-    request(app)
-      .post("/graphql")
-      .send({ query })
-      .expect(200)
-      .end((err, res) => {
-        if (err) return done(err);
-        const { data } = res.body;
-        assert.strictEqual(data?.deleteTaskStep, true);
-        done();
-      });
-  });
-});
-
-describe("deleteCompanyComment API Tests", () => {
-  it("Should delete a company comment with valid input data", (done) => {
-    const query = `
-    query {
-          deleteCompanyComment(commentId: ${commentId})
-        }
-      `;
-
-    request(app)
-      .post("/graphql")
-      .send({ query })
-      .expect(200)
-      .end((err, res) => {
-        if (err) return done(err);
-        const { data } = res.body;
-        assert.strictEqual(data?.deleteCompanyComment, true);
-        done();
-      });
-  });
-});
-
-describe("deleteProjectRequirement API Tests", () => {
-  it("Should delete a project requirement with valid input data", (done) => {
-    const query = `
-    query {
-          deleteProjectRequirement(projectRequirementId: ${projectRequirementId})
-        }
-      `;
-
-    request(app)
-      .post("/graphql")
-      .send({ query })
-      .expect(200)
-      .end((err, res) => {
-        if (err) return done(err);
-        const { data } = res.body;
-        assert.strictEqual(data?.deleteProjectRequirement, true);
-        done();
-      });
-  });
-});
+// describe("delete AI Chat API Tests (create)", () => {
+//   it("Should delete an AI chat with valid chat ID", (done) => {
+//     const query = `
+//     query {
+//         deleteAIChat(AIchatId: ${AIchatId})
+//       }
+//     `;
+
+//     request(app)
+//       .post("/graphql")
+//       .send({ query })
+//       .expect(200)
+//       .end((err, res) => {
+//         if (err) return done(err);
+//         const { data } = res.body;
+//         assert.strictEqual(data?.deleteAIChat, true);
+//         done();
+//       });
+//   });
+// });
+
+// describe("delete team", () => {
+//   it("Should delete team", (done) => {
+//     const query = `
+//     query{
+//       deleteTeam(teamId: ${teamId})
+//     }
+//         `;
+
+//     request(app)
+//       .post("/graphql")
+//       .send({ query, variables: { userId } })
+//       .expect(200)
+//       .end((err, res) => {
+//         if (err) return done(err);
+//         const { data } = res.body;
+//         assert.equal(data.deleteTeam, true);
+//         done();
+//       });
+//   });
+// });
+
+// describe("delete company", () => {
+//   it("Should delete company", (done) => {
+//     const query = `
+//     query{
+//       deleteCompany(companyId: ${companyId})
+//         }
+//         `;
+
+//     request(app)
+//       .post("/graphql")
+//       .send({ query, variables: { userId } })
+//       .expect(200)
+//       .end((err, res) => {
+//         if (err) return done(err);
+//         const { data } = res.body;
+//         assert.equal(data.deleteCompany, true);
+//         done();
+//       });
+//   });
+// });
+
+// describe("delete skill", () => {
+//   it("Should delete skill", (done) => {
+//     const query = `
+//     query{
+//       deleteSkill(skillId: ${skillId})
+//         }
+//         `;
+
+//     request(app)
+//       .post("/graphql")
+//       .send({ query, variables: { userId } })
+//       .expect(200)
+//       .end((err, res) => {
+//         if (err) return done(err);
+//         const { data } = res.body;
+//         assert.equal(data.deleteSkill, true);
+//         done();
+//       });
+//   });
+// });
+
+// describe("delete Account", () => {
+//   it("Should delete Account", (done) => {
+//     const query = `
+//     query{
+//       deleteSocialMediaAccounts(id: ${accountId})
+//         }
+//         `;
+
+//     request(app)
+//       .post("/graphql")
+//       .send({ query })
+//       .expect(200)
+//       .end((err, res) => {
+//         if (err) return done(err);
+//         const { data } = res.body;
+//         assert.equal(data.deleteSocialMediaAccounts, true);
+//         done();
+//       });
+//   });
+// });
+
+// describe("delete Education API Tests", () => {
+//   it("Should delete an education with valid input data", (done) => {
+//     const query = `
+//     query {
+//           deleteEducation(educationId: ${educationId})
+//         }
+//       `;
+
+//     request(app)
+//       .post("/graphql")
+//       .send({ query })
+//       .expect(200)
+//       .end((err, res) => {
+//         if (err) return done(err);
+//         const { data } = res.body;
+//         assert.strictEqual(data?.deleteEducation, true);
+//         done();
+//       });
+//   });
+// });
+
+// describe("deleteUserFromTeam API Tests", () => {
+//   it("Should delete user from team with valid input data", (done) => {
+//     const query = `
+//     query {
+//           deleteUserFromTeam(userId: ${userId}, teamId: ${teamId})
+//         }
+//       `;
+
+//     request(app)
+//       .post("/graphql")
+//       .send({ query })
+//       .expect(200)
+//       .end((err, res) => {
+//         if (err) return done(err);
+//         const { data } = res.body;
+//         assert.strictEqual(data?.deleteUserFromTeam, true);
+//         done();
+//       });
+//   });
+// });
+
+// describe("deletePost API Tests", () => {
+//   it("Should delete a post with valid input data", (done) => {
+//     const query = `
+//     query {
+//           deletePost(postId: ${postId})
+//         }
+//       `;
+
+//     request(app)
+//       .post("/graphql")
+//       .send({ query })
+//       .expect(200)
+//       .end((err, res) => {
+//         if (err) return done(err);
+//         const { data } = res.body;
+//         assert.strictEqual(data?.deletePost, true);
+//         done();
+//       });
+//   });
+// });
+
+// describe("deleteUser API Tests", () => {
+//   it("Should delete a user with valid input data", (done) => {
+//     const query = `
+//     query {
+//           deleteUser(userId: ${userId})
+//         }
+//       `;
+
+//     request(app)
+//       .post("/graphql")
+//       .send({ query })
+//       .expect(200)
+//       .end((err, res) => {
+//         if (err) return done(err);
+//         const { data } = res.body;
+//         assert.strictEqual(data?.deleteUser, true);
+//         done();
+//       });
+//   });
+// });
+
+// describe("deleteTask API Tests", () => {
+//   it("Should delete a task with valid input data", (done) => {
+//     const query = `
+//     query {
+//           deleteTask(taskId: ${taskId})
+//         }
+//       `;
+
+//     request(app)
+//       .post("/graphql")
+//       .send({ query })
+//       .expect(200)
+//       .end((err, res) => {
+//         if (err) return done(err);
+//         const { data } = res.body;
+//         assert.strictEqual(data?.deleteTask, true);
+//         done();
+//       });
+//   });
+// });
+
+// describe("deleteTaskStep API Tests", () => {
+//   it("Should delete a task step with valid input data", (done) => {
+//     const query = `
+//     query {
+//           deleteTaskStep(taskStepId: ${taskStepId})
+//         }
+//       `;
+
+//     request(app)
+//       .post("/graphql")
+//       .send({ query })
+//       .expect(200)
+//       .end((err, res) => {
+//         if (err) return done(err);
+//         const { data } = res.body;
+//         assert.strictEqual(data?.deleteTaskStep, true);
+//         done();
+//       });
+//   });
+// });
+
+// describe("deleteCompanyComment API Tests", () => {
+//   it("Should delete a company comment with valid input data", (done) => {
+//     const query = `
+//     query {
+//           deleteCompanyComment(commentId: ${commentId})
+//         }
+//       `;
+
+//     request(app)
+//       .post("/graphql")
+//       .send({ query })
+//       .expect(200)
+//       .end((err, res) => {
+//         if (err) return done(err);
+//         const { data } = res.body;
+//         assert.strictEqual(data?.deleteCompanyComment, true);
+//         done();
+//       });
+//   });
+// });
+
+// describe("deleteProjectRequirement API Tests", () => {
+//   it("Should delete a project requirement with valid input data", (done) => {
+//     const query = `
+//     query {
+//           deleteProjectRequirement(projectRequirementId: ${projectRequirementId})
+//         }
+//       `;
+
+//     request(app)
+//       .post("/graphql")
+//       .send({ query })
+//       .expect(200)
+//       .end((err, res) => {
+//         if (err) return done(err);
+//         const { data } = res.body;
+//         assert.strictEqual(data?.deleteProjectRequirement, true);
+//         done();
+//       });
+//   });
+// });

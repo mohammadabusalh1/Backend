@@ -287,7 +287,7 @@ const typeDefs = gql`
     deleteSkill(skillId: Int!): Boolean
     filterMyCompanies(
       userId: Int!
-      filterType: String!
+      filterType: String
       desc: Boolean
       page: Int
       limit: Int
@@ -295,12 +295,12 @@ const typeDefs = gql`
     searchInMyCompanies(
       userId: Int!
       word: String!
-      page: Int!
-      limit: Int!
+      page: Int
+      limit: Int
     ): [Company]
     filterWorksCompanies(
       userId: Int!
-      filterType: String!
+      filterType: String
       desc: Boolean
       page: Int
       limit: Int

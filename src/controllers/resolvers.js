@@ -254,8 +254,8 @@ const resolvers = {
         );
 
         // I make map because result is not as a schema type.
-        return companies.records.slice(page * limit, limit).map((record) => ({
-          ...record.get("companies").properties(),
+        return companies?.records?.slice(page * limit, limit).map((record) => ({
+          ...record.get("companies").properties,
           _id: `${record.get("companies").identity}`,
         }));
       } catch (error) {
@@ -293,7 +293,7 @@ const resolvers = {
         );
 
         return companies.records.slice(page * limit, limit).map((record) => ({
-          ...record.get("companies").properties(),
+          ...record.get("companies").properties,
           _id: `${record.get("companies").identity}`,
         }));
       } catch (error) {
@@ -330,7 +330,7 @@ const resolvers = {
         const companies = await NeodeObject?.cypher(
           `
           MATCH (u:User) - [:IN_TEAM] -> (t:Team) WHERE ID(u) = $userId
-          MATCH (c:Company) -[:has_a_team]-> (t) RETURN c ORDER BY companies.${filterType} ${
+          MATCH (c:Company) -[:HAS_A_TEAM]-> (t) RETURN c ORDER BY c.${filterType} ${
             desc ? "desc" : "asc"
           }
           `,
@@ -339,10 +339,11 @@ const resolvers = {
 
         // I make map because result is not as a schema type.
         return companies.records.slice(page * limit, limit).map((record) => ({
-          ...record.get("c").properties(),
+          ...record.get("c").properties,
           _id: `${record.get("c").identity}`,
         }));
       } catch (error) {
+        console.log(error);
         Logging.error(
           `${new Date()}, in resolvers.js => filterWorksCompanies, ${error}`
         );
@@ -370,17 +371,17 @@ const resolvers = {
         const companies = await NeodeObject?.cypher(
           `
           MATCH (u:User) - [:IN_TEAM] -> (t:Team) WHERE ID(u) = $userId
-          MATCH (c:Company) -[:has_a_team]-> (t) where 
-          companies.CompanyDescription CONTAINS '${word}' 
-          OR companies.CompanyName CONTAINS '${word}'
-          OR companies.Domain CONTAINS '${word}' 
+          MATCH (c:Company) -[:HAS_A_TEAM]-> (t) where 
+          c.CompanyDescription CONTAINS '${word}' 
+          OR c.CompanyName CONTAINS '${word}'
+          OR c.Domain CONTAINS '${word}' 
           RETURN c
           `,
           { userId }
         );
 
         return companies.records.slice(page * limit, limit).map((record) => ({
-          ...record.get("c").properties(),
+          ...record.get("c").properties,
           _id: `${record.get("c").identity}`,
         }));
       } catch (error) {
@@ -414,37 +415,40 @@ const resolvers = {
           `
           MATCH (u:User) -[:WORK_ON]-> (p:Project) WHERE ID(u) = $userId
           RETURN count(p)
-          `
+          `,
+          { userId }
         );
 
         const numberOfTeams = await NeodeObject?.cypher(
           `
           MATCH (u:User) -[:IN_TEAM]-> (t:Team) WHERE ID(u) = $userId
           RETURN count(t)
-          `
+          `,
+          { userId }
         );
 
         const numberOfTasks = await NeodeObject?.cypher(
           `
           MATCH (u:User) -[:HAS_A_TASK]-> (t:Task) WHERE ID(u) = $userId
           RETURN count(t)
-          `
+          `,
+          { userId }
         );
 
         const numberOfMyCompanies = await NeodeObject?.cypher(
           `
-          MATCH (u:User) -[:admin_of] -> (c:Company) WHERE ID(u) = $userId
+          MATCH (u:User) -[:ADMIN_OF] -> (c:Company) WHERE ID(u) = $userId
           RETURN count(c) as myCompaniesCount
           `,
           { userId }
         );
 
         return {
-          NumberOfProjects: numberOfProjects.records[0].get("count(p)"),
-          NumberOfTeams: numberOfTeams.records[0].get("count(t)"),
-          NumberOfTasks: numberOfTasks.records[0].get("count(t)"),
+          NumberOfProjects: numberOfProjects.records[0].get("count(p)").low,
+          NumberOfTeams: numberOfTeams.records[0].get("count(t)").low,
+          NumberOfTasks: numberOfTasks.records[0].get("count(t)").low,
           NumberOfMyCompanies:
-            numberOfMyCompanies.records[0].get("myCompaniesCount"),
+            numberOfMyCompanies.records[0].get("myCompaniesCount").low,
         };
       } catch (error) {
         Logging.error(
@@ -555,7 +559,7 @@ const resolvers = {
         const projects = await NeodeObject?.cypher(
           ` MATCH (p:Project) 
             WHERE p.ProjectName CONTAINS $word
-            WHERE p.ProjectDescription CONTAINS $word
+            OR p.ProjectDescription CONTAINS $word
             RETURN p
           `,
           { word }
@@ -564,7 +568,7 @@ const resolvers = {
         return projects.records
           .slice(page * limit, (page + 1) * limit)
           .map((record) => ({
-            ...record.get("p").properties(),
+            ...record.get("p").properties,
             _id: `${record.get("p").identity}`,
           }));
       } catch (error) {
@@ -698,7 +702,7 @@ const resolvers = {
         return posts.records
           .slice(page * limit, (page + 1) * limit)
           .map((record) => ({
-            ...record.get("p").properties(),
+            ...record.get("p").properties,
             _id: `${record.get("p").identity}`,
           }));
       } catch (error) {
@@ -751,7 +755,7 @@ const resolvers = {
         return posts.records
           .slice(page * limit, (page + 1) * limit)
           .map((record) => ({
-            ...record.get("p").properties(),
+            ...record.get("p").properties,
             _id: `${record.get("p").identity}`,
           }));
       } catch (error) {
@@ -793,7 +797,7 @@ const resolvers = {
         return posts.records
           .slice(page * limit, (page + 1) * limit)
           .map((record) => ({
-            ...record.get("p").properties(),
+            ...record.get("p").properties,
             _id: `${record.get("p").identity}`,
           }));
       } catch (error) {
@@ -837,7 +841,7 @@ const resolvers = {
         return posts.records
           .slice(page * limit, (page + 1) * limit)
           .map((record) => ({
-            ...record.get("p").properties(),
+            ...record.get("p").properties,
             _id: `${record.get("p").identity}`,
           }));
       } catch (error) {
@@ -879,7 +883,7 @@ const resolvers = {
         return posts.records
           .slice(page * limit, (page + 1) * limit)
           .map((record) => ({
-            ...record.get("p").properties(),
+            ...record.get("p").properties,
             _id: `${record.get("p").identity}`,
           }));
       } catch (error) {
@@ -906,7 +910,7 @@ const resolvers = {
           );
         }
 
-        const team = await NeodeObject?.find("Team", teamId);
+        const team = await NeodeObject?.findById("Team", teamId);
 
         return {
           ...team.properties(),
@@ -1773,25 +1777,56 @@ const resolvers = {
             `Are you send teamId? teamId is required, teamId value is ${teamId}. please check teamId value before send`
           );
         }
+        const result = await NeodeObject.writeCypher(
+          `
+          Match (n:User) WHERE ID(n) = ${userId}
+          Match (t:Team) WHERE ID(t) = ${teamId}
+          MATCH (c:Company)-[cr:HAS_A_TEAM]->(t)
+          CREATE (n) -[tr:IN_TEAM {role: "${role}"}] -> (t)
+          RETURN c`
+        );
+
+        const project = await NeodeObject.writeCypher(
+          `
+           Match (n:User) WHERE ID(n) = ${userId}
+           MATCH (c:Company) -[tp:TAKE_A_PROJECT]-> (p:Project) WHERE ID(c) = ${
+             result.records[0].get("c").identity.low
+           }
+           RETURN p`
+        );
 
         await NeodeObject.writeCypher(
-          `MATCH (n:User) WHERE ID(n) = $userId
-           MATCH (t:Team) WHERE ID(t) = $teamId
-           MATCH (c:Company)-[cr:HAS_A_TEAM]->(t)
-           CREATE (n) -[tr:IN_TEAM {role: $role}] -> (t)
-           CREATE (n) -[wr:WORK_ON] -> (c)
-           RETURN t`,
-          { userId, teamId, role }
+          `
+           Match (n:User) WHERE ID(n) = ${userId}
+           Match (p:Project) WHERE ID(p) = ${
+             project.records[0].get("p").identity.low
+           }
+           CREATE (n) -[wr:WORK_ON] -> (p)
+           RETURN p`
         );
 
         backup.info(
-          `MATCH (n:User) WHERE ID(n) = ${userId}
-           MATCH (t:Team) WHERE ID(t) = ${teamId}
-           CREATE (n) -[r:IN_TEAM {role: ${role}}] -> (t)`
+          `
+          Match (n:User) WHERE ID(n) = ${userId}
+          Match (t:Team) WHERE ID(t) = ${teamId}
+          MATCH (c:Company)-[cr:HAS_A_TEAM]->(t)
+          CREATE (n) -[tr:IN_TEAM {role: "${role}"}] -> (t)
+          RETURN c`
+        );
+
+        backup.info(
+          `
+           Match (n:User) WHERE ID(n) = ${userId}
+           Match (p:Project) WHERE ID(p) = ${
+             project.records[0].get("p").identity.low
+           }
+           CREATE (n) -[wr:WORK_ON] -> (p)
+           RETURN p`
         );
 
         return true;
       } catch (error) {
+        console.log(error);
         Logging.error(
           `${new Date()}, in resolvers.js => addUserToTeam, ${error}`
         );
@@ -2420,17 +2455,17 @@ const resolvers = {
      */
     updatePositionPost: async (parent, args) => {
       try {
-        const { postId, positionPost } = args;
+        const { positionPostId, positionPost } = args;
 
-        if (!postId) {
+        if (!positionPostId) {
           throw new Error(
-            `Are you send postId? postId is required, postId value is ${postId}. please check postId value before send`
+            `Are you send postId? postId is required, postId value is ${positionPostId}. please check postId value before send`
           );
         }
 
         const updatedPositionPost = await NeodeObject?.findById(
           "PositionPost",
-          postId
+          positionPostId
         ).then((p) => p.update({ ...positionPost }));
 
         if (!updatedPositionPost) {
@@ -2439,7 +2474,7 @@ const resolvers = {
 
         backup.info(
           `MATCH (pp:PositionPost)
-          WHERE ID(pp) = ${postId}
+          WHERE ID(pp) = ${positionPostId}
           SET pp = {${Object.keys(positionPost)
             ?.map((key) => `${key}: "${positionPost[key]}"`)
             .join(", ")}} RETURN pp`
@@ -2595,7 +2630,7 @@ const resolvers = {
           throw new Error("Company not found");
         }
 
-        await company.relateTo(project, "TAKE_A_PROJECT");
+        await company.relateTo(project, "take_a_project");
 
         backup.info(
           `MATCH (c:Company) WHERE ID(c) = ${companyId}
@@ -2724,7 +2759,7 @@ const resolvers = {
         return result?.records
           ?.slice(page * limit, (page + 1) * limit)
           .map((record) => ({
-            ...record.get("messages").properties(),
+            ...record.get("messages").properties,
             _id: `${record.get("messages").identity().low}`,
           }));
       } catch (error) {
@@ -2757,8 +2792,8 @@ const resolvers = {
         return result?.records
           ?.slice(page * limit, (page + 1) * limit)
           ?.map((record) => ({
-            ...record.get("companies").properties(),
-            _id: `${record.get("companies").identity().low}`,
+            ...record.get("companies").properties,
+            _id: `${record.get("companies").identity}`,
           }));
       } catch (error) {
         Logging.error(
@@ -2777,7 +2812,8 @@ const resolvers = {
         }
 
         const cypherQuery = `
-           MATCH (user:User)-[:WORK_ON]-> (companies:Company)
+           MATCH (user:User)-[:IN_TEAM]-> (team:Team)
+           Match (companies:Company)-[:HAS_A_TEAM]->(team)
            WHERE ID(user) = $userId
            RETURN companies`;
 
@@ -2790,8 +2826,8 @@ const resolvers = {
         return result?.records
           ?.slice(page * limit, (page + 1) * limit)
           ?.map((record) => ({
-            ...record.get("companies").properties(),
-            _id: `${record.get("companies").identity().low}`,
+            ...record.get("companies").properties,
+            _id: `${record.get("companies").identity}`,
           }));
       } catch (error) {
         Logging.error(
@@ -2823,8 +2859,8 @@ const resolvers = {
         return result?.records
           ?.slice(page * limit, (page + 1) * limit)
           ?.map((record) => ({
-            ...record.get("skills").properties(),
-            _id: `${record.get("skills").identity().low}`,
+            ...record.get("skills").properties,
+            _id: `${record.get("skills").identity}`,
           }));
       } catch (error) {
         Logging.error(`${new Date()}, in resolvers.js => Skills, ${error}`);
@@ -2850,8 +2886,8 @@ const resolvers = {
         return result?.records
           ?.slice(page * limit, (page + 1) * limit)
           ?.map((record) => ({
-            ...record.get("accounts").properties(),
-            _id: record.get("accounts").identity().low,
+            ...record.get("accounts").properties,
+            _id: record.get("accounts").identity.low,
           }));
       } catch (error) {
         Logging.error(`${new Date()}, in resolvers.js => Accounts, ${error}`);
@@ -2877,9 +2913,9 @@ const resolvers = {
         return result?.records
           ?.slice(page * limit, (page + 1) * limit)
           ?.map((record) => ({
-            ...record.get("tasks").properties(),
-            Priority: record.get("tasks")?.properties()?.Priority?.low,
-            _id: record.get("tasks").identity().low,
+            ...record.get("tasks").properties,
+            Priority: record.get("tasks")?.properties?.Priority,
+            _id: record.get("tasks").identity.low,
             page,
             limit,
           }));
@@ -2904,8 +2940,8 @@ const resolvers = {
         const result = await NeodeObject.cypher(cypherQuery, { userId });
 
         return result?.records?.map((record) => ({
-          ...record.get("educations").properties(),
-          _id: record.get("educations").identity().low,
+          ...record.get("educations").properties,
+          _id: record.get("educations").identity.low,
         }));
       } catch (error) {
         Logging.error(`${new Date()}, in resolvers.js => Educations, ${error}`);
@@ -2931,8 +2967,8 @@ const resolvers = {
         return result?.records
           ?.slice(page * limit, (page + 1) * limit)
           ?.map((record) => ({
-            ...record.get("chats").properties(),
-            _id: record.get("chats").identity().low,
+            ...record.get("chats").properties,
+            _id: record.get("chats").identity.low,
             page,
             limit,
           }));
@@ -2957,9 +2993,9 @@ const resolvers = {
         const result = await NeodeObject.cypher(cypherQuery, { userId });
 
         return result?.records?.map((record) => ({
-          ...record.get("tasks").properties(),
-          Priority: record.get("tasks")?.properties?.Priority?.low,
-          _id: record.get("tasks").identity().low,
+          ...record.get("tasks").properties,
+          Priority: record.get("tasks")?.properties?.Priority,
+          _id: record.get("tasks").identity.low,
         }));
       } catch (error) {
         Logging.error(
@@ -2987,8 +3023,8 @@ const resolvers = {
         return result?.records
           ?.slice(page * limit, (page + 1) * limit)
           ?.map((record) => ({
-            ...record.get("posts").properties(),
-            _id: record.get("posts")?.identity?.low,
+            ...record.get("posts").properties,
+            _id: record.get("posts")?.identity.low,
           }));
       } catch (error) {
         Logging.error(`${new Date()}, in resolvers.js => Posts, ${error}`);
@@ -3007,14 +3043,14 @@ const resolvers = {
 
         const cypherQuery = `
            MATCH (project:Project)-[:HAS_NOTE]->(notes:ProjectNote)
-           WHERE ID(project) = $projectId
+           WHERE ID(project) = ${projectId}
            RETURN notes`;
 
-        const result = await NeodeObject.cypher(cypherQuery, { projectId });
+        const result = await NeodeObject.cypher(cypherQuery);
 
         return result?.records?.map((record) => ({
-          ...record.get("notes").properties(),
-          id: record.get("notes").identity,
+          ...record.get("notes").properties,
+          _id: record.get("notes").identity.low,
         }));
       } catch (error) {
         Logging.error(`${new Date()}, in resolvers.js => Notes, ${error}`);
@@ -3031,14 +3067,14 @@ const resolvers = {
 
         const cypherQuery = `
            MATCH (project:Project)-[:HAS_REQUIREMENT]->(requirements:ProjectRequirement)
-           WHERE ID(project) = $projectId
+           WHERE ID(project) = ${projectId}
            RETURN requirements`;
 
-        const result = await NeodeObject.cypher(cypherQuery, { projectId });
+        const result = await NeodeObject.cypher(cypherQuery);
 
         return result?.records?.map((record) => ({
-          ...record.get("requirements").properties(),
-          id: record.get("requirements").identity,
+          ...record.get("requirements").properties,
+          _id: record.get("requirements").identity.low,
         }));
       } catch (error) {
         Logging.error(
@@ -3057,14 +3093,14 @@ const resolvers = {
 
         const cypherQuery = `
            MATCH (companies:Company)-[:TAKE_A_PROJECT]->(project:Project)
-           WHERE ID(project) = $projectId
+           WHERE ID(project) = ${projectId}
            RETURN companies`;
 
-        const result = await NeodeObject.cypher(cypherQuery, { projectId });
+        const result = await NeodeObject.cypher(cypherQuery);
 
         return result?.records?.map((record) => ({
-          ...record.get("companies").properties(),
-          id: record.get("companies").identity,
+          ...record.get("companies").properties,
+          _id: record.get("companies").identity.low,
         }));
       } catch (error) {
         Logging.error(`${new Date()}, in resolvers.js => Applies, ${error}`);
@@ -3083,14 +3119,14 @@ const resolvers = {
 
         const cypherQuery = `
            MATCH (company:Company)-[:HAS_A_TEAM]->(teams:Team)
-           WHERE ID(company) = $companyId
+           WHERE ID(company) = ${companyId}
            RETURN teams`;
 
-        const result = await NeodeObject.cypher(cypherQuery, { companyId });
+        const result = await NeodeObject.cypher(cypherQuery);
 
         return result?.records?.map((record) => ({
-          ...record.get("teams").properties(),
-          id: record.get("teams").identity,
+          ...record.get("teams").properties,
+          _id: record.get("teams").identity.low,
         }));
       } catch (error) {
         Logging.error(`${new Date()}, in resolvers.js => Teams, ${error}`);
@@ -3107,14 +3143,14 @@ const resolvers = {
 
         const cypherQuery = `
            MATCH (company:Company)-[:HAS_A_COMMENT]->(comments:Comment)
-           WHERE ID(company) = $companyId
+           WHERE ID(company) = ${companyId}
            RETURN comments`;
 
-        const result = await NeodeObject.cypher(cypherQuery, { companyId });
+        const result = await NeodeObject.cypher(cypherQuery);
 
         return result?.records?.map((record) => ({
-          ...record.get("comments").properties(),
-          id: record.get("comments").identity,
+          ...record.get("comments").properties,
+          _id: record.get("comments").identity.low,
         }));
       } catch (error) {
         Logging.error(`${new Date()}, in resolvers.js => Comments, ${error}`);
@@ -3131,14 +3167,14 @@ const resolvers = {
 
         const cypherQuery = `
            MATCH (company:Company)-[:HAS_A_POST]->(posts:PositionPost)
-           WHERE ID(company) = $companyId
+           WHERE ID(company) = ${companyId}
            RETURN posts`;
 
-        const result = await NeodeObject.cypher(cypherQuery, { companyId });
+        const result = await NeodeObject.cypher(cypherQuery);
 
         return result?.records?.map((record) => ({
-          ...record.get("posts").properties(),
-          id: record.get("posts").identity,
+          ...record.get("posts").properties,
+          _id: record.get("posts").identity.low,
         }));
       } catch (error) {
         Logging.error(`${new Date()}, in resolvers.js => Posts, ${error}`);
@@ -3155,15 +3191,15 @@ const resolvers = {
 
         const cypherQuery = `
            MATCH (tasks:Task)-[:IN_COMPANY]->(company:Company)
-           WHERE ID(company) = $companyId
+           WHERE ID(company) = ${companyId}
            RETURN tasks`;
 
-        const result = await NeodeObject.cypher(cypherQuery, { companyId });
+        const result = await NeodeObject.cypher(cypherQuery);
 
         return result?.records?.map((record) => ({
-          ...record.get("tasks").properties(),
+          ...record.get("tasks").properties,
           Priority: record.get("tasks")?.properties?.Priority?.low,
-          id: record.get("tasks").identity,
+          _id: record.get("tasks").identity.low,
         }));
       } catch (error) {
         Logging.error(`${new Date()}, in resolvers.js => Tasks, ${error}`);
@@ -3180,15 +3216,22 @@ const resolvers = {
 
         const cypherQuery = `
         MATCH (c:Company) -[:TAKE_A_PROJECT] -> (p:Project)
-        WHERE ID(c) = $companyId
+        WHERE ID(c) = ${companyId}
         RETURN p`;
 
-        const result = await NeodeObject.cypher(cypherQuery, { companyId });
+        const result = await NeodeObject.cypher(cypherQuery);
 
-        return result?.records?.map((record) => ({
-          ...record.get("p").properties(),
-          id: record.get("p").identity,
-        }));
+        console.log(
+          result?.records?.map((record) => ({
+            ...record.get("p").properties,
+            _id: record.get("p").identity.low,
+          }))
+        );
+
+        return {
+          ...result?.records[0].get("p").properties,
+          _id: result?.records[0].get("p").identity.low,
+        };
       } catch (error) {
         Logging.error(`${new Date()}, in resolvers.js => Project, ${error}`);
         throw error;
@@ -3215,7 +3258,7 @@ const resolvers = {
         return result?.records
           ?.slice(page * limit, (page + 1) * limit)
           ?.map((record) => ({
-            ...record.get("messages").properties(),
+            ...record.get("messages").properties,
             userId: record.get("messages")?.properties?.userId?.low,
             _id: record.get("messages").identity().low,
           }));
@@ -3242,8 +3285,8 @@ const resolvers = {
         const result = await NeodeObject.cypher(cypherQuery, { noteId });
 
         return result?.records?.map((record) => ({
-          ...record.get("tasks").properties(),
-          id: record.get("tasks").identity,
+          ...record.get("tasks").properties,
+          id: record.get("tasks").identity.low,
         }));
       } catch (error) {
         Logging.error(`${new Date()}, in resolvers.js => Tasks, ${error}`);
@@ -3262,15 +3305,17 @@ const resolvers = {
 
         const cypherQuery = `
            MATCH (task:Task)-[:HAS_A]->(taskSteps:TaskStep)
-           WHERE ID(task) = $taskId
+           WHERE ID(task) = ${taskId}
            RETURN taskSteps`;
 
-        const result = await NeodeObject.cypher(cypherQuery, { taskId });
+        console.log(cypherQuery);
+
+        const result = await NeodeObject.cypher(cypherQuery);
 
         return result?.records?.map((record) => ({
-          ...record.get("taskSteps").properties(),
+          ...record.get("taskSteps").properties,
           Number: record.get("taskSteps")?.properties?.Number?.low,
-          _id: record.get("taskSteps").identity().low,
+          _id: record.get("taskSteps").identity.low,
         }));
       } catch (error) {
         Logging.error(`${new Date()}, in resolvers.js => Steps, ${error}`);
@@ -3282,22 +3327,21 @@ const resolvers = {
     Tasks: async (parent) => {
       try {
         const teamId = parent._id;
-
         if (!teamId) {
           throw new Error("TeamID is null");
         }
 
         const cypherQuery = `
            MATCH (team:Team)-[:HAS_A_TASK]->(tasks:Task)
-           WHERE ID(team) = $teamId
+           WHERE ID(team) = ${teamId}
            RETURN tasks`;
 
-        const result = await NeodeObject.cypher(cypherQuery, { teamId });
+        const result = await NeodeObject.cypher(cypherQuery);
 
         return result?.records?.map((record) => ({
-          ...record.get("tasks").properties(),
+          ...record.get("tasks").properties,
           Priority: record.get("tasks")?.properties?.Priority?.low,
-          id: record.get("tasks").identity,
+          _id: record.get("tasks").identity.low,
         }));
       } catch (error) {
         Logging.error(`${new Date()}, in resolvers.js => Tasks, ${error}`);
@@ -3314,14 +3358,14 @@ const resolvers = {
 
         const cypherQuery = `
            MATCH (users:User)-[:IN_TEAM]->(team:Team)
-           WHERE ID(team) = $teamId
+           WHERE ID(team) = ${teamId}
            RETURN users`;
 
-        const result = await NeodeObject.cypher(cypherQuery, { teamId });
+        const result = await NeodeObject.cypher(cypherQuery);
 
         return result?.records?.map((record) => ({
-          ...record.get("users").properties(),
-          id: record.get("users").identity,
+          ...record.get("users").properties,
+          _id: record.get("users").identity.low,
         }));
       } catch (error) {
         Logging.error(`${new Date()}, in resolvers.js => Members, ${error}`);
