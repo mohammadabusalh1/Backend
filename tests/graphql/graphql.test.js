@@ -339,7 +339,6 @@ describe("Create Project API Tests", () => {
       .end((err, res) => {
         if (err) return done(err);
         const { data } = res.body;
-
         assert.notStrictEqual(data?.createNewProject, null || undefined);
         assert.notStrictEqual(data?.createNewProject?._id, null || undefined);
         if (projectId === 0) {

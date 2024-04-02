@@ -314,7 +314,7 @@ const typeDefs = gql`
     getProfileStatistics(userId: Int!): UserStatistics
     deleteSocialMediaAccounts(id: Int!): Boolean
     getProjects(page: Int, limit: Int): [Project]
-    getProject(projectId: Int!): Project
+    getProject(projectId: Int!, page: Int, limit: Int): Project
     searchInProjects(page: Int, limit: Int, word: String!): [Project]
     getTask(taskId: Int!): Task
     getCompany(companyId: Int!): Company
@@ -368,7 +368,7 @@ const typeDefs = gql`
     createNewUser(user: UserInput!): User
     forgetPassword(email: String!): Boolean
     updateUser(userId: Int!, user: UserInput!): User
-    createNewProject(project: ProjectInput!): Project
+    createNewProject(project: ProjectInput!, page: Int, limit: Int): Project
     createProjectRequirement(
       projectId: Int!
       requirement: ProjectRequirementInput!
@@ -411,7 +411,7 @@ const typeDefs = gql`
       companyId: Int!
       company: CompanyInput!
     ): Company
-    updateProject(projectId: Int!, project: ProjectInput!): Project
+    updateProject(projectId: Int!, project: ProjectInput!, page: Int, limit: Int): Project
     createTaskStep(taskStep: TaskStepInput!, taskId: Int!): TaskStep
     replayContactMessage(contactMessageId: Int!, message: String!): Boolean
     updatePositionPost(

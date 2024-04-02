@@ -275,7 +275,6 @@ const resolvers = {
           _id: `${record.get("companies").identity}`,
         }));
       } catch (error) {
-        console.log(error);
         Logging.error(
           `${new Date()}, in resolvers.js => filterMyCompanies, ${error}`
         );
@@ -361,7 +360,6 @@ const resolvers = {
           _id: `${record.get("c").identity}`,
         }));
       } catch (error) {
-        console.log(error);
         Logging.error(
           `${new Date()}, in resolvers.js => filterWorksCompanies, ${error}`
         );
@@ -532,8 +530,17 @@ const resolvers = {
           limit,
           skip
         );
-        return allProjects.toJson();
+
+        return allProjects?.map(async (project) => {
+          const result = await project.toJson();
+          return {
+            ...result,
+            page,
+            limit,
+          };
+        });
       } catch (error) {
+        console.log(error);
         Logging.error(
           `${new Date()}, in resolvers.js => getProjects, ${error}`
         );
@@ -549,7 +556,7 @@ const resolvers = {
      */
     getProject: async (parent, args) => {
       try {
-        const { projectId } = args;
+        const { projectId, page = 0, limit = 6 } = args;
 
         if (!projectId) {
           throw new Error(
@@ -559,7 +566,17 @@ const resolvers = {
 
         const project = await NeodeObject?.findById("Project", projectId);
 
-        return project.toJson();
+        if (!project) {
+          throw new Error("Project not found");
+        }
+
+        const result = await project.toJson();
+
+        return {
+          ...result,
+          page,
+          limit,
+        };
       } catch (error) {
         Logging.error(`${new Date()}, in resolvers.js => getProject, ${error}`);
         throw new Error(`Error in getProject: ${error.message}`);
@@ -595,6 +612,8 @@ const resolvers = {
         return projects?.records?.map((record) => ({
           ...record.get("p").properties,
           _id: `${record.get("p").identity}`,
+          page,
+          limit,
         }));
       } catch (error) {
         Logging.error(
@@ -720,7 +739,8 @@ const resolvers = {
           `MATCH (c:Company) -[:HAS_A_POST]-> (p:PositionPost)
            MATCH (u:User) -[:ADMIN_OF] -> (c1:Company)
            WHERE ID(u) = $userId AND ID(c) <> ID(c1)
-           RETURN p, c`,
+           RETURN p, c
+           SKIP ${page} * ${limit} LIMIT ${limit}`,
           { userId }
         );
 
@@ -728,9 +748,7 @@ const resolvers = {
           throw new Error("Posts not found");
         }
 
-        return posts.records
-          .slice(page * limit, (page + 1) * limit)
-          .map((record) => ({
+        return posts?.records?.map((record) => ({
             ...record.get("p").properties,
             _id: `${record.get("p").identity}`,
           }));
@@ -770,6 +788,7 @@ const resolvers = {
           MATCH (u:User) -[:ADMIN_OF] -> (c1:Company)
           where p.Content CONTAINS $word AND ID(u) = $userId AND ID(c) <> ID(c1)
           return p
+          SKIP ${page} * ${limit} LIMIT ${limit}
           `,
           { word, userId }
         );
@@ -781,9 +800,7 @@ const resolvers = {
           throw new Error("Posts not found");
         }
 
-        return posts.records
-          .slice(page * limit, (page + 1) * limit)
-          .map((record) => ({
+        return posts?.records?.map((record) => ({
             ...record.get("p").properties,
             _id: `${record.get("p").identity}`,
           }));
@@ -815,7 +832,8 @@ const resolvers = {
           `MATCH (c:Company) -[:HAS_A_POST]-> (p:PositionPost)
            MATCH (u:User) -[:ADMIN_OF] -> (c1:Company)
            WHERE ID(u) = $userId AND ID(c) <> ID(c1)
-           RETURN p ORDER BY p.CreatedDate ${isDESC ? "DESC" : "ASC"}`,
+           RETURN p ORDER BY p.CreatedDate ${isDESC ? "DESC" : "ASC"}
+           SKIP ${page} * ${limit} LIMIT ${limit}`,
           { userId }
         );
 
@@ -823,9 +841,7 @@ const resolvers = {
           throw new Error("Posts not found");
         }
 
-        return posts.records
-          .slice(page * limit, (page + 1) * limit)
-          .map((record) => ({
+        return posts?.records?.map((record) => ({
             ...record.get("p").properties,
             _id: `${record.get("p").identity}`,
           }));
@@ -863,13 +879,12 @@ const resolvers = {
           `MATCH (u:User) -[:ADMIN_OF] -> (c:Company)
           MATCH (c:Company) -[:HAS_A_POST]-> (p:PositionPost)
           WHERE ID(u) = $userId AND p.Content CONTAINS $word
-          RETURN p`,
+          RETURN p
+          SKIP ${page} * ${limit} LIMIT ${limit}`,
           { word, userId }
         );
 
-        return posts.records
-          .slice(page * limit, (page + 1) * limit)
-          .map((record) => ({
+        return posts?.records?.map((record) => ({
             ...record.get("p").properties,
             _id: `${record.get("p").identity}`,
           }));
@@ -901,7 +916,8 @@ const resolvers = {
           `MATCH (u:User) -[:ADMIN_OF] -> (c:Company)
           MATCH (c:Company) -[:HAS_A_POST]-> (p:PositionPost)
           WHERE ID(u) = $userId
-          RETURN p ORDER BY p.CreatedDate ${isDESC ? "DESC" : "ASC"}`,
+          RETURN p ORDER BY p.CreatedDate ${isDESC ? "DESC" : "ASC"}
+          SKIP ${page} * ${limit} LIMIT ${limit}`,
           { userId }
         );
 
@@ -909,9 +925,7 @@ const resolvers = {
           throw new Error("Posts not found");
         }
 
-        return posts.records
-          .slice(page * limit, (page + 1) * limit)
-          .map((record) => ({
+        return posts?.records?.map((record) => ({
             ...record.get("p").properties,
             _id: `${record.get("p").identity}`,
           }));
@@ -1571,7 +1585,7 @@ const resolvers = {
      */
     createNewProject: async (parent, args) => {
       try {
-        const { project } = args;
+        const { project, page = 0, limit = 6 } = args;
 
         if (!project) {
           throw new Error(
@@ -1592,7 +1606,13 @@ const resolvers = {
           RETURN project`
         );
 
-        return newProject?.toJson();
+        const result = await newProject?.toJson();
+
+        return {
+          ...result,
+          page,
+          limit,
+        };
       } catch (error) {
         Logging.error(
           `${new Date()}, in resolvers.js => createNewProject, ${error}`
@@ -1956,7 +1976,6 @@ const resolvers = {
 
         return true;
       } catch (error) {
-        console.log(error);
         Logging.error(
           `${new Date()}, in resolvers.js => addUserToTeam, ${error}`
         );
@@ -2454,7 +2473,7 @@ const resolvers = {
      */
     updateProject: async (parent, args) => {
       try {
-        const { projectId, project } = args;
+        const { projectId, project, page = 0, limit = 6 } = args;
 
         if (!projectId) {
           throw new Error(
@@ -2481,6 +2500,8 @@ const resolvers = {
         return {
           ...updatedProject.properties(),
           _id: `${updatedProject?.identity()?.low}`,
+          page,
+          limit,
         };
       } catch (error) {
         Logging.error(
@@ -2879,16 +2900,15 @@ const resolvers = {
         const cypherQuery = `
            MATCH (chat:AIChat)-[:HAS_A]->(messages:AIMessage) 
            WHERE ID(chat) = $chatId 
-           RETURN messages`;
+           RETURN messages
+           SKIP ${page} * ${limit} LIMIT ${limit}`;
         const result = await NeodeObject.cypher(cypherQuery, { chatId });
 
         if (!result) {
           return [];
         }
 
-        return result?.records
-          ?.slice(page * limit, (page + 1) * limit)
-          .map((record) => ({
+        return result?.records?.map((record) => ({
             ...record.get("messages").properties,
             _id: `${record.get("messages").identity().low}`,
           }));
@@ -2911,7 +2931,8 @@ const resolvers = {
         const cypherQuery = `
            MATCH (user:User)-[:ADMIN_OF]->(companies:Company)
            WHERE ID(user) = $userId
-           RETURN companies`;
+           RETURN companies
+           SKIP ${page} * ${limit} LIMIT ${limit}`;
 
         const result = await NeodeObject.cypher(cypherQuery, { userId });
 
@@ -2919,9 +2940,7 @@ const resolvers = {
           return [];
         }
 
-        return result?.records
-          ?.slice(page * limit, (page + 1) * limit)
-          ?.map((record) => ({
+        return result?.records?.map((record) => ({
             ...record.get("companies").properties,
             _id: `${record.get("companies").identity}`,
           }));
@@ -2945,7 +2964,8 @@ const resolvers = {
            MATCH (user:User)-[:IN_TEAM]-> (team:Team)
            Match (companies:Company)-[:HAS_A_TEAM]->(team)
            WHERE ID(user) = $userId
-           RETURN companies`;
+           RETURN companies
+           SKIP ${page} * ${limit} LIMIT ${limit}`;
 
         const result = await NeodeObject.cypher(cypherQuery, { userId });
 
@@ -2953,9 +2973,7 @@ const resolvers = {
           return [];
         }
 
-        return result?.records
-          ?.slice(page * limit, (page + 1) * limit)
-          ?.map((record) => ({
+        return result?.records?.map((record) => ({
             ...record.get("companies").properties,
             _id: `${record.get("companies").identity}`,
           }));
@@ -2978,7 +2996,8 @@ const resolvers = {
         const cypherQuery = `
            MATCH (user:User)-[:HAS_A_SKILL]->(skills:Skill)
            WHERE ID(user) = $userId
-           RETURN skills`;
+           RETURN skills
+           SKIP ${page} * ${limit} LIMIT ${limit}`;
 
         const result = await NeodeObject.cypher(cypherQuery, { userId });
 
@@ -2986,9 +3005,7 @@ const resolvers = {
           return [];
         }
 
-        return result?.records
-          ?.slice(page * limit, (page + 1) * limit)
-          ?.map((record) => ({
+        return result?.records?.map((record) => ({
             ...record.get("skills").properties,
             _id: `${record.get("skills").identity}`,
           }));
@@ -3009,13 +3026,12 @@ const resolvers = {
         const cypherQuery = `
            MATCH (user:User)-[:HAS_A_SOCIAL_MEDIA]->(accounts:SocialMediaLink)
            WHERE ID(user) = $userId
-           RETURN accounts`;
+           RETURN accounts
+           SKIP ${page} * ${limit} LIMIT ${limit}`;
 
         const result = await NeodeObject.cypher(cypherQuery, { userId });
 
-        return result?.records
-          ?.slice(page * limit, (page + 1) * limit)
-          ?.map((record) => ({
+        return result?.records?.map((record) => ({
             ...record.get("accounts").properties,
             _id: record.get("accounts").identity.low,
           }));
@@ -3036,13 +3052,12 @@ const resolvers = {
         const cypherQuery = `
            MATCH (user:User)-[:HAS_A_TASK]->(tasks:Task)
            WHERE ID(user) = $userId
-           RETURN tasks`;
+           RETURN tasks
+           SKIP ${page} * ${limit} LIMIT ${limit}`;
 
         const result = await NeodeObject.cypher(cypherQuery, { userId });
 
-        return result?.records
-          ?.slice(page * limit, (page + 1) * limit)
-          ?.map((record) => ({
+        return result?.records?.map((record) => ({
             ...record.get("tasks").properties,
             Priority: record.get("tasks")?.properties?.Priority,
             _id: record.get("tasks").identity.low,
@@ -3090,13 +3105,12 @@ const resolvers = {
         const cypherQuery = `
            MATCH (user:User)-[:CHAT_WITH_AI]->(chats:AIChat)
            WHERE ID(user) = $userId
-           RETURN chats`;
+           RETURN chats
+           SKIP ${page} * ${limit} LIMIT ${limit}`;
 
         const result = await NeodeObject.cypher(cypherQuery, { userId });
 
-        return result?.records
-          ?.slice(page * limit, (page + 1) * limit)
-          ?.map((record) => ({
+        return result?.records?.map((record) => ({
             ...record.get("chats").properties,
             _id: record.get("chats").identity.low,
             page,
@@ -3110,6 +3124,7 @@ const resolvers = {
     CreatedTasks: async (parent) => {
       try {
         const userId = parent._id;
+        const { page, limit } = parent;
 
         if (!userId) {
           throw new Error("UserID is null");
@@ -3118,7 +3133,8 @@ const resolvers = {
         const cypherQuery = `
            MATCH (user:User)-[:CREATE_TASK]->(tasks:Task)
            WHERE ID(user) = $userId
-           RETURN tasks`;
+           RETURN tasks
+           SKIP ${page} * ${limit} LIMIT ${limit}`;
 
         const result = await NeodeObject.cypher(cypherQuery, { userId });
 
@@ -3146,13 +3162,12 @@ const resolvers = {
         const cypherQuery = `
            MATCH (user:User)-[:APPLY_TO]->(posts:PositionPost)
            WHERE ID(user) = $userId
-           RETURN posts`;
+           RETURN posts
+           SKIP ${page} * ${limit} LIMIT ${limit}`;
 
         const result = await NeodeObject.cypher(cypherQuery, { userId });
 
-        return result?.records
-          ?.slice(page * limit, (page + 1) * limit)
-          ?.map((record) => ({
+        return result?.records?.map((record) => ({
             ...record.get("posts").properties,
             _id: record.get("posts")?.identity.low,
           }));
@@ -3216,6 +3231,7 @@ const resolvers = {
     Applies: async (parent) => {
       try {
         const projectId = parent._id;
+        const { page, limit } = parent;
 
         if (!projectId) {
           throw new Error(`ProjectID is ${projectId}`);
@@ -3224,7 +3240,8 @@ const resolvers = {
         const cypherQuery = `
            MATCH (companies:Company)-[:TAKE_A_PROJECT]->(project:Project)
            WHERE ID(project) = ${projectId}
-           RETURN companies`;
+           RETURN companies
+           SKIP ${page} * ${limit} LIMIT ${limit}`;
 
         const result = await NeodeObject.cypher(cypherQuery);
 
@@ -3351,13 +3368,6 @@ const resolvers = {
 
         const result = await NeodeObject.cypher(cypherQuery);
 
-        console.log(
-          result?.records?.map((record) => ({
-            ...record.get("p").properties,
-            _id: record.get("p").identity.low,
-          }))
-        );
-
         return {
           ...result?.records[0].get("p").properties,
           _id: result?.records[0].get("p").identity.low,
@@ -3381,13 +3391,12 @@ const resolvers = {
         const cypherQuery = `
            MATCH (chat:Chat)-[:HAS_A]->(messages:Message)
            WHERE ID(chat) = $chatId
-           RETURN messages`;
+           RETURN messages
+           SKIP ${page} * ${limit} LIMIT ${limit}`;
 
         const result = await NeodeObject.cypher(cypherQuery, { chatId });
 
-        return result?.records
-          ?.slice(page * limit, (page + 1) * limit)
-          ?.map((record) => ({
+        return result?.records?.map((record) => ({
             ...record.get("messages").properties,
             userId: record.get("messages")?.properties?.userId?.low,
             _id: record.get("messages").identity().low,
@@ -3437,8 +3446,6 @@ const resolvers = {
            MATCH (task:Task)-[:HAS_A]->(taskSteps:TaskStep)
            WHERE ID(task) = ${taskId}
            RETURN taskSteps`;
-
-        console.log(cypherQuery);
 
         const result = await NeodeObject.cypher(cypherQuery);
 
