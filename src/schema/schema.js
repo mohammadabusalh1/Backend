@@ -329,7 +329,7 @@ const typeDefs = gql`
     getAllPostsSortedByDate(
       page: Int
       limit: Int
-      isDESC: Boolean!
+      isDESC: Boolean
       userId: Int!
     ): [PositionPost]
     searchInMyPosts(
@@ -341,7 +341,7 @@ const typeDefs = gql`
     getAllMyPostsSortedByDate(
       page: Int
       limit: Int
-      isDESC: Boolean!
+      isDESC: Boolean
       userId: Int!
     ): [PositionPost]
     getTeam(teamId: Int!): Team
@@ -354,6 +354,8 @@ const typeDefs = gql`
     deleteTaskStep(taskStepId: Int!): Boolean
     deleteCompanyComment(commentId: Int!): Boolean
     deleteProjectRequirement(projectRequirementId: Int!): Boolean
+    deleteProjectNote(projectNoteId: Int!): Boolean
+    deleteProjectNoteTask(projectNoteTaskId: Int!): Boolean
   }
 
   type Mutation {

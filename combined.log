@@ -197,3 +197,144 @@
 {"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
 {"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
 {"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"error","message":"Tue Apr 02 2024 12:29:56 GMT+0200 (Eastern European Standard Time), in resolvers.js => addUserToTeam, Error: Are you send userId? userId is required, userId value is 0. please check userId value before send","service":"user-service"}
+{"level":"error","message":"Tue Apr 02 2024 12:29:56 GMT+0200 (Eastern European Standard Time), in resolvers.js => createNewSocialMediaLink, Error: Are you send userId? userId is required, userId value is 0. please check userId value before send","service":"user-service"}
+{"level":"error","message":"Tue Apr 02 2024 12:29:56 GMT+0200 (Eastern European Standard Time), in resolvers.js => createTaskForUser, Error: Are you send userId? userId is required, userId value is 0. please check userId value before send","service":"user-service"}
+{"level":"error","message":"Tue Apr 02 2024 12:29:56 GMT+0200 (Eastern European Standard Time), in resolvers.js => createTaskForTeam, Error: Are you send userId? userId is required, userId value is 0. please check userId value before send","service":"user-service"}
+{"level":"error","message":"Tue Apr 02 2024 12:29:56 GMT+0200 (Eastern European Standard Time), in resolvers.js => createTaskStep, Error: Are you send taskId? taskId is required, taskId value is 0. please check taskId value before send","service":"user-service"}
+{"level":"error","message":"Tue Apr 02 2024 12:29:56 GMT+0200 (Eastern European Standard Time), in resolvers.js => createEducation, Error: Are you send userId? userId is required, userId value is 0. please check userId value before send","service":"user-service"}
+{"level":"error","message":"Tue Apr 02 2024 12:29:56 GMT+0200 (Eastern European Standard Time), in resolvers.js => applyToPost, Error: Are you send userId? userId is required, userId value is 0. please check userId value before send","service":"user-service"}
+{"level":"error","message":"Tue Apr 02 2024 12:29:56 GMT+0200 (Eastern European Standard Time), in resolvers.js => filterMyCompanies, Error: Are you send userId? userId is required, userId value is 0. please check userId value before send","service":"user-service"}
+{"level":"error","message":"Tue Apr 02 2024 12:29:56 GMT+0200 (Eastern European Standard Time), in resolvers.js => searchInMyCompanies, Error: Are you send userId? userId is required, userId value is 0. please check userId value before send","service":"user-service"}
+{"level":"error","message":"Tue Apr 02 2024 12:29:56 GMT+0200 (Eastern European Standard Time), in resolvers.js => filterWorksCompanies, Error: Are you send userId? userId is required, userId value is 0. please check userId value before send","service":"user-service"}
+{"level":"error","message":"Tue Apr 02 2024 12:29:56 GMT+0200 (Eastern European Standard Time), in resolvers.js => searchInWorksCompanies, Error: Are you send userId? userId is required, userId value is 0. please check userId value before send","service":"user-service"}
+{"level":"error","message":"Tue Apr 02 2024 12:29:56 GMT+0200 (Eastern European Standard Time), in resolvers.js => getProfileStatistics, Error: Are you send userId? userId is required, userId value is 0. please check userId value before send","service":"user-service"}
+{"level":"error","message":"Tue Apr 02 2024 12:29:56 GMT+0200 (Eastern European Standard Time), in resolvers.js => getUser, Error: Are you send userId? UserID is required, userId value is 0. please check userId value before send","service":"user-service"}
+{"level":"error","message":"Tue Apr 02 2024 12:29:57 GMT+0200 (Eastern European Standard Time), in resolvers.js => getAllPosts, Error: Are you send userId? userId is required, userId value is 0. please check userId value before send","service":"user-service"}
+{"level":"error","message":"Tue Apr 02 2024 12:29:57 GMT+0200 (Eastern European Standard Time), in resolvers.js => searchInPositionPosts, Error: Are you send userId? userId is required, userId value is 0. please check userId value before send","service":"user-service"}
+{"level":"error","message":"Tue Apr 02 2024 12:29:57 GMT+0200 (Eastern European Standard Time), in resolvers.js => searchInMyPosts, Error: Are you send userId? userId is required, userId value is 0. please check userId value before send","service":"user-service"}
+{"level":"error","message":"Tue Apr 02 2024 12:29:57 GMT+0200 (Eastern European Standard Time), in resolvers.js => updateUser, Error: UserID is required","service":"user-service"}
+{"level":"error","message":"Tue Apr 02 2024 12:29:57 GMT+0200 (Eastern European Standard Time), in resolvers.js => updateTaskStep, Error: Are you send taskStepId? taskStepId is required, taskStepId value is 0. please check taskStepId value before send","service":"user-service"}
+{"level":"error","message":"Tue Apr 02 2024 12:29:57 GMT+0200 (Eastern European Standard Time), in resolvers.js => updateEducation, Error: Are you send educationId? educationId is required, educationId value is 0. please check educationId value before send","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"error","message":"Tue Apr 02 2024 12:40:22 GMT+0200 (Eastern European Standard Time), in resolvers.js => deleteEducation, Error: Are you send educationId? educationId is required, educationId value is 233. please check educationId value before send","service":"user-service"}
+{"level":"error","message":"Tue Apr 02 2024 12:40:23 GMT+0200 (Eastern European Standard Time), in resolvers.js => deletePost, TypeError: Cannot read properties of undefined (reading 'find')","service":"user-service"}
+{"level":"error","message":"Tue Apr 02 2024 12:40:24 GMT+0200 (Eastern European Standard Time), in resolvers.js => deleteUser, Error: Are you send userId? userId is required, userId value is 214. please check userId value before send","service":"user-service"}
+{"level":"error","message":"Tue Apr 02 2024 12:40:24 GMT+0200 (Eastern European Standard Time), in resolvers.js => deleteTask, Error: Are you send taskId? taskId is required, taskId value is 229. please check taskId value before send","service":"user-service"}
+{"level":"error","message":"Tue Apr 02 2024 12:40:24 GMT+0200 (Eastern European Standard Time), in resolvers.js => deleteTaskStep, Error: Are you send taskStepId? taskStepId is required, taskStepId value is 231. please check taskStepId value before send","service":"user-service"}
+{"level":"error","message":"Tue Apr 02 2024 12:41:24 GMT+0200 (Eastern European Standard Time), in resolvers.js => deleteEducation, Error: Are you send educationId? educationId is required, educationId value is 233. please check educationId value before send","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"error","message":"Tue Apr 02 2024 12:41:59 GMT+0200 (Eastern European Standard Time), in resolvers.js => deleteEducation, Error: Are you send educationId? educationId is required, educationId value is 233. please check educationId value before send","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"error","message":"Tue Apr 02 2024 12:42:26 GMT+0200 (Eastern European Standard Time), in resolvers.js => deleteEducation, Error: Education not found with educationId: 233","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"error","message":"Tue Apr 02 2024 12:43:33 GMT+0200 (Eastern European Standard Time), in resolvers.js => deletePost, TypeError: Cannot read properties of undefined (reading 'findById')","service":"user-service"}
+{"level":"error","message":"Tue Apr 02 2024 12:44:27 GMT+0200 (Eastern European Standard Time), in resolvers.js => deletePost, TypeError: Cannot read properties of undefined (reading 'findById')","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"error","message":"Tue Apr 02 2024 12:44:58 GMT+0200 (Eastern European Standard Time), in resolvers.js => deletePost, TypeError: Cannot read properties of undefined (reading 'findById')","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"error","message":"Tue Apr 02 2024 12:45:06 GMT+0200 (Eastern European Standard Time), in resolvers.js => deletePost, TypeError: Cannot read properties of undefined (reading 'findById')","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"error","message":"Tue Apr 02 2024 12:45:39 GMT+0200 (Eastern European Standard Time), in resolvers.js => deletePost, TypeError: Cannot read properties of undefined (reading 'findById')","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"error","message":"Tue Apr 02 2024 12:45:58 GMT+0200 (Eastern European Standard Time), in resolvers.js => deletePost, TypeError: Cannot read properties of undefined (reading 'findById')","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"error","message":"Tue Apr 02 2024 12:49:42 GMT+0200 (Eastern European Standard Time), in resolvers.js => deleteCompanyComment, TypeError: Cannot read properties of undefined (reading 'findById')","service":"user-service"}
+{"level":"error","message":"Tue Apr 02 2024 12:50:25 GMT+0200 (Eastern European Standard Time), in resolvers.js => deleteCompanyComment, TypeError: Cannot read properties of undefined (reading 'findById')","service":"user-service"}
+{"level":"error","message":"Tue Apr 02 2024 12:50:53 GMT+0200 (Eastern European Standard Time), in resolvers.js => deleteCompanyComment, TypeError: Cannot read properties of undefined (reading 'findById')","service":"user-service"}
+{"level":"error","message":"Tue Apr 02 2024 12:51:08 GMT+0200 (Eastern European Standard Time), in resolvers.js => deleteCompanyComment, TypeError: Cannot read properties of undefined (reading 'findById')","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"error","message":"Tue Apr 02 2024 13:05:59 GMT+0200 (Eastern European Standard Time), in resolvers.js => deleteTaskStep, Error: Are you send taskStepId? taskStepId is required, taskStepId value is 0. please check taskStepId value before send","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"error","message":"Tue Apr 02 2024 13:07:10 GMT+0200 (Eastern European Standard Time), in resolvers.js => deleteTaskStep, Error: Are you send taskStepId? taskStepId is required, taskStepId value is 0. please check taskStepId value before send","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"error","message":"Tue Apr 02 2024 13:14:05 GMT+0200 (Eastern European Standard Time), in resolvers.js => createCompanyComment, Error: Are you send companyId? companyId is required, companyId value is 0. please check companyId value before send","service":"user-service"}
+{"level":"error","message":"Tue Apr 02 2024 13:14:05 GMT+0200 (Eastern European Standard Time), in resolvers.js => applyForProject, Error: Are you send companyId? companyId is required, companyId value is 0. please check companyId value before send","service":"user-service"}
+{"level":"error","message":"Tue Apr 02 2024 13:14:05 GMT+0200 (Eastern European Standard Time), in resolvers.js => addUserToTeam, TypeError: Cannot read properties of undefined (reading 'get')","service":"user-service"}
+{"level":"error","message":"Tue Apr 02 2024 13:14:06 GMT+0200 (Eastern European Standard Time), in resolvers.js => createTaskForUser, Error: Are you send companyId? companyId is required, companyId value is 0. please check companyId value before send","service":"user-service"}
+{"level":"error","message":"Tue Apr 02 2024 13:14:06 GMT+0200 (Eastern European Standard Time), in resolvers.js => getCompany, Error: Are you send companyId? companyId is required, companyId value is 0. please check companyId value before send","service":"user-service"}
+{"level":"error","message":"Tue Apr 02 2024 13:14:06 GMT+0200 (Eastern European Standard Time), in resolvers.js => updateTaskStep, Error: Are you send taskStepId? taskStepId is required, taskStepId value is 0. please check taskStepId value before send","service":"user-service"}
+{"level":"error","message":"Tue Apr 02 2024 13:14:06 GMT+0200 (Eastern European Standard Time), in resolvers.js => updateCompany, Error: Are you send companyId? companyId is required, companyId value is 0. please check companyId value before send","service":"user-service"}
+{"level":"error","message":"Tue Apr 02 2024 13:14:06 GMT+0200 (Eastern European Standard Time), in resolvers.js => deleteCompany, Error: Are you send companyId? companyId is required, companyId value is 0. please check companyId value before send","service":"user-service"}
+{"level":"error","message":"Tue Apr 02 2024 13:14:06 GMT+0200 (Eastern European Standard Time), in resolvers.js => deleteTaskStep, Error: Are you send taskStepId? taskStepId is required, taskStepId value is 0. please check taskStepId value before send","service":"user-service"}
+{"level":"error","message":"Tue Apr 02 2024 13:14:06 GMT+0200 (Eastern European Standard Time), in resolvers.js => deleteCompanyComment, Error: Are you send commentId? commentId is required, commentId value is 0. please check commentId value before send","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"error","message":"Tue Apr 02 2024 13:47:18 GMT+0200 (Eastern European Standard Time), in resolvers.js => getProjects, TypeError: Cannot convert undefined or null to object","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"error","message":"Tue Apr 02 2024 13:55:25 GMT+0200 (Eastern European Standard Time), in resolvers.js => getProjects, TypeError: Cannot convert undefined or null to object","service":"user-service"}
+{"level":"error","message":"Tue Apr 02 2024 13:55:40 GMT+0200 (Eastern European Standard Time), in resolvers.js => getProjects, TypeError: Cannot convert undefined or null to object","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"error","message":"Tue Apr 02 2024 13:58:11 GMT+0200 (Eastern European Standard Time), in resolvers.js => getProjects, TypeError: Cannot convert undefined or null to object","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"error","message":"Tue Apr 02 2024 13:59:09 GMT+0200 (Eastern European Standard Time), in resolvers.js => getProjects, TypeError: Cannot convert undefined or null to object","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"error","message":"Tue Apr 02 2024 14:01:10 GMT+0200 (Eastern European Standard Time), in resolvers.js => getProjects, Neo4jError: Invalid input '1': expected\r\n  \"!=\"\r\n  \"%\"\r\n  \"*\"\r\n  \"+\"\r\n  \",\"\r\n  \"-\"\r\n  \"/\"\r\n  \"::\"\r\n  \"<\"\r\n  \"<=\"\r\n  \"<>\"\r\n  \"=\"\r\n  \"=~\"\r\n  \">\"\r\n  \">=\"\r\n  \"AND\"\r\n  \"CALL\"\r\n  \"CONTAINS\"\r\n  \"CREATE\"\r\n  \"DELETE\"\r\n  \"DETACH\"\r\n  \"ENDS\"\r\n  \"FOREACH\"\r\n  \"IN\"\r\n  \"IS\"\r\n  \"LIMIT\"\r\n  \"LOAD\"\r\n  \"MATCH\"\r\n  \"MERGE\"\r\n  \"OPTIONAL\"\r\n  \"OR\"\r\n  \"REMOVE\"\r\n  \"RETURN\"\r\n  \"SET\"\r\n  \"SKIP\"\r\n  \"STARTS\"\r\n  \"UNION\"\r\n  \"UNWIND\"\r\n  \"USE\"\r\n  \"WITH\"\r\n  \"XOR\"\r\n  \"^\"\r\n  <ASC>\r\n  <DESC>\r\n  <EOF> (line 49, column 7 (offset: 2026))\r\n\"LIMIT 1\"\r\n       ^","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"error","message":"Tue Apr 02 2024 14:01:33 GMT+0200 (Eastern European Standard Time), in resolvers.js => getProjects, Neo4jError: Invalid input '1': expected\r\n  \"!=\"\r\n  \"%\"\r\n  \"*\"\r\n  \"+\"\r\n  \",\"\r\n  \"-\"\r\n  \"/\"\r\n  \"::\"\r\n  \"<\"\r\n  \"<=\"\r\n  \"<>\"\r\n  \"=\"\r\n  \"=~\"\r\n  \">\"\r\n  \">=\"\r\n  \"AND\"\r\n  \"CALL\"\r\n  \"CONTAINS\"\r\n  \"CREATE\"\r\n  \"DELETE\"\r\n  \"DETACH\"\r\n  \"ENDS\"\r\n  \"FOREACH\"\r\n  \"IN\"\r\n  \"IS\"\r\n  \"LIMIT\"\r\n  \"LOAD\"\r\n  \"MATCH\"\r\n  \"MERGE\"\r\n  \"OPTIONAL\"\r\n  \"OR\"\r\n  \"REMOVE\"\r\n  \"RETURN\"\r\n  \"SET\"\r\n  \"SKIP\"\r\n  \"STARTS\"\r\n  \"UNION\"\r\n  \"UNWIND\"\r\n  \"USE\"\r\n  \"WITH\"\r\n  \"XOR\"\r\n  \"^\"\r\n  <ASC>\r\n  <DESC>\r\n  <EOF> (line 49, column 7 (offset: 2026))\r\n\"LIMIT 1\"\r\n       ^","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}

@@ -18,9 +18,13 @@ let userCreateTaskId = 0;
 let taskId = 0;
 let teamTaskId = 0;
 let taskStepId = 0;
+let teamTaskStepId = 0;
 let postId = 0;
 let accountId = 0;
 let educationId = 0;
+let commentId = 0;
+let projectRequirementId = 0;
+let projectNoteTaskId = 0;
 const message = "can tell me about this project?";
 const company = {
   CompanyName: "Test Company",
@@ -385,6 +389,9 @@ describe("Create Project Requirement API Test", () => {
           data?.createProjectRequirement?._id,
           null || undefined
         );
+        if (projectRequirementId === 0) {
+          projectRequirementId = data?.createProjectRequirement?._id;
+        }
         assert.strictEqual(
           data?.createProjectRequirement?.Value,
           projectRequirement?.Value
@@ -549,7 +556,14 @@ describe("Create Company Comment API Tests", () => {
         if (err) return done(err);
 
         const { data } = res.body;
-        assert.ok(data.createCompanyComment._id);
+        assert.notStrictEqual(data?.createCompanyComment, null || undefined);
+        assert.notStrictEqual(
+          data?.createCompanyComment?._id,
+          null || undefined
+        );
+        if (commentId === 0) {
+          commentId = data?.createCompanyComment?._id;
+        }
         assert.strictEqual(data.createCompanyComment.Value, commentInput.Value);
         assert.strictEqual(
           data.createCompanyComment.CreatedDate,
@@ -822,6 +836,9 @@ describe("Create Project Note Task API Tests", () => {
           data?.createProjectNoteTask?._id,
           null || undefined
         );
+        if (projectNoteTaskId === 0) {
+          projectNoteTaskId = data?.createProjectNoteTask?._id;
+        }
         assert.strictEqual(
           data?.createProjectNoteTask?.Title,
           projectNoteTaskInput.Title
@@ -1067,8 +1084,8 @@ describe("Create Team Task Step API Tests", () => {
         assert.notStrictEqual(data.createTaskStep, null || undefined);
         assert.notStrictEqual(data.createTaskStep._id, null || undefined);
 
-        if (taskStepId === 0) {
-          taskStepId = data.createTaskStep._id;
+        if (teamTaskStepId === 0) {
+          teamTaskStepId = data.createTaskStep._id;
         }
 
         assert.strictEqual(
@@ -1352,8 +1369,6 @@ describe("getProfileStatistics API Test", () => {
       }
     }`;
 
-    console.log(query);
-
     request(app)
       .post("/graphql")
       .send({ query })
@@ -1362,7 +1377,6 @@ describe("getProfileStatistics API Test", () => {
         if (err) return done(err);
 
         const { data } = res.body;
-        console.log(data);
         assert.notStrictEqual(data?.getProfileStatistics, null || undefined);
         assert.strictEqual(data?.getProfileStatistics.NumberOfProjects, 1);
         assert.strictEqual(data?.getProfileStatistics.NumberOfTeams, 1);
@@ -2152,10 +2166,7 @@ describe("get company by id", () => {
           data?.getCompany?.Teams[0]?.Tasks[0]?.Steps[0]?.Number,
           taskStepInput.Number
         );
-        assert.strictEqual(
-          data?.getCompany?.Teams[0]?.Members[0]._id,
-          userId
-        );
+        assert.strictEqual(data?.getCompany?.Teams[0]?.Members[0]._id, userId);
         assert.notStrictEqual(data?.getCompany?.Project, null || undefined);
         assert.notStrictEqual(
           data?.getCompany?.Project?._id,
@@ -2353,7 +2364,7 @@ describe("searchInMyPosts API Tests", () => {
   it("Should search in my posts", (done) => {
     const query = `
     query{
-      searchInMyPosts(word: "${positionPostInput.Content}", userId: ${userId}) {
+      searchInMyPosts(word: "${positionPostInput.Content}", userId: ${userCreateTaskId}) {
         _id
         Content
         CreatedDate
@@ -2387,7 +2398,7 @@ describe("getAllMyPostsSortedByDate API Tests", () => {
   it("Should get all my posts sorted by date", (done) => {
     const query = `
     query{
-      getAllMyPostsSortedByDate(userId: ${userId}) {
+      getAllMyPostsSortedByDate(userId: ${userCreateTaskId}) {
         _id
         Content
         CreatedDate
@@ -2792,275 +2803,401 @@ describe("Update Team API Tests", () => {
   });
 });
 
-// describe("delete AI Chat API Tests (create)", () => {
-//   it("Should delete an AI chat with valid chat ID", (done) => {
-//     const query = `
-//     query {
-//         deleteAIChat(AIchatId: ${AIchatId})
-//       }
-//     `;
+describe("delete AI Chat API Tests (create)", () => {
+  it("Should delete an AI chat with valid chat ID", (done) => {
+    const query = `
+    query {
+        deleteAIChat(AIchatId: ${AIchatId})
+      }
+    `;
 
-//     request(app)
-//       .post("/graphql")
-//       .send({ query })
-//       .expect(200)
-//       .end((err, res) => {
-//         if (err) return done(err);
-//         const { data } = res.body;
-//         assert.strictEqual(data?.deleteAIChat, true);
-//         done();
-//       });
-//   });
-// });
+    request(app)
+      .post("/graphql")
+      .send({ query })
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        const { data } = res.body;
+        assert.strictEqual(data?.deleteAIChat, true);
+        done();
+      });
+  });
+});
 
-// describe("delete team", () => {
-//   it("Should delete team", (done) => {
-//     const query = `
-//     query{
-//       deleteTeam(teamId: ${teamId})
-//     }
-//         `;
+describe("delete team", () => {
+  it("Should delete team", (done) => {
+    const query = `
+    query{
+      deleteTeam(teamId: ${teamId})
+    }
+        `;
 
-//     request(app)
-//       .post("/graphql")
-//       .send({ query, variables: { userId } })
-//       .expect(200)
-//       .end((err, res) => {
-//         if (err) return done(err);
-//         const { data } = res.body;
-//         assert.equal(data.deleteTeam, true);
-//         done();
-//       });
-//   });
-// });
+    request(app)
+      .post("/graphql")
+      .send({ query, variables: { userId } })
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        const { data } = res.body;
+        assert.equal(data.deleteTeam, true);
+        done();
+      });
+  });
+});
 
-// describe("delete company", () => {
-//   it("Should delete company", (done) => {
-//     const query = `
-//     query{
-//       deleteCompany(companyId: ${companyId})
-//         }
-//         `;
+describe("delete company", () => {
+  it("Should delete company", (done) => {
+    const query = `
+    query{
+      deleteCompany(companyId: ${companyId})
+        }
+        `;
 
-//     request(app)
-//       .post("/graphql")
-//       .send({ query, variables: { userId } })
-//       .expect(200)
-//       .end((err, res) => {
-//         if (err) return done(err);
-//         const { data } = res.body;
-//         assert.equal(data.deleteCompany, true);
-//         done();
-//       });
-//   });
-// });
+    request(app)
+      .post("/graphql")
+      .send({ query, variables: { userId } })
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        const { data } = res.body;
+        assert.equal(data.deleteCompany, true);
+        done();
+      });
+  });
+});
 
-// describe("delete skill", () => {
-//   it("Should delete skill", (done) => {
-//     const query = `
-//     query{
-//       deleteSkill(skillId: ${skillId})
-//         }
-//         `;
+describe("delete company", () => {
+  it("Should delete company", (done) => {
+    const query = `
+    query{
+      deleteCompany(companyId: ${myCompany})
+        }
+        `;
 
-//     request(app)
-//       .post("/graphql")
-//       .send({ query, variables: { userId } })
-//       .expect(200)
-//       .end((err, res) => {
-//         if (err) return done(err);
-//         const { data } = res.body;
-//         assert.equal(data.deleteSkill, true);
-//         done();
-//       });
-//   });
-// });
+    request(app)
+      .post("/graphql")
+      .send({ query, variables: { userId } })
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        const { data } = res.body;
+        assert.equal(data.deleteCompany, true);
+        done();
+      });
+  });
+});
 
-// describe("delete Account", () => {
-//   it("Should delete Account", (done) => {
-//     const query = `
-//     query{
-//       deleteSocialMediaAccounts(id: ${accountId})
-//         }
-//         `;
+describe("delete skill", () => {
+  it("Should delete skill", (done) => {
+    const query = `
+    query{
+      deleteSkill(skillId: ${skillId})
+        }
+        `;
 
-//     request(app)
-//       .post("/graphql")
-//       .send({ query })
-//       .expect(200)
-//       .end((err, res) => {
-//         if (err) return done(err);
-//         const { data } = res.body;
-//         assert.equal(data.deleteSocialMediaAccounts, true);
-//         done();
-//       });
-//   });
-// });
+    request(app)
+      .post("/graphql")
+      .send({ query, variables: { userId } })
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        const { data } = res.body;
+        assert.equal(data.deleteSkill, true);
+        done();
+      });
+  });
+});
 
-// describe("delete Education API Tests", () => {
-//   it("Should delete an education with valid input data", (done) => {
-//     const query = `
-//     query {
-//           deleteEducation(educationId: ${educationId})
-//         }
-//       `;
+describe("delete Account", () => {
+  it("Should delete Account", (done) => {
+    const query = `
+    query{
+      deleteSocialMediaAccounts(id: ${accountId})
+        }
+        `;
 
-//     request(app)
-//       .post("/graphql")
-//       .send({ query })
-//       .expect(200)
-//       .end((err, res) => {
-//         if (err) return done(err);
-//         const { data } = res.body;
-//         assert.strictEqual(data?.deleteEducation, true);
-//         done();
-//       });
-//   });
-// });
+    request(app)
+      .post("/graphql")
+      .send({ query })
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        const { data } = res.body;
+        assert.equal(data.deleteSocialMediaAccounts, true);
+        done();
+      });
+  });
+});
 
-// describe("deleteUserFromTeam API Tests", () => {
-//   it("Should delete user from team with valid input data", (done) => {
-//     const query = `
-//     query {
-//           deleteUserFromTeam(userId: ${userId}, teamId: ${teamId})
-//         }
-//       `;
+describe("delete Education API Tests", () => {
+  it("Should delete an education with valid input data", (done) => {
+    const query = `
+    query {
+          deleteEducation(educationId: ${educationId})
+        }
+      `;
 
-//     request(app)
-//       .post("/graphql")
-//       .send({ query })
-//       .expect(200)
-//       .end((err, res) => {
-//         if (err) return done(err);
-//         const { data } = res.body;
-//         assert.strictEqual(data?.deleteUserFromTeam, true);
-//         done();
-//       });
-//   });
-// });
+    request(app)
+      .post("/graphql")
+      .send({ query })
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        const { data } = res.body;
+        assert.strictEqual(data?.deleteEducation, true);
+        done();
+      });
+  });
+});
 
-// describe("deletePost API Tests", () => {
-//   it("Should delete a post with valid input data", (done) => {
-//     const query = `
-//     query {
-//           deletePost(postId: ${postId})
-//         }
-//       `;
+describe("deleteUserFromTeam API Tests", () => {
+  it("Should delete user from team with valid input data", (done) => {
+    const query = `
+    query {
+          deleteUserFromTeam(userId: ${userId}, teamId: ${teamId})
+        }
+      `;
 
-//     request(app)
-//       .post("/graphql")
-//       .send({ query })
-//       .expect(200)
-//       .end((err, res) => {
-//         if (err) return done(err);
-//         const { data } = res.body;
-//         assert.strictEqual(data?.deletePost, true);
-//         done();
-//       });
-//   });
-// });
+    request(app)
+      .post("/graphql")
+      .send({ query })
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        const { data } = res.body;
+        assert.strictEqual(data?.deleteUserFromTeam, true);
+        done();
+      });
+  });
+});
 
-// describe("deleteUser API Tests", () => {
-//   it("Should delete a user with valid input data", (done) => {
-//     const query = `
-//     query {
-//           deleteUser(userId: ${userId})
-//         }
-//       `;
+describe("deletePost API Tests", () => {
+  it("Should delete a post with valid input data", (done) => {
+    const query = `
+    query {
+          deletePost(postId: ${postId})
+        }
+      `;
 
-//     request(app)
-//       .post("/graphql")
-//       .send({ query })
-//       .expect(200)
-//       .end((err, res) => {
-//         if (err) return done(err);
-//         const { data } = res.body;
-//         assert.strictEqual(data?.deleteUser, true);
-//         done();
-//       });
-//   });
-// });
+    request(app)
+      .post("/graphql")
+      .send({ query })
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        const { data } = res.body;
+        assert.strictEqual(data?.deletePost, true);
+        done();
+      });
+  });
+});
 
-// describe("deleteTask API Tests", () => {
-//   it("Should delete a task with valid input data", (done) => {
-//     const query = `
-//     query {
-//           deleteTask(taskId: ${taskId})
-//         }
-//       `;
+describe("deleteUser API Tests", () => {
+  it("Should delete a user with valid input data", (done) => {
+    const query = `
+    query {
+          deleteUser(userId: ${userId})
+        }
+      `;
 
-//     request(app)
-//       .post("/graphql")
-//       .send({ query })
-//       .expect(200)
-//       .end((err, res) => {
-//         if (err) return done(err);
-//         const { data } = res.body;
-//         assert.strictEqual(data?.deleteTask, true);
-//         done();
-//       });
-//   });
-// });
+    request(app)
+      .post("/graphql")
+      .send({ query })
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        const { data } = res.body;
+        assert.strictEqual(data?.deleteUser, true);
+        done();
+      });
+  });
+});
 
-// describe("deleteTaskStep API Tests", () => {
-//   it("Should delete a task step with valid input data", (done) => {
-//     const query = `
-//     query {
-//           deleteTaskStep(taskStepId: ${taskStepId})
-//         }
-//       `;
+describe("deleteUser API Tests", () => {
+  it("Should delete a user with valid input data", (done) => {
+    const query = `
+    query {
+          deleteUser(userId: ${userCreateTaskId})
+        }
+      `;
 
-//     request(app)
-//       .post("/graphql")
-//       .send({ query })
-//       .expect(200)
-//       .end((err, res) => {
-//         if (err) return done(err);
-//         const { data } = res.body;
-//         assert.strictEqual(data?.deleteTaskStep, true);
-//         done();
-//       });
-//   });
-// });
+    request(app)
+      .post("/graphql")
+      .send({ query })
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        const { data } = res.body;
+        assert.strictEqual(data?.deleteUser, true);
+        done();
+      });
+  });
+});
 
-// describe("deleteCompanyComment API Tests", () => {
-//   it("Should delete a company comment with valid input data", (done) => {
-//     const query = `
-//     query {
-//           deleteCompanyComment(commentId: ${commentId})
-//         }
-//       `;
+describe("deleteTask API Tests", () => {
+  it("Should delete a task with valid input data", (done) => {
+    const query = `
+    query {
+          deleteTask(taskId: ${taskId})
+        }
+      `;
 
-//     request(app)
-//       .post("/graphql")
-//       .send({ query })
-//       .expect(200)
-//       .end((err, res) => {
-//         if (err) return done(err);
-//         const { data } = res.body;
-//         assert.strictEqual(data?.deleteCompanyComment, true);
-//         done();
-//       });
-//   });
-// });
+    request(app)
+      .post("/graphql")
+      .send({ query })
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        const { data } = res.body;
+        assert.strictEqual(data?.deleteTask, true);
+        done();
+      });
+  });
+});
 
-// describe("deleteProjectRequirement API Tests", () => {
-//   it("Should delete a project requirement with valid input data", (done) => {
-//     const query = `
-//     query {
-//           deleteProjectRequirement(projectRequirementId: ${projectRequirementId})
-//         }
-//       `;
+describe("deleteTeamTask API Tests", () => {
+  it("Should delete a task with valid input data", (done) => {
+    const query = `
+    query {
+          deleteTask(taskId: ${teamTaskId})
+        }
+      `;
 
-//     request(app)
-//       .post("/graphql")
-//       .send({ query })
-//       .expect(200)
-//       .end((err, res) => {
-//         if (err) return done(err);
-//         const { data } = res.body;
-//         assert.strictEqual(data?.deleteProjectRequirement, true);
-//         done();
-//       });
-//   });
-// });
+    request(app)
+      .post("/graphql")
+      .send({ query })
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        const { data } = res.body;
+        assert.strictEqual(data?.deleteTask, true);
+        done();
+      });
+  });
+});
+
+describe("deleteTaskStep API Tests", () => {
+  it("Should delete a task step with valid input data", (done) => {
+    const query = `
+    query {
+          deleteTaskStep(taskStepId: ${taskStepId})
+        }
+      `;
+
+    request(app)
+      .post("/graphql")
+      .send({ query })
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        const { data } = res.body;
+        assert.strictEqual(data?.deleteTaskStep, true);
+        done();
+      });
+  });
+});
+
+describe("deleteTeamTaskStep API Tests", () => {
+  it("Should delete a task step with valid input data", (done) => {
+    const query = `
+    query {
+          deleteTaskStep(taskStepId: ${teamTaskStepId})
+        }
+      `;
+
+    request(app)
+      .post("/graphql")
+      .send({ query })
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        const { data } = res.body;
+        assert.strictEqual(data?.deleteTaskStep, true);
+        done();
+      });
+  });
+});
+
+describe("deleteCompanyComment API Tests", () => {
+  it("Should delete a company comment with valid input data", (done) => {
+    const query = `
+    query {
+          deleteCompanyComment(commentId: ${commentId})
+        }
+      `;
+
+    request(app)
+      .post("/graphql")
+      .send({ query })
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        const { data } = res.body;
+        assert.strictEqual(data?.deleteCompanyComment, true);
+        done();
+      });
+  });
+});
+
+describe("deleteProjectRequirement API Tests", () => {
+  it("Should delete a project requirement with valid input data", (done) => {
+    const query = `
+    query {
+          deleteProjectRequirement(projectRequirementId: ${projectRequirementId})
+        }
+      `;
+
+    request(app)
+      .post("/graphql")
+      .send({ query })
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        const { data } = res.body;
+        assert.strictEqual(data?.deleteProjectRequirement, true);
+        done();
+      });
+  });
+});
+
+describe("deleteProjectNote API Tests", () => {
+  it("Should delete a project note with valid input data", (done) => {
+    const query = `
+    query {
+          deleteProjectNote(projectNoteId: ${projectNoteId})
+        }
+      `;
+
+    request(app)
+      .post("/graphql")
+      .send({ query })
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        const { data } = res.body;
+        assert.strictEqual(data?.deleteProjectNote, true);
+        done();
+      });
+  });
+});
+
+describe("deleteProjectNoteTask API Tests", () => {
+  it("Should delete a project note task with valid input data", (done) => {
+    const query = `
+    query {
+          deleteProjectNoteTask(projectNoteTaskId: ${projectNoteTaskId})
+        }
+      `;
+
+    request(app)
+      .post("/graphql")
+      .send({ query })
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        const { data } = res.body;
+        assert.strictEqual(data?.deleteProjectNoteTask, true);
+        done();
+      });
+  });
+});

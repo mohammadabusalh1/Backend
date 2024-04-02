@@ -144,6 +144,11 @@ const resolvers = {
         }
         await team.delete();
 
+        backup.info(`
+        Match (team:Team) where ID(team) = ${teamId}
+        delete team
+        `);
+
         return true;
       } catch (error) {
         Logging.error(`${new Date()}, in resolvers.js => deleteTeam, ${error}`);
@@ -176,6 +181,11 @@ const resolvers = {
         }
 
         await company.delete();
+
+        backup.info(`
+        Match (company:Company) where ID(company) = ${companyId}
+        delete company
+        `);
 
         return true;
       } catch (error) {
@@ -211,6 +221,11 @@ const resolvers = {
         }
 
         await skill.delete();
+
+        backup.info(` 
+        Match (skill:Skill) where ID(skill) = ${skillId}
+        delete skill
+        `);
 
         return true;
       } catch (error) {
@@ -249,12 +264,13 @@ const resolvers = {
         const companies = await NeodeObject?.cypher(
           `MATCH (user:User) -[r:ADMIN_OF]-> (companies:Company) 
            where ID(user) = $userId return companies 
-           ORDER BY companies.${filterType} ${desc ? "desc" : "asc"}`,
+           ORDER BY companies.${filterType} ${desc ? "desc" : "asc"}
+           SKIP ${page} * ${limit} LIMIT ${limit}`,
           { userId }
         );
 
         // I make map because result is not as a schema type.
-        return companies?.records?.slice(page * limit, limit).map((record) => ({
+        return companies?.records?.map((record) => ({
           ...record.get("companies").properties,
           _id: `${record.get("companies").identity}`,
         }));
@@ -289,10 +305,11 @@ const resolvers = {
           `MATCH (user:User) -[r:ADMIN_OF]-> (companies:Company) where Id(user) = ${userId} 
           AND (companies.CompanyDescription CONTAINS '${word}' 
           OR companies.CompanyName CONTAINS '${word}'
-          OR companies.Domain CONTAINS '${word}') return companies`
+          OR companies.Domain CONTAINS '${word}') return companies
+          SKIP ${page} * ${limit} LIMIT ${limit}`
         );
 
-        return companies.records.slice(page * limit, limit).map((record) => ({
+        return companies?.records?.map((record) => ({
           ...record.get("companies").properties,
           _id: `${record.get("companies").identity}`,
         }));
@@ -333,12 +350,13 @@ const resolvers = {
           MATCH (c:Company) -[:HAS_A_TEAM]-> (t) RETURN c ORDER BY c.${filterType} ${
             desc ? "desc" : "asc"
           }
+          SKIP ${page} * ${limit} LIMIT ${limit}
           `,
           { userId }
         );
 
         // I make map because result is not as a schema type.
-        return companies.records.slice(page * limit, limit).map((record) => ({
+        return companies?.records?.map((record) => ({
           ...record.get("c").properties,
           _id: `${record.get("c").identity}`,
         }));
@@ -376,11 +394,12 @@ const resolvers = {
           OR c.CompanyName CONTAINS '${word}'
           OR c.Domain CONTAINS '${word}' 
           RETURN c
+          SKIP ${page} * ${limit} LIMIT ${limit}
           `,
           { userId }
         );
 
-        return companies.records.slice(page * limit, limit).map((record) => ({
+        return companies?.records?.map((record) => ({
           ...record.get("c").properties,
           _id: `${record.get("c").identity}`,
         }));
@@ -482,6 +501,9 @@ const resolvers = {
         }
 
         await account.delete();
+
+        backup.info(`query{ deleteSocialMediaAccounts(id: ${id}) }`);
+
         return true;
       } catch (error) {
         Logging.error(
@@ -501,17 +523,21 @@ const resolvers = {
     getProjects: async (parent, args) => {
       try {
         const { page = 0, limit = 6 } = args;
+        const skip = page * limit;
 
-        const allProjects = await NeodeObject?.all("Project");
-
-        return allProjects
-          .toJson()
-          .then((e) => e.slice(page * limit, (page + 1) * limit));
+        const allProjects = await NeodeObject?.all(
+          "Project",
+          undefined,
+          undefined,
+          limit,
+          skip
+        );
+        return allProjects.toJson();
       } catch (error) {
         Logging.error(
           `${new Date()}, in resolvers.js => getProjects, ${error}`
         );
-        throw new Error(`Error in deleteSocialMediaAccounts: ${error.message}`);
+        throw new Error(`Error in getProjects: ${error.message}`);
       }
     },
     /**
@@ -561,16 +587,15 @@ const resolvers = {
             WHERE p.ProjectName CONTAINS $word
             OR p.ProjectDescription CONTAINS $word
             RETURN p
+            SKIP ${page} * ${limit} LIMIT ${limit}
           `,
           { word }
         );
 
-        return projects.records
-          .slice(page * limit, (page + 1) * limit)
-          .map((record) => ({
-            ...record.get("p").properties,
-            _id: `${record.get("p").identity}`,
-          }));
+        return projects?.records?.map((record) => ({
+          ...record.get("p").properties,
+          _id: `${record.get("p").identity}`,
+        }));
       } catch (error) {
         Logging.error(
           `${new Date()}, in resolvers.js => searchInProjects, ${error}`
@@ -653,15 +678,19 @@ const resolvers = {
       try {
         const { page = 0, limit = 6 } = args;
 
-        const messages = await NeodeObject?.all("ContactMessage");
+        const messages = await NeodeObject?.all(
+          "ContactMessage",
+          undefined,
+          undefined,
+          limit,
+          page * limit
+        );
 
         if (!messages) {
           throw new Error("Messages not found");
         }
 
-        return messages
-          .toJson()
-          .then((data) => data.slice(page * limit, (page + 1) * limit));
+        return messages.toJson();
       } catch (error) {
         Logging.error(
           `${new Date()}, in resolvers.js => getContactMessages, ${error}`
@@ -931,15 +960,19 @@ const resolvers = {
           );
         }
 
-        const education = await NeodeObject?.find("Education", educationId);
+        const education = await NeodeObject?.findById("Education", educationId);
 
         if (!education) {
           throw new Error(
-            `Are you send educationId? educationId is required, educationId value is ${educationId}. please check educationId value before send`
+            `Education not found with educationId: ${educationId}`
           );
         }
 
         await NeodeObject?.delete(education);
+
+        backup.info(
+          `Match (education:Education) WHERE ID(education) = ${educationId} DETACH DELETE education`
+        );
 
         return true;
       } catch (error) {
@@ -971,6 +1004,9 @@ const resolvers = {
           { userId, teamId }
         );
 
+        backup.info(`MATCH (u:User) -[r:IN_TEAM]-> (t:Team) WHERE ID(u) = ${userId} AND ID(t) = ${teamId}
+        DETACH DELETE r`);
+
         return true;
       } catch (error) {
         Logging.error(
@@ -989,13 +1025,17 @@ const resolvers = {
           );
         }
 
-        const post = await NeodeObject?.find("Post", postId);
+        const post = await NeodeObject?.findById("PositionPost", postId);
 
         if (!post) {
-          throw new Error(
-            `Are you send postId? postId is required, postId value is ${postId}. please check postId value before send`
-          );
+          throw new Error(`Post not found with postId: ${postId}`);
         }
+
+        await NeodeObject?.delete(post);
+
+        backup.info(
+          `MATCH (p:PositionPost) WHERE ID(p) = ${postId} DETACH DELETE p`
+        );
 
         return true;
       } catch (error) {
@@ -1013,7 +1053,7 @@ const resolvers = {
           );
         }
 
-        const user = await NeodeObject?.find("User", userId);
+        const user = await NeodeObject?.findById("User", userId);
 
         if (!user) {
           throw new Error(
@@ -1022,6 +1062,8 @@ const resolvers = {
         }
 
         await NeodeObject?.delete(user);
+
+        backup.info(`MATCH (u:User) WHERE ID(u) = ${userId} DETACH DELETE u`);
 
         return true;
       } catch (error) {
@@ -1039,7 +1081,7 @@ const resolvers = {
           );
         }
 
-        const chat = await NeodeObject?.find("AIChat", AIchatId);
+        const chat = await NeodeObject?.findById("AIChat", AIchatId);
 
         if (!chat) {
           throw new Error(
@@ -1048,6 +1090,10 @@ const resolvers = {
         }
 
         await NeodeObject?.delete(chat);
+
+        backup.info(
+          `MATCH (c:AIChat) WHERE ID(c) = ${AIchatId} DETACH DELETE c`
+        );
 
         return true;
       } catch (error) {
@@ -1067,7 +1113,7 @@ const resolvers = {
           );
         }
 
-        const task = await NeodeObject?.find("Task", taskId);
+        const task = await NeodeObject?.findById("Task", taskId);
 
         if (!task) {
           throw new Error(
@@ -1076,6 +1122,8 @@ const resolvers = {
         }
 
         await NeodeObject?.delete(task);
+
+        backup.info(`MATCH (t:Task) WHERE ID(t) = ${taskId} DETACH DELETE t`);
 
         return true;
       } catch (error) {
@@ -1093,7 +1141,7 @@ const resolvers = {
           );
         }
 
-        const taskStep = await NeodeObject?.find("TaskStep", taskStepId);
+        const taskStep = await NeodeObject?.findById("TaskStep", taskStepId);
 
         if (!taskStep) {
           throw new Error(
@@ -1102,6 +1150,10 @@ const resolvers = {
         }
 
         await NeodeObject?.delete(taskStep);
+
+        backup.info(
+          `MATCH (ts:TaskStep) WHERE ID(ts) = ${taskStepId} DETACH DELETE ts`
+        );
 
         return true;
       } catch (error) {
@@ -1121,7 +1173,7 @@ const resolvers = {
           );
         }
 
-        const comment = await NeodeObject?.find("CompanyComment", commentId);
+        const comment = await NeodeObject.findById("Comment", commentId);
 
         if (!comment) {
           throw new Error(
@@ -1130,6 +1182,10 @@ const resolvers = {
         }
 
         await NeodeObject?.delete(comment);
+
+        backup.info(
+          `MATCH (c:Comment) WHERE ID(c) = ${commentId} DETACH DELETE c`
+        );
 
         return true;
       } catch (error) {
@@ -1149,7 +1205,7 @@ const resolvers = {
           );
         }
 
-        const projectRequirement = await NeodeObject?.find(
+        const projectRequirement = await NeodeObject?.findById(
           "ProjectRequirement",
           projectRequirementId
         );
@@ -1162,12 +1218,86 @@ const resolvers = {
 
         await NeodeObject?.delete(projectRequirement);
 
+        backup.info(
+          `MATCH (pr:ProjectRequirement) WHERE ID(pr) = ${projectRequirementId} DETACH DELETE pr`
+        );
+
         return true;
       } catch (error) {
         Logging.error(
           `${new Date()}, in resolvers.js => deleteProjectRequirement, ${error}`
         );
         throw new Error(`Error in deleteProjectRequirement: ${error.message}`);
+      }
+    },
+    deleteProjectNote: async (parent, args) => {
+      try {
+        const { projectNoteId } = args;
+
+        if (!projectNoteId) {
+          throw new Error(
+            `Are you send projectNoteId? projectNoteId is required, projectNoteId value is ${projectNoteId}. please check projectNoteId value before send`
+          );
+        }
+
+        const projectNote = await NeodeObject?.findById(
+          "ProjectNote",
+          projectNoteId
+        );
+
+        if (!projectNote) {
+          throw new Error(
+            `ProjectNote not found, projectNoteId value is ${projectNoteId}. please check projectNoteId value before send`
+          );
+        }
+
+        await NeodeObject?.delete(projectNote);
+
+        backup.info(
+          `MATCH (pn:ProjectNote) WHERE ID(pn) = ${projectNoteId} DETACH DELETE pn`
+        );
+
+        return true;
+      } catch (error) {
+        Logging.error(
+          `${new Date()}, in resolvers.js => deleteProjectNote, ${error}`
+        );
+        throw new Error(`Error in deleteProjectNote: ${error.message}`);
+      }
+    },
+    deleteProjectNoteTask: async (parent, args) => {
+      try {
+        const { projectNoteTaskId } = args;
+
+        if (!projectNoteTaskId) {
+          throw new Error(
+            `Are you send projectNoteTaskId? projectNoteTaskId is required, projectNoteTaskId value is ${projectNoteTaskId}. please check projectNoteTaskId value before send`
+          );
+        }
+
+        const projectNoteTask = await NeodeObject?.findById(
+          "ProjectNoteTask",
+          projectNoteTaskId
+        );
+
+        if (!projectNoteTask) {
+          throw new Error(
+            `ProjectNoteTask not found, projectNoteTaskId value is ${projectNoteTaskId}. please check projectNoteTaskId value before send`
+          );
+        }
+
+        await NeodeObject?.delete(projectNoteTask);
+
+        backup.info(
+          `MATCH (pnt:ProjectNoteTask) WHERE ID(pnt) = ${projectNoteTaskId} DETACH DELETE pnt`
+        );
+
+        return true;
+      } catch (error) {
+        Logging.error(
+          `${new Date()}, in resolvers.js => deleteProjectNoteTask, ${error}`
+        );
+        throw new Error(`Error in deleteProjectNoteTask: ${error.message}`);
       }
     },
   },
