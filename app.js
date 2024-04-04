@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 require("express-async-errors");
 require("dotenv").config();
 const express = require("express");
@@ -10,11 +11,12 @@ const { typeDefs } = require("./src/schema/schema");
 const { resolvers } = require("./src/controllers/resolvers");
 const Logging = require("./src/config/Logging");
 
+require("./src/config/writeBehindWorker");
+
 //express-validator
 
 // fixed variable to save this server port, so sever run in this port
 const PORT = 3000;
-
 const app = express();
 
 // this to compression data when request and response

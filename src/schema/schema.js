@@ -92,7 +92,7 @@ const typeDefs = gql`
   }
 
   input MessageInput {
-    userId: Int!
+    userId: String!
     MessageContent: String!
   }
 
@@ -223,11 +223,10 @@ const typeDefs = gql`
   }
 
   input UserInput {
+    id: ID
     Username: String!
     FirstName: String!
     LastName: String!
-    Email: String!
-    Password: String!
     Country: String!
     IsActive: Boolean
     CreatedBy: Int!
@@ -242,7 +241,7 @@ const typeDefs = gql`
   }
 
   type User {
-    _id: ID
+    id: ID
     Username: String
     FirstName: String
     LastName: String
@@ -281,37 +280,37 @@ const typeDefs = gql`
 
   type Query {
     getAIChat(chatId: Int!, page: Int, limit: Int): AIChat
-    getUser(userId: Int!, page: Int, limit: Int): User
+    getUser(userId: String!, page: Int, limit: Int): User
     deleteTeam(teamId: Int!): Boolean
     deleteCompany(companyId: Int!): Boolean
     deleteSkill(skillId: Int!): Boolean
     filterMyCompanies(
-      userId: Int!
+      userId: String!
       filterType: String
       desc: Boolean
       page: Int
       limit: Int
     ): [Company]
     searchInMyCompanies(
-      userId: Int!
+      userId: String!
       word: String!
       page: Int
       limit: Int
     ): [Company]
     filterWorksCompanies(
-      userId: Int!
+      userId: String!
       filterType: String
       desc: Boolean
       page: Int
       limit: Int
     ): [Company]
     searchInWorksCompanies(
-      userId: Int!
+      userId: String!
       word: String!
       page: Int
       limit: Int
     ): [Company]
-    getProfileStatistics(userId: Int!): UserStatistics
+    getProfileStatistics(userId: String!): UserStatistics
     deleteSocialMediaAccounts(id: Int!): Boolean
     getProjects(page: Int, limit: Int): [Project]
     getProject(projectId: Int!, page: Int, limit: Int): Project
@@ -319,36 +318,36 @@ const typeDefs = gql`
     getTask(taskId: Int!): Task
     getCompany(companyId: Int!): Company
     getContactMessages(page: Int, limit: Int): [ContactMessage]
-    getAllPosts(userId: Int!, page: Int, limit: Int): [PositionPost]
+    getAllPosts(userId: String!, page: Int, limit: Int): [PositionPost]
     searchInPositionPosts(
       page: Int
       limit: Int
       word: String!
-      userId: Int!
+      userId: String!
     ): [PositionPost]
     getAllPostsSortedByDate(
       page: Int
       limit: Int
       isDESC: Boolean
-      userId: Int!
+      userId: String!
     ): [PositionPost]
     searchInMyPosts(
       page: Int
       limit: Int
       word: String!
-      userId: Int!
+      userId: String!
     ): [PositionPost]
     getAllMyPostsSortedByDate(
       page: Int
       limit: Int
       isDESC: Boolean
-      userId: Int!
+      userId: String!
     ): [PositionPost]
     getTeam(teamId: Int!): Team
     deleteEducation(educationId: Int!): Boolean
-    deleteUserFromTeam(userId: Int!, teamId: Int!): Boolean
+    deleteUserFromTeam(userId: String!, teamId: Int!): Boolean
     deletePost(postId: Int!): Boolean
-    deleteUser(userId: Int!): Boolean
+    deleteUser(userId: String!): Boolean
     deleteAIChat(AIchatId: Int!): Boolean
     deleteTask(taskId: Int!): Boolean
     deleteTaskStep(taskStepId: Int!): Boolean
@@ -364,27 +363,27 @@ const typeDefs = gql`
       fileName: String!
       AIchatId: Int!
     ): AIMessage
-    createNewAIChat(userId: Int!): AIChat
+    createNewAIChat(userId: String!): AIChat
     createNewUser(user: UserInput!): User
     forgetPassword(email: String!): Boolean
-    updateUser(userId: Int!, user: UserInput!): User
+    updateUser(userId: String!, user: UserInput!): User
     createNewProject(project: ProjectInput!, page: Int, limit: Int): Project
     createProjectRequirement(
       projectId: Int!
       requirement: ProjectRequirementInput!
     ): ProjectRequirement
     createNewTeam(team: TeamInput!, companyId: Int!): Team
-    createNewCompany(company: CompanyInput!, userId: Int!): Company
-    createNewSkill(skill: SkillInput!, userId: Int!): Skill
+    createNewCompany(company: CompanyInput!, userId: String!): Company
+    createNewSkill(skill: SkillInput!, userId: String!): Skill
     createNewContactMessage(
       contactMessage: ContactMessageInput!
-      userId: Int!
+      userId: String!
     ): ContactMessage
     createPositionPost(
       post: PositionPostInput!
       companyId: Int!
     ): PositionPost
-    addUserToTeam(teamId: Int!, userId: Int!, role: String!): Boolean
+    addUserToTeam(teamId: Int!, userId: String!, role: String!): Boolean
     createProjectNote(
       projectNote: ProjectNoteInput!
       projectId: Int!
@@ -395,15 +394,15 @@ const typeDefs = gql`
     ): ProjectNoteTask
     createNewSocialMediaLink(
       socialMediaAccount: SocialMediaLinkInput!
-      userId: Int!
+      userId: String!
     ): SocialMediaLink
     createTaskForUser(
       task: TaskInput!
-      userId: Int!
-      userCreateTaskId: Int!
+      userId: String!
+      userCreateTaskId: String!
       companyId: Int!
     ): Task
-    createTaskForTeam(task: TaskInput!, teamId: Int!, userId: Int!): Task
+    createTaskForTeam(task: TaskInput!, teamId: Int!, userId: String!): Task
     updateTask(taskId: Int!, task: TaskInput!): Task
     updateTaskStep(taskStepId: Int!, taskStep: TaskStepInput!): TaskStep
     createCompanyComment(comment: CommentInput!, companyId: Int!): Comment
@@ -418,8 +417,8 @@ const typeDefs = gql`
       positionPostId: Int!
       positionPost: PositionPostInput!
     ): PositionPost
-    applyToPost(postId: Int!, userId: Int!): Boolean
-    createEducation(education: EducationInput!, userId: Int!): Education
+    applyToPost(postId: Int!, userId: String!): Boolean
+    createEducation(education: EducationInput!, userId: String!): Education
     applyForProject(projectId: Int!, companyId: Int!): Boolean
     updateEducation(educationId: Int!, education: EducationInput!): Education
     updateTeam(teamId: Int!, team: TeamInput!): Team

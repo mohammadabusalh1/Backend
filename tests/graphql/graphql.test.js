@@ -113,14 +113,25 @@ const skillInput = {
 describe("Create User API Tests (create)", () => {
   it("Should create a new user with valid input data", (done) => {
     const mutation = `
-    mutation Mutation($user: UserInput!) {
-      createNewUser(user: $user) {
-        _id
+    mutation{
+      createNewUser(user: {
+        Username: "${user.Username}",
+        FirstName: "${user.FirstName}",
+        LastName: "${user.LastName}",
+        Country: "${user.Country}",
+        CreatedBy: ${user.CreatedBy},
+        Rate: ${user.Rate},
+        DateOfBirth: "${user.DateOfBirth}",
+        Gender: "${user.Gender}",
+        Work: "${user.Work}",
+        Bio: "${user.Bio}",
+        LastTimeOnline: "${user.LastTimeOnline}",
+        ImageUrl: "${user.ImageUrl}",
+      }) {
+        id
         Username
         FirstName
         LastName
-        Email
-        Password
         Country
         IsActive
         CreatedBy
@@ -164,11 +175,11 @@ describe("Create User API Tests (create)", () => {
 
         const { data } = res.body;
         if (userId === 0) {
-          userId = data?.createNewUser?._id;
+          userId = data?.createNewUser?.id;
         }
 
         assert.notStrictEqual(data?.createNewUser, null || undefined);
-        assert.notStrictEqual(data?.createNewUser?._id, null || undefined);
+        assert.notStrictEqual(data?.createNewUser?.id, null || undefined);
         assert.notStrictEqual(
           data?.createNewUser?.CreateDate,
           null || undefined
@@ -176,8 +187,6 @@ describe("Create User API Tests (create)", () => {
         assert.strictEqual(data?.createNewUser?.Username, user.Username);
         assert.strictEqual(data?.createNewUser?.FirstName, user.FirstName);
         assert.strictEqual(data?.createNewUser?.LastName, user.LastName);
-        assert.strictEqual(data?.createNewUser?.Email, user.Email);
-        assert.notStrictEqual(data?.createNewUser?.Password, null || undefined);
         assert.strictEqual(data?.createNewUser?.Country, user.Country);
         assert.strictEqual(data?.createNewUser?.IsActive, true);
         assert.strictEqual(data?.createNewUser?.CreatedBy, user.CreatedBy);
@@ -199,14 +208,25 @@ describe("Create User API Tests (create)", () => {
 describe("Second Create User API Tests (create)", () => {
   it("Should create a new user with valid input data", (done) => {
     const mutation = `
-    mutation Mutation($user: UserInput!) {
-      createNewUser(user: $user) {
-        _id
+    mutation{
+      createNewUser(user: {
+        Username: "${user.Username}",
+        FirstName: "${user.FirstName}",
+        LastName: "${user.LastName}",
+        Country: "${user.Country}",
+        CreatedBy: ${user.CreatedBy},
+        Rate: ${user.Rate},
+        DateOfBirth: "${user.DateOfBirth}",
+        Gender: "${user.Gender}",
+        Work: "${user.Work}",
+        Bio: "${user.Bio}",
+        LastTimeOnline: "${user.LastTimeOnline}",
+        ImageUrl: "${user.ImageUrl}",
+      }) {
+        id
         Username
         FirstName
         LastName
-        Email
-        Password
         Country
         IsActive
         CreatedBy
@@ -251,11 +271,11 @@ describe("Second Create User API Tests (create)", () => {
 
         const { data } = res.body;
         if (userCreateTaskId === 0) {
-          userCreateTaskId = data?.createNewUser?._id;
+          userCreateTaskId = data?.createNewUser?.id;
         }
 
         assert.notStrictEqual(data?.createNewUser, null || undefined);
-        assert.notStrictEqual(data?.createNewUser?._id, null || undefined);
+        assert.notStrictEqual(data?.createNewUser?.id, null || undefined);
         assert.notStrictEqual(
           data?.createNewUser?.CreateDate,
           null || undefined
@@ -263,8 +283,6 @@ describe("Second Create User API Tests (create)", () => {
         assert.strictEqual(data?.createNewUser?.Username, user.Username);
         assert.strictEqual(data?.createNewUser?.FirstName, user.FirstName);
         assert.strictEqual(data?.createNewUser?.LastName, user.LastName);
-        assert.strictEqual(data?.createNewUser?.Email, user.Email);
-        assert.notStrictEqual(data?.createNewUser?.Password, null || undefined);
         assert.strictEqual(data?.createNewUser?.Country, user.Country);
         assert.strictEqual(data?.createNewUser?.IsActive, true);
         assert.strictEqual(data?.createNewUser?.CreatedBy, user.CreatedBy);
@@ -277,8 +295,9 @@ describe("Second Create User API Tests (create)", () => {
           data?.createNewUser?.LastTimeOnline,
           user.LastTimeOnline
         );
-
-        done();
+        setTimeout(() => {
+          done();
+        }, 1900);
       });
   });
 });
@@ -287,7 +306,7 @@ describe("Create AIChat API Tests", () => {
   it("Should create a new AI chat for a valid user ID", (done) => {
     const mutation = `
       mutation {
-        createNewAIChat(userId: ${userId}) {
+        createNewAIChat(userId: "${userId}") {
           _id
           CreatedDate
         }
@@ -439,7 +458,7 @@ describe("Create Company API Tests", () => {
         CompanyDescription: "${company.CompanyDescription}",
         Domain: "${company.Domain}",
         Rate: ${company.Rate}
-      }, userId: ${userId}) {
+      }, userId: "${userId}") {
         _id
         CompanyName
         CompanyDescription
@@ -447,7 +466,7 @@ describe("Create Company API Tests", () => {
         Domain
         CreateDate
       }
-    }    
+    }
       `;
 
     request(app)
@@ -490,7 +509,7 @@ describe("Second Create Company API Tests", () => {
         CompanyDescription: "${company.CompanyDescription}",
         Domain: "${company.Domain}",
         Rate: ${company.Rate}
-      }, userId: ${userCreateTaskId}) {
+      }, userId: "${userCreateTaskId}") {
         _id
         CompanyName
         CompanyDescription
@@ -498,7 +517,7 @@ describe("Second Create Company API Tests", () => {
         Domain
         CreateDate
       }
-    }    
+    }
       `;
 
     request(app)
@@ -618,7 +637,7 @@ describe("Create Skill API Tests", () => {
         mutation {
           createNewSkill(skill: {
             Skill: "${skillInput.Skill}"
-          }, userId: ${userId}) {
+          }, userId: "${userId}") {
             _id
             Skill
           }
@@ -651,7 +670,7 @@ describe("Create Contact Message API Tests", () => {
         mutation {
           createNewContactMessage(contactMessage: {
             Message: "${contactMessageInput.Message}"
-          } , userId: ${userId}) {
+          } , userId: "${userId}") {
             _id
             Message
             CreatedDate
@@ -750,7 +769,7 @@ describe("Add a User To a Team", () => {
 
     const mutation = `
         mutation {
-          addUserToTeam(teamId: ${teamId}, userId: ${userId}, role: "${role}")
+          addUserToTeam(teamId: ${teamId}, userId: "${userId}", role: "${role}")
         }
       `;
 
@@ -859,7 +878,7 @@ describe("Create Account API Tests", () => {
           createNewSocialMediaLink(socialMediaAccount: {
             PlatformName: "${socialMediaLinkInput.PlatformName}",
             Link: "${socialMediaLinkInput.Link}",
-          }, userId: ${userId}) {
+          }, userId: "${userId}") {
             _id
             PlatformName
             Link
@@ -912,7 +931,7 @@ describe("Create Task For User API Tests", () => {
             Priority: ${taskInput.Priority},
             Comments: "${taskInput.Comments}",
             IsMarked: ${taskInput.IsMarked},
-          }, userId: ${userId}, userCreateTaskId: ${userCreateTaskId}, companyId: ${companyId}) {
+          }, userId: "${userId}", userCreateTaskId: "${userCreateTaskId}", companyId: ${companyId}) {
             _id
             TaskName
             TaskStatus
@@ -970,7 +989,7 @@ describe("Create Task For Team API Tests", () => {
             Priority: ${taskInput.Priority},
             Comments: "${taskInput.Comments}",
             IsMarked: ${taskInput.IsMarked},
-          }, teamId: ${teamId}, userId: ${userId}) {
+          }, teamId: ${teamId}, userId: "${userId}") {
             _id
             TaskName
             TaskStatus
@@ -1112,7 +1131,7 @@ describe("Create Education API Tests", () => {
             Title: "${educationInput.Title}",
             Description: "${educationInput.Description}",
             FileName: "${educationInput.FileName}",
-          }, userId: ${userId}) {
+          }, userId: "${userId}") {
             _id
             Title
             Description
@@ -1153,7 +1172,7 @@ describe("Apply To a Post API Tests", () => {
   it("Should apply to a post with valid post and user IDs", (done) => {
     const mutation = `
         mutation {
-          applyToPost(postId: ${postId}, userId: ${userId})
+          applyToPost(postId: ${postId}, userId: "${userId}")
         }
       `;
 
@@ -1176,7 +1195,7 @@ describe("Filter My Companies API Tests", () => {
   it("Should filter my companies with valid input data", (done) => {
     const query = `
     query{
-      filterMyCompanies(userId: ${userId}, desc: true) {
+      filterMyCompanies(userId: "${userId}", desc: true) {
         _id
         CompanyName
         CompanyDescription
@@ -1219,7 +1238,7 @@ describe("Search In My Companies API Tests", () => {
   it("Should search in my companies with valid input data", (done) => {
     const query = `
     query{
-      searchInMyCompanies(userId: ${userId}, word: "Company") {
+      searchInMyCompanies(userId: "${userId}", word: "Company") {
         _id
         CompanyName
         CompanyDescription
@@ -1227,7 +1246,6 @@ describe("Search In My Companies API Tests", () => {
         Rate
       }
     }`;
-
     request(app)
       .post("/graphql")
       .send({
@@ -1267,7 +1285,7 @@ describe("Filter Works Companies API Tests", () => {
   it("Should filter works companies with valid input data", (done) => {
     const query = `
     query{
-      filterWorksCompanies(userId: ${userId}, desc: true) {
+      filterWorksCompanies(userId: "${userId}", desc: true) {
         _id
         CompanyName
         CompanyDescription
@@ -1313,7 +1331,7 @@ describe("Search In Works Companies API Tests", () => {
   it("Should search in works companies with valid input data", (done) => {
     const query = `
     query{
-      searchInWorksCompanies(userId: ${userId}, word: "Company") {
+      searchInWorksCompanies(userId: "${userId}", word: "Company") {
         _id
         CompanyName
         CompanyDescription
@@ -1360,7 +1378,7 @@ describe("getProfileStatistics API Test", () => {
   it("Should get profile statistics with valid user ID", (done) => {
     const query = `
     query{
-      getProfileStatistics(userId: ${userId}) {
+      getProfileStatistics(userId: "${userId}") {
         NumberOfProjects
         NumberOfTeams
         NumberOfTasks
@@ -1442,7 +1460,7 @@ describe("get User API Test", () => {
   it("Should get a user with valid user ID", (done) => {
     const query = `
     query{
-      getUser(userId: ${userId}) {
+      getUser(userId: "${userId}") {
         AIChats {
           _id
           CreatedDate
@@ -1472,7 +1490,6 @@ describe("get User API Test", () => {
           Description
           FileName
         }
-        Email
         FirstName
         Gender
         ImageUrl
@@ -1501,7 +1518,7 @@ describe("get User API Test", () => {
         WorkCompanies {
           _id
         }
-        _id
+        id
       }
     }`;
 
@@ -1514,8 +1531,7 @@ describe("get User API Test", () => {
 
         const { data } = res.body;
         assert.notStrictEqual(data?.getUser, null || undefined);
-        assert.strictEqual(data?.getUser?._id, userId);
-        assert.strictEqual(data?.getUser?.Email, user.Email);
+        assert.strictEqual(data?.getUser?.id, userId);
         assert.strictEqual(data?.getUser?.Username, user.Username);
         assert.strictEqual(data?.getUser?.FirstName, user.FirstName);
         assert.strictEqual(data?.getUser?.LastName, user.LastName);
@@ -1528,7 +1544,6 @@ describe("get User API Test", () => {
         assert.strictEqual(data?.getUser?.Rate, user.Rate);
         assert.strictEqual(data?.getUser?.IsActive, true);
         assert.strictEqual(data?.getUser?.LastTimeOnline, user.LastTimeOnline);
-        assert.notStrictEqual(data?.getUser?.Password, null);
         assert.strictEqual(data?.getUser?.ImageUrl, user.ImageUrl);
         assert.strictEqual(data?.getUser?.Gender, user.Gender);
         assert.strictEqual(data?.getUser?.Rate, user.Rate);
@@ -1592,7 +1607,7 @@ describe("get Team API Test", () => {
           _id
         }
         Members {
-          _id
+          id
         }
       }
     }`;
@@ -1611,7 +1626,7 @@ describe("get Team API Test", () => {
         assert.strictEqual(data?.getTeam?.TeamName, team.TeamName);
         assert.strictEqual(data?.getTeam?.TeamRole, team.TeamRole);
         assert.notStrictEqual(data?.getTeam?.Members, null || undefined);
-        assert.strictEqual(data?.getTeam?.Members[0]?._id, userId);
+        assert.strictEqual(data?.getTeam?.Members[0]?.id, userId);
         assert.strictEqual(data?.getTeam?.Tasks[0]?._id, teamTaskId);
         assert.notStrictEqual(data?.getTeam?.CreateDate, null || undefined);
         done();
@@ -2058,7 +2073,7 @@ describe("get company by id", () => {
             }
           }
           Members {
-            _id
+            id
           }
         }
         Project {
@@ -2165,7 +2180,7 @@ describe("get company by id", () => {
           data?.getCompany?.Teams[0]?.Tasks[0]?.Steps[0]?.Number,
           taskStepInput.Number
         );
-        assert.strictEqual(data?.getCompany?.Teams[0]?.Members[0]._id, userId);
+        assert.strictEqual(data?.getCompany?.Teams[0]?.Members[0].id, userId);
         assert.notStrictEqual(data?.getCompany?.Project, null || undefined);
         assert.notStrictEqual(
           data?.getCompany?.Project?._id,
@@ -2255,7 +2270,7 @@ describe("get All Posts API Tests", () => {
   it("Should get all posts", (done) => {
     const query = `
     query{
-      getAllPosts(userId: ${userId}) {
+      getAllPosts(userId: "${userId}") {
         _id
         Content
         CreatedDate
@@ -2289,7 +2304,7 @@ describe("searchInPositionPosts API Tests", () => {
   it("Should search in position posts", (done) => {
     const query = `
     query{
-      searchInPositionPosts(word: "${positionPostInput.Content}", userId: ${userId}) {
+      searchInPositionPosts(word: "${positionPostInput.Content}", userId: "${userId}") {
         _id
         Content
         CreatedDate
@@ -2326,7 +2341,7 @@ describe("getAllPostsSortedByDate API Tests", () => {
   it("Should get all posts sorted by date", (done) => {
     const query = `
     query{
-      getAllPostsSortedByDate(userId: ${userId}) {
+      getAllPostsSortedByDate(userId: "${userId}") {
         _id
         Content
         CreatedDate
@@ -2363,7 +2378,7 @@ describe("searchInMyPosts API Tests", () => {
   it("Should search in my posts", (done) => {
     const query = `
     query{
-      searchInMyPosts(word: "${positionPostInput.Content}", userId: ${userCreateTaskId}) {
+      searchInMyPosts(word: "${positionPostInput.Content}", userId: "${userCreateTaskId}") {
         _id
         Content
         CreatedDate
@@ -2397,7 +2412,7 @@ describe("getAllMyPostsSortedByDate API Tests", () => {
   it("Should get all my posts sorted by date", (done) => {
     const query = `
     query{
-      getAllMyPostsSortedByDate(userId: ${userCreateTaskId}) {
+      getAllMyPostsSortedByDate(userId: "${userCreateTaskId}") {
         _id
         Content
         CreatedDate
@@ -2437,12 +2452,10 @@ describe("Update User API Tests (update)", () => {
   it("Should update an existing user with valid input data", (done) => {
     const mutation = `
       mutation {
-        updateUser(userId: ${userId}, user: {
+        updateUser(userId: "${userId}", user: {
           Username: "aa",
           FirstName: "b",
           LastName: "c",
-          Email: "abc@example.com",
-          Password: "123",
           Country: "as",
           IsActive: false,
           CreatedBy: 99,
@@ -2454,11 +2467,10 @@ describe("Update User API Tests (update)", () => {
           Bio: "A data enthusiast with a passion for analysis.",
           LastTimeOnline: "2024-02-26T10:00:00Z",
         }) {
-          _id
+          id
           Username
           FirstName
           LastName
-          Email
           Country
           IsActive
           CreatedBy
@@ -2481,11 +2493,10 @@ describe("Update User API Tests (update)", () => {
         if (err) return done(err);
 
         const { data } = res.body;
-        assert(data.updateUser._id); // Ensure an ID is returned for the updated user
+        assert(data.updateUser.id); // Ensure an ID is returned for the updated user
         assert.strictEqual(data.updateUser.Username, "aa"); // Ensure the updated user has the expected values
         assert.strictEqual(data.updateUser.FirstName, "b");
         assert.strictEqual(data.updateUser.LastName, "c");
-        assert.strictEqual(data.updateUser.Email, "abc@example.com");
         assert.strictEqual(data.updateUser.Country, "as");
         assert.strictEqual(data.updateUser.Gender, "Female");
         assert.strictEqual(data.updateUser.Rate, 4.8);
@@ -2953,7 +2964,7 @@ describe("deleteUserFromTeam API Tests", () => {
   it("Should delete user from team with valid input data", (done) => {
     const query = `
     query {
-          deleteUserFromTeam(userId: ${userId}, teamId: ${teamId})
+          deleteUserFromTeam(userId: "${userId}", teamId: ${teamId})
         }
       `;
 
@@ -2995,7 +3006,7 @@ describe("deleteUser API Tests", () => {
   it("Should delete a user with valid input data", (done) => {
     const query = `
     query {
-          deleteUser(userId: ${userId})
+          deleteUser(userId: "${userId}")
         }
       `;
 
@@ -3016,7 +3027,7 @@ describe("deleteUser API Tests", () => {
   it("Should delete a user with valid input data", (done) => {
     const query = `
     query {
-          deleteUser(userId: ${userCreateTaskId})
+          deleteUser(userId: "${userCreateTaskId}")
         }
       `;
 

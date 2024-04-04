@@ -9,7 +9,7 @@ async function redisClientGet(key) {
       .on("error", (err) => Logging.error("Redis Client Error", err))
       .connect();
 
-    const value = await redisClient.get(key);
+    const value = await redisClient.rPop(key);
 
     return value;
   } catch (error) {
@@ -26,7 +26,7 @@ async function redisClientSet(key, value) {
       .on("error", (err) => Logging.error("Redis Client Error", err))
       .connect();
 
-    await redisClient.set(key, value);
+    await redisClient.rPush(key, value);
 
     return value;
   } catch (error) {
