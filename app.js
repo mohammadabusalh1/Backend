@@ -16,7 +16,7 @@ require("./src/config/writeBehindWorker");
 //express-validator
 
 // fixed variable to save this server port, so sever run in this port
-const PORT = 3000;
+const PORT = 4000;
 const app = express();
 
 // this to compression data when request and response

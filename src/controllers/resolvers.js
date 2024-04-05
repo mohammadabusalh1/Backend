@@ -276,7 +276,6 @@ const resolvers = {
           _id: `${record.get("companies").identity}`,
         }));
       } catch (error) {
-        
         Logging.error(
           `${new Date()}, in resolvers.js => filterMyCompanies, ${error}`
         );
@@ -536,7 +535,6 @@ const resolvers = {
           };
         });
       } catch (error) {
-        
         Logging.error(
           `${new Date()}, in resolvers.js => getProjects, ${error}`
         );
@@ -1067,9 +1065,19 @@ const resolvers = {
           );
         }
 
-        await NeodeObject?.delete(user);
+        await user.update({
+          ...user?.properties(),
+          id: userId,
+          IsActive: false,
+        });
 
-        await backup.info(`MATCH (u:User) WHERE ID(u) = ${userId} DETACH DELETE u`);
+        await backup.info(
+          `MATCH (user:User {id: "${userId}"})
+          SET ${Object.keys(user)
+            ?.map((key) => `${key}: "${user[key]}"`)
+            .join(", ")}
+          RETURN user`
+        );
 
         return true;
       } catch (error) {
@@ -1129,7 +1137,9 @@ const resolvers = {
 
         await NeodeObject?.delete(task);
 
-        await backup.info(`MATCH (t:Task) WHERE ID(t) = ${taskId} DETACH DELETE t`);
+        await backup.info(
+          `MATCH (t:Task) WHERE ID(t) = ${taskId} DETACH DELETE t`
+        );
 
         return true;
       } catch (error) {
@@ -1411,7 +1421,7 @@ const resolvers = {
         const AIChat = await NeodeObject?.create("AIChat", {});
         const User = await NeodeObject?.first("User", "id", userId);
 
-        if (User === false) {
+        if (!User) {
           NeodeObject?.delete(AIChat);
           throw new Error("User not found");
         }
@@ -1419,12 +1429,12 @@ const resolvers = {
         // Relate AIChat to User
         await User.relateTo(AIChat, "chat_with_AI");
 
-       await backup.info(
+        await backup.info(
           `CREATE (chat:AIChat {createdDate: datetime()}) - [:chat_with_AI]-> (user:User {id: "${userId}"}) 
           RETURN chat`
         );
 
-        return AIChat.toJson();
+        return await AIChat.toJson();
       } catch (error) {
         Logging.error(
           `${new Date()}, in resolvers.js => createNewAIChat, ${error}`
@@ -1758,7 +1768,6 @@ const resolvers = {
 
         return companyCreated.toJson();
       } catch (error) {
-        
         Logging.error(
           `${new Date()}, in resolvers.js => createNewCompany, ${error}`
         );
@@ -1952,7 +1961,6 @@ const resolvers = {
 
         return true;
       } catch (error) {
-        
         Logging.error(
           `${new Date()}, in resolvers.js => addUserToTeam, ${error}`
         );
@@ -2199,7 +2207,6 @@ const resolvers = {
 
         return newTask.toJson();
       } catch (error) {
-        
         Logging.error(
           `${new Date()}, in resolvers.js => createTaskForUser, ${error}`
         );

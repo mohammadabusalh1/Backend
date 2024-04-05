@@ -1379,3 +1379,19 @@
 {"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
 {"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
 {"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"error","message":"Fri Apr 05 2024 12:57:18 GMT+0200 (Eastern European Standard Time), in resolvers.js => Messages, Error: ChatID is null","service":"user-service"}
+{"level":"error","message":"Fri Apr 05 2024 12:57:20 GMT+0200 (Eastern European Standard Time), in resolvers.js => deleteAIChat, Error: Are you send AIchatId? AIchatId is required, AIchatId value is 0. please check AIchatId value before send","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:3000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
