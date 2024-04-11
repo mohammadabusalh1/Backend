@@ -10,7 +10,7 @@ const rateLimit = require("express-rate-limit");
 const { typeDefs } = require("./src/schema/schema");
 const { resolvers } = require("./src/controllers/resolvers");
 const Logging = require("./src/config/Logging");
-
+const NeodeObject = require("./src/config/NeodeObject");
 require("./src/config/writeBehindWorker");
 
 //express-validator
@@ -60,6 +60,24 @@ async function startServer() {
     server.applyMiddleware({ app });
 
     app.listen({ port: PORT }, () => {
+      NeodeObject.writeCypher(
+        "CREATE INDEX UserIndex IF NOT EXISTS FOR (n:User) ON (n.id)"
+      ).catch((error) => Logging.error(error));
+
+      NeodeObject.writeCypher(
+        `CREATE INDEX SearchInMyCompanies IF NOT EXISTS 
+        FOR (n:Company) ON (n.CompanyName, n.CompanyDescription, n.Domain)`
+      ).catch((error) => Logging.error(error));
+
+      NeodeObject.writeCypher(
+        `CREATE INDEX SearchInProjects IF NOT EXISTS 
+        FOR (n:Project) ON (n.ProjectName, n.ProjectDescription)`
+      ).catch((error) => Logging.error(error));
+
+      NeodeObject.writeCypher(
+        "CREATE INDEX SearchInMyPosts IF NOT EXISTS FOR (n:PositionPost) ON (n.Content)"
+      ).catch((error) => Logging.error(error));
+
       Logging.info(`🚀 Server ready at http://localhost:${PORT}`);
       console.log(
         `🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`

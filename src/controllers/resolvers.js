@@ -500,7 +500,7 @@ const resolvers = {
         return true;
       } catch (error) {
         Logging.error(
-          `${new Date()}, in resolvers.js => deleteUserSocialMediaAccounts, ${error}`
+          `${new Date()}, in resolvers.js => deleteSocialMediaAccounts , ${error}`
         );
         throw new Error(`Error in deleteSocialMediaAccounts: ${error.message}`);
       }
