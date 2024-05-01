@@ -25,15 +25,15 @@ app.use(cors());
 // to save all headers from cross-site injections
 app.use(helmet());
 
-const limiter = rateLimit({
-  windowMs: 10 * 60 * 1000, // 10 minutes
-  limit: 100, // Limit each IP to 100 requests per `window` (here, per 10 minutes).
-  standardHeaders: "draft-7", // draft-6: `RateLimit-*` headers; draft-7: combined `RateLimit` header
-  legacyHeaders: false, // Disable the `X-RateLimit-*` headers.
-  // store: ... , // Redis, Memcached, etc. See below.
-});
+// const limiter = rateLimit({
+//   windowMs: 10 * 60 * 1000, // 10 minutes
+//   limit: 100, // Limit each IP to 100 requests per `window` (here, per 10 minutes).
+//   standardHeaders: "draft-7", // draft-6: `RateLimit-*` headers; draft-7: combined `RateLimit` header
+//   legacyHeaders: false, // Disable the `X-RateLimit-*` headers.
+//   // store: ... , // Redis, Memcached, etc. See below.
+// });
 
-app.use(limiter);
+// app.use(limiter);
 
 // app.use((req, res, next) => {
 //   if (!req.secure) {

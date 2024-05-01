@@ -223,25 +223,25 @@ const typeDefs = gql`
   }
 
   input UserInput {
-    id: ID
-    Username: String!
-    FirstName: String!
-    LastName: String!
-    Country: String!
+    id: String
+    Username: String
+    FirstName: String
+    LastName: String
+    Country: String
     IsActive: Boolean
-    CreatedBy: Int!
+    CreatedBy: Int
     CreateDate: String
-    Rate: Float!
-    DateOfBirth: String!
-    Gender: String!
-    Work: String!
-    Bio: String!
+    Rate: Float
+    DateOfBirth: String
+    Gender: String
+    Work: String
+    Bio: String
     LastTimeOnline: String
     ImageUrl: String
   }
 
   type User {
-    id: ID
+    id: String
     Username: String
     FirstName: String
     LastName: String
@@ -379,10 +379,7 @@ const typeDefs = gql`
       contactMessage: ContactMessageInput!
       userId: String!
     ): ContactMessage
-    createPositionPost(
-      post: PositionPostInput!
-      companyId: Int!
-    ): PositionPost
+    createPositionPost(post: PositionPostInput!, companyId: Int!): PositionPost
     addUserToTeam(teamId: Int!, userId: String!, role: String!): Boolean
     createProjectNote(
       projectNote: ProjectNoteInput!
@@ -406,11 +403,13 @@ const typeDefs = gql`
     updateTask(taskId: Int!, task: TaskInput!): Task
     updateTaskStep(taskStepId: Int!, taskStep: TaskStepInput!): TaskStep
     createCompanyComment(comment: CommentInput!, companyId: Int!): Comment
-    updateCompany(
-      companyId: Int!
-      company: CompanyInput!
-    ): Company
-    updateProject(projectId: Int!, project: ProjectInput!, page: Int, limit: Int): Project
+    updateCompany(companyId: Int!, company: CompanyInput!): Company
+    updateProject(
+      projectId: Int!
+      project: ProjectInput!
+      page: Int
+      limit: Int
+    ): Project
     createTaskStep(taskStep: TaskStepInput!, taskId: Int!): TaskStep
     replayContactMessage(contactMessageId: Int!, message: String!): Boolean
     updatePositionPost(

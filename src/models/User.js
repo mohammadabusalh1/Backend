@@ -1,7 +1,8 @@
 module.exports = {
   id: {
-    type: "uuid",
+    type: "string",
     primary: true,
+    unique: true,
   },
   Username: {
     type: "string",
@@ -19,7 +20,10 @@ module.exports = {
     type: "string",
     default: () => new Date().toString(),
   },
-  Rate: "float",
+  Rate: {
+    type: "float",
+    default: 0,
+  },
   DateOfBirth: "string",
   Gender: "string",
   Work: "string",

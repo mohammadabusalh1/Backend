@@ -1455,16 +1455,19 @@ const resolvers = {
       try {
         const { user } = args;
 
-        const newUserId = uuidv4();
-
         if (!user) {
           throw new Error(
             `Are you send user? user is required, user value is ${user}. please check user value before send`
           );
         }
 
-        user.id = `${newUserId}`;
         user.IsActive = true;
+
+        // find user by id
+        const existingUser = await NeodeObject?.first("User", "id", user.id);
+        if (existingUser) {
+          throw new Error("User already exists");
+        }
 
         redisClientSet(
           "users",
@@ -1496,10 +1499,7 @@ const resolvers = {
         Logging.error(
           `${new Date()}, in resolvers.js => createNewUser, ${error}`
         );
-        throw new Error(
-          "An error occurred while processing the request",
-          error
-        );
+        throw new Error(error.message);
       }
     },
     /**
