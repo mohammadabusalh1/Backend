@@ -62,7 +62,7 @@ async function startServer() {
     app.listen({ port: PORT }, () => {
       NeodeObject.writeCypher(
         "CREATE INDEX UserIndex IF NOT EXISTS FOR (n:User) ON (n.id)"
-      ).catch((error) => Logging.error(error));
+      ).catch((error) => console.log(error));
 
       NeodeObject.writeCypher(
         `CREATE INDEX SearchInMyCompanies IF NOT EXISTS 

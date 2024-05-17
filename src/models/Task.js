@@ -24,7 +24,14 @@ module.exports = {
     type: "relationship",
     target: "Company",
     relationship: "IN_COMPANY",
-    direction: "in",
+    direction: "out",
+    eager: true,
+  },
+  in_team: {
+    type: "relationship",
+    target: "Team",
+    relationship: "IN_TEAM",
+    direction: "out",
     eager: true,
   },
 };

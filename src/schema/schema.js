@@ -17,6 +17,8 @@ const typeDefs = gql`
     _id: ID
     CreatedDate: String
     Messages: [AIMessage]
+    Name: String
+    FileName: String
   }
 
   type Comment {
@@ -100,6 +102,8 @@ const typeDefs = gql`
     _id: ID
     Content: String
     CreatedDate: String
+    User: User
+    Company: Company
   }
 
   input PositionPostInput {
@@ -183,6 +187,8 @@ const typeDefs = gql`
     IsMarked: Boolean
     CreateDate: String
     Steps: [TaskStep]
+    CompanyName: String
+    TeamName: String
   }
 
   input TaskInput {
@@ -240,6 +246,11 @@ const typeDefs = gql`
     ImageUrl: String
   }
 
+  type Friends {
+    friends: [User]
+    myFriends: [User]
+  }
+
   type User {
     id: String
     Username: String
@@ -267,8 +278,9 @@ const typeDefs = gql`
     Chats: [Chat]
     Educations: [Education]
     AIChats: [AIChat]
-    Friends: [User]
+    Friends: Friends
     CreatedTasks: [Task]
+    type: String
   }
 
   type UserStatistics {
@@ -363,7 +375,7 @@ const typeDefs = gql`
       fileName: String!
       AIchatId: Int!
     ): AIMessage
-    createNewAIChat(userId: String!): AIChat
+    createNewAIChat(userId: String!, Name: String!, projectId: Int!): AIChat
     createNewUser(user: UserInput!): User
     forgetPassword(email: String!): Boolean
     updateUser(userId: String!, user: UserInput!): User
@@ -398,8 +410,14 @@ const typeDefs = gql`
       userId: String!
       userCreateTaskId: String!
       companyId: Int!
+      teamId: Int!
     ): Task
-    createTaskForTeam(task: TaskInput!, teamId: Int!, userId: String!): Task
+    createTaskForTeam(
+      task: TaskInput!
+      teamId: Int!
+      userId: String!
+      companyId: Int!
+    ): Task
     updateTask(taskId: Int!, task: TaskInput!): Task
     updateTaskStep(taskStepId: Int!, taskStep: TaskStepInput!): TaskStep
     createCompanyComment(comment: CommentInput!, companyId: Int!): Comment

@@ -1,8 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable object-curly-newline */
-/* eslint-disable consistent-return */
-/* eslint-disable indent */
 const axios = require("axios");
 const base64 = require("base-64");
 const nodemailer = require("nodemailer");
@@ -115,6 +110,8 @@ const resolvers = {
           );
           throw new Error("User not found");
         }
+
+        console.log({ id: userId, ...result.properties(), page, limit });
 
         return { id: userId, ...result.properties(), page, limit };
       } catch (error) {
@@ -1413,18 +1410,39 @@ const resolvers = {
     createNewAIChat: async (parent, args) => {
       try {
         // this int args from client with user id value to create new AI chat.
-        const { userId } = args;
+        const { userId, Name, projectId } = args;
 
         if (userId === null) {
           throw new Error("UserID is null");
         }
-        const AIChat = await NeodeObject?.create("AIChat", {});
+
+        if (Name === null) {
+          throw new Error("Name is null");
+        }
+
+        if (projectId === null) {
+          throw new Error("ProjectID is null");
+        }
+
+        const AIChat = await NeodeObject?.create("AIChat", {
+          Name,
+        });
         const User = await NeodeObject?.first("User", "id", userId);
 
         if (!User) {
           NeodeObject?.delete(AIChat);
           throw new Error("User not found");
         }
+
+        const Project = await NeodeObject?.findById("Project", projectId);
+
+        if (!Project) {
+          NeodeObject?.delete(AIChat);
+          throw new Error("Project not found");
+        }
+
+        // Relate AIChat to Project
+        await AIChat.relateTo(Project, "for_project");
 
         // Relate AIChat to User
         await User.relateTo(AIChat, "chat_with_AI");
@@ -1461,13 +1479,17 @@ const resolvers = {
           );
         }
 
-        user.IsActive = true;
+        const existingUser = await NeodeObject?.first("User", "id", user?.id);
 
-        // find user by id
-        const existingUser = await NeodeObject?.first("User", "id", user.id);
         if (existingUser) {
-          throw new Error("User already exists");
+          return {
+            ...existingUser.properties(),
+            type: "old",
+          };
         }
+
+        user.IsActive = true;
+        user.type = "new";
 
         redisClientSet(
           "users",
@@ -1496,6 +1518,7 @@ const resolvers = {
 
         // return await createdUser?.toJson();
       } catch (error) {
+        console.log(error);
         Logging.error(
           `${new Date()}, in resolvers.js => createNewUser, ${error}`
         );
@@ -2142,7 +2165,7 @@ const resolvers = {
     createTaskForUser: async (parent, args) => {
       try {
         // userCreateTaskId for user who need to create task for other user
-        const { task, userId, userCreateTaskId, companyId } = args;
+        const { task, userId, userCreateTaskId, companyId, teamId } = args;
 
         if (!userId) {
           throw new Error(
@@ -2186,11 +2209,21 @@ const resolvers = {
           throw new Error("User need to Create Task is not found");
         }
 
+        if (!teamId) {
+          throw new Error(
+            `Are you send teamId? teamId is required, teamId value is ${teamId}. please check teamId value before send`
+          );
+        }
+
+        const team = await NeodeObject?.findById("Team", teamId);
+
         await userCreateTask.relateTo(newTask, "create_task");
 
         await user.relateTo(newTask, "has_a_task");
 
         await newTask.relateTo(company, "in_company");
+
+        await newTask.relateTo(team, "in_team");
 
         await backup.info(
           `CREATE (task:Task {createdDate: datetime(), ${Object.keys(task)
@@ -2223,7 +2256,7 @@ const resolvers = {
      */
     createTaskForTeam: async (parent, args) => {
       try {
-        const { task, teamId, userId } = args;
+        const { task, teamId, userId, companyId } = args;
 
         if (!teamId) {
           throw new Error(
@@ -2249,11 +2282,23 @@ const resolvers = {
           throw new Error("User not found");
         }
 
+        if (!companyId) {
+          throw new Error(
+            `Are you send companyId? companyId is required, companyId value is ${companyId}. please check companyId value before send`
+          );
+        }
+
+        const company = await NeodeObject?.findById("Company", companyId);
+
         const newTask = await NeodeObject?.create("Task", { ...task });
 
         await team.relateTo(newTask, "has_a_task");
 
         await user.relateTo(newTask, "create_task");
+
+        await newTask.relateTo(company, "in_company");
+
+        await newTask.relateTo(team, "in_team");
 
         await backup.info(
           `CREATE (task:Task {createdDate: datetime(), ${Object.keys(task)
@@ -2268,6 +2313,7 @@ const resolvers = {
 
         return newTask.toJson();
       } catch (error) {
+        console.log(error);
         Logging.error(
           `${new Date()}, in resolvers.js => createTaskForTeam, ${error}`
         );
@@ -2903,6 +2949,30 @@ const resolvers = {
         throw error;
       }
     },
+    FileName: async (parent) => {
+      try {
+        const chatId = parent._id;
+
+        if (!chatId) {
+          throw new Error("ChatID is null");
+        }
+
+        const cypherQuery = `
+           MATCH (chat:AIChat)-[:FOR_PROJECT]-> (project:Project)
+           WHERE ID(chat) = $chatId 
+           RETURN project.FileName as fileName`;
+        const result = await NeodeObject.cypher(cypherQuery, { chatId });
+
+        if (result.records.length === 0) {
+          throw new Error("Project not found");
+        }
+
+        return result?.records[0].get("fileName");
+      } catch (error) {
+        Logging.error(`${new Date()}, in resolvers.js => FileName, ${error}`);
+        console.log(error);
+      }
+    },
   },
   User: {
     MyCompanies: async (parent) => {
@@ -3025,6 +3095,7 @@ const resolvers = {
     Tasks: async (parent) => {
       try {
         const userId = parent.id;
+
         const { page, limit } = parent;
 
         if (!userId) {
@@ -3040,7 +3111,7 @@ const resolvers = {
 
         return result?.records?.map((record) => ({
           ...record.get("tasks").properties,
-          Priority: record.get("tasks")?.properties?.Priority,
+          Priority: record.get("tasks")?.properties?.Priority.low,
           _id: record.get("tasks").identity.low,
           page,
           limit,
@@ -3150,6 +3221,45 @@ const resolvers = {
         }));
       } catch (error) {
         Logging.error(`${new Date()}, in resolvers.js => Posts, ${error}`);
+        throw error;
+      }
+    },
+    Friends: async (parent) => {
+      try {
+        const userId = parent.id;
+
+        if (!userId) {
+          throw new Error("UserID is null");
+        }
+
+        const cypherQuery = `
+           MATCH (user:User {id: "${userId}"})-[:ADMIN_OF]->(myCompany:Company)
+           MATCH (user:User {id: "${userId}"})-[:WORK_ON]->(company:Company)
+           MATCH (myCompany)-[:HAS_A_TEAM]->(myTeam:Team)
+           MATCH (company)-[:HAS_A_TEAM]->(team)
+           MATCH (myFriends:User)-[:IN_TEAM]->(myTeam)
+           MATCH (friends:User)-[:IN_TEAM]->(team)
+           WHERE ID(myFriends) <> ID(friends) 
+           and ID(myTeam) <> ID(team) 
+           and ID(myCompany) <> ID(company)
+           and user.id <> friends.id
+           and user.id <> myFriends.id
+           RETURN friends, myFriends`;
+
+        const result = await NeodeObject.cypher(cypherQuery);
+
+        return result?.records?.map((record) => ({
+          friends: {
+            ...record.get("friends").properties,
+            id: record.get("friends").identity.low,
+          },
+          myFriends: {
+            ...record.get("myFriends").properties,
+            id: record.get("myFriends").identity.low,
+          },
+        }));
+      } catch (error) {
+        Logging.error(`${new Date()}, in resolvers.js => Friends, ${error}`);
         throw error;
       }
     },
@@ -3436,6 +3546,48 @@ const resolvers = {
         throw error;
       }
     },
+    CompanyName: async (parent) => {
+      try {
+        const taskId = parent._id;
+
+        if (!taskId) {
+          throw new Error("TaskID is null");
+        }
+
+        const cypherQuery = `
+           MATCH (task:Task)-[:IN_COMPANY]->(company:Company)
+           WHERE ID(task) = ${taskId}
+           RETURN company`;
+
+        const result = await NeodeObject.cypher(cypherQuery);
+
+        return result?.records[0].get("company").properties?.CompanyName;
+      } catch (error) {
+        Logging.error(`${new Date()}, in resolvers.js => company, ${error}`);
+        throw error;
+      }
+    },
+    TeamName: async (parent) => {
+      try {
+        const taskId = parent._id;
+
+        if (!taskId) {
+          throw new Error("TaskID is null");
+        }
+
+        const cypherQuery = `
+           MATCH (task:Task)-[:IN_TEAM]->(team:Team)
+           WHERE ID(task) = ${taskId}
+           RETURN team`;
+
+        const result = await NeodeObject.cypher(cypherQuery);
+
+        return result?.records[0].get("team").properties?.TeamName;
+      } catch (error) {
+        Logging.error(`${new Date()}, in resolvers.js => team, ${error}`);
+        throw error;
+      }
+    },
   },
   Team: {
     Tasks: async (parent) => {
@@ -3483,6 +3635,57 @@ const resolvers = {
         }));
       } catch (error) {
         Logging.error(`${new Date()}, in resolvers.js => Members, ${error}`);
+        throw error;
+      }
+    },
+  },
+  PositionPost: {
+    User: async (parent) => {
+      try {
+        const postId = parent._id;
+
+        if (!postId) {
+          throw new Error("PostID is null");
+        }
+
+        const cypherQuery = `
+           MATCH (company:Company)-[:HAS_A_POST]->(post:PositionPost)
+           MATCH (user:User)-[:ADMIN_OF]->(company)
+           WHERE ID(post) = ${postId}
+           RETURN user`;
+
+        const result = await NeodeObject.cypher(cypherQuery);
+
+        return {
+          ...result?.records[0].get("user").properties,
+          _id: result?.records[0].get("user").identity.low,
+        };
+      } catch (error) {
+        Logging.error(`${new Date()}, in resolvers.js => User, ${error}`);
+        throw error;
+      }
+    },
+    Company: async (parent) => {
+      try {
+        const postId = parent._id;
+
+        if (!postId) {
+          throw new Error("PostID is null");
+        }
+
+        const cypherQuery = `
+           MATCH (company:Company)-[:HAS_A_POST]->(post:PositionPost)
+           WHERE ID(post) = ${postId}
+           RETURN company`;
+
+        const result = await NeodeObject.cypher(cypherQuery);
+
+        return {
+          ...result?.records[0].get("company").properties,
+          _id: result?.records[0].get("company").identity.low,
+        };
+      } catch (error) {
+        Logging.error(`${new Date()}, in resolvers.js => Company, ${error}`);
         throw error;
       }
     },
