@@ -1,0 +1,359 @@
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"code":"ServiceUnavailable","level":"error","name":"Neo4jError","query":"CREATE INDEX SearchInMyPosts IF NOT EXISTS FOR (n:PositionPost) ON (n.Content)","service":"user-service"}
+{"code":"ServiceUnavailable","level":"error","name":"Neo4jError","query":"CREATE INDEX SearchInProjects IF NOT EXISTS \n        FOR (n:Project) ON (n.ProjectName, n.ProjectDescription)","service":"user-service"}
+{"code":"ServiceUnavailable","level":"error","name":"Neo4jError","query":"CREATE INDEX SearchInMyCompanies IF NOT EXISTS \n        FOR (n:Company) ON (n.CompanyName, n.CompanyDescription, n.Domain)","service":"user-service"}
+{"level":"error","message":"Tue May 21 2024 15:53:58 GMT+0300 (Eastern European Summer Time), in resolvers.js => getProfileStatistics, Neo4jError: Failed to connect to server. Please ensure that your database is listening on the correct host and port and that you have compatible encryption settings both on Neo4j server and driver. Note that the default encryption setting has changed in Neo4j 4.0. Caused by: connect ECONNREFUSED 127.0.0.1:7687","service":"user-service"}
+{"level":"error","message":"Tue May 21 2024 15:54:31 GMT+0300 (Eastern European Summer Time), in resolvers.js => getUser, Neo4jError: Failed to connect to server. Please ensure that your database is listening on the correct host and port and that you have compatible encryption settings both on Neo4j server and driver. Note that the default encryption setting has changed in Neo4j 4.0. Caused by: connect ECONNREFUSED 127.0.0.1:7687","service":"user-service"}
+{"level":"error","message":"Tue May 21 2024 15:54:33 GMT+0300 (Eastern European Summer Time), in resolvers.js => getUser, Neo4jError: Failed to connect to server. Please ensure that your database is listening on the correct host and port and that you have compatible encryption settings both on Neo4j server and driver. Note that the default encryption setting has changed in Neo4j 4.0. Caused by: connect ECONNREFUSED 127.0.0.1:7687","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"code":"ServiceUnavailable","level":"error","name":"Neo4jError","query":"CREATE INDEX SearchInMyPosts IF NOT EXISTS FOR (n:PositionPost) ON (n.Content)","service":"user-service"}
+{"code":"ServiceUnavailable","level":"error","name":"Neo4jError","query":"CREATE INDEX SearchInProjects IF NOT EXISTS \n        FOR (n:Project) ON (n.ProjectName, n.ProjectDescription)","service":"user-service"}
+{"code":"ServiceUnavailable","level":"error","name":"Neo4jError","query":"CREATE INDEX SearchInMyCompanies IF NOT EXISTS \n        FOR (n:Company) ON (n.CompanyName, n.CompanyDescription, n.Domain)","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"code":"ServiceUnavailable","level":"error","name":"Neo4jError","query":"CREATE INDEX SearchInMyPosts IF NOT EXISTS FOR (n:PositionPost) ON (n.Content)","service":"user-service"}
+{"code":"ServiceUnavailable","level":"error","name":"Neo4jError","query":"CREATE INDEX SearchInProjects IF NOT EXISTS \n        FOR (n:Project) ON (n.ProjectName, n.ProjectDescription)","service":"user-service"}
+{"code":"ServiceUnavailable","level":"error","name":"Neo4jError","query":"CREATE INDEX SearchInMyCompanies IF NOT EXISTS \n        FOR (n:Company) ON (n.CompanyName, n.CompanyDescription, n.Domain)","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"code":"ServiceUnavailable","level":"error","name":"Neo4jError","query":"CREATE INDEX SearchInMyPosts IF NOT EXISTS FOR (n:PositionPost) ON (n.Content)","service":"user-service"}
+{"code":"ServiceUnavailable","level":"error","name":"Neo4jError","query":"CREATE INDEX SearchInProjects IF NOT EXISTS \n        FOR (n:Project) ON (n.ProjectName, n.ProjectDescription)","service":"user-service"}
+{"code":"ServiceUnavailable","level":"error","name":"Neo4jError","query":"CREATE INDEX SearchInMyCompanies IF NOT EXISTS \n        FOR (n:Company) ON (n.CompanyName, n.CompanyDescription, n.Domain)","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"code":"ServiceUnavailable","level":"error","name":"Neo4jError","query":"CREATE INDEX SearchInMyPosts IF NOT EXISTS FOR (n:PositionPost) ON (n.Content)","service":"user-service"}
+{"code":"ServiceUnavailable","level":"error","name":"Neo4jError","query":"CREATE INDEX SearchInProjects IF NOT EXISTS \n        FOR (n:Project) ON (n.ProjectName, n.ProjectDescription)","service":"user-service"}
+{"code":"ServiceUnavailable","level":"error","name":"Neo4jError","query":"CREATE INDEX SearchInMyCompanies IF NOT EXISTS \n        FOR (n:Company) ON (n.CompanyName, n.CompanyDescription, n.Domain)","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"error","message":"Wed May 22 2024 06:15:23 GMT+0300 (Eastern European Summer Time), in resolvers.js => sendAIMessage, AxiosError: Request failed with status code 500","service":"user-service"}
+{"level":"error","message":"Wed May 22 2024 06:16:11 GMT+0300 (Eastern European Summer Time), in resolvers.js => sendAIMessage, AxiosError: Request failed with status code 500","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"code":"ServiceUnavailable","level":"error","name":"Neo4jError","query":"CREATE INDEX SearchInMyPosts IF NOT EXISTS FOR (n:PositionPost) ON (n.Content)","service":"user-service"}
+{"code":"ServiceUnavailable","level":"error","name":"Neo4jError","query":"CREATE INDEX SearchInProjects IF NOT EXISTS \n        FOR (n:Project) ON (n.ProjectName, n.ProjectDescription)","service":"user-service"}
+{"code":"ServiceUnavailable","level":"error","name":"Neo4jError","query":"CREATE INDEX SearchInMyCompanies IF NOT EXISTS \n        FOR (n:Company) ON (n.CompanyName, n.CompanyDescription, n.Domain)","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"error","message":"Mon May 27 2024 09:44:29 GMT+0300 (Eastern European Summer Time), in resolvers.js => getProfileStatistics, Neo4jError: This record has no field with key 'count(t)', available key are: [count].","service":"user-service"}
+{"level":"error","message":"Mon May 27 2024 09:44:48 GMT+0300 (Eastern European Summer Time), in resolvers.js => getProfileStatistics, Neo4jError: This record has no field with key 'count(t)', available key are: [count].","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"error","message":"Mon May 27 2024 09:46:08 GMT+0300 (Eastern European Summer Time), in resolvers.js => getProfileStatistics, Neo4jError: This record has no field with key 'count', available key are: [count(t)].","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"error","message":"Mon May 27 2024 09:53:17 GMT+0300 (Eastern European Summer Time), in resolvers.js => getProfileStatistics, Neo4jError: This record has no field with key 'tasks', available key are: [count(task)].","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"warn","message":"Mon May 27 2024 11:04:38 GMT+0300 (Eastern European Summer Time), in resolvers.js => getUser, User not found in database","service":"user-service"}
+{"level":"error","message":"Mon May 27 2024 11:04:38 GMT+0300 (Eastern European Summer Time), in resolvers.js => getUser, Error: User not found","service":"user-service"}
+{"level":"warn","message":"Mon May 27 2024 11:04:38 GMT+0300 (Eastern European Summer Time), in resolvers.js => getUser, User not found in database","service":"user-service"}
+{"level":"error","message":"Mon May 27 2024 11:04:38 GMT+0300 (Eastern European Summer Time), in resolvers.js => getUser, Error: User not found","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"error","message":"Mon May 27 2024 11:56:59 GMT+0300 (Eastern European Summer Time), in resolvers.js => updateUserSkills, Neo4jError: Invalid input '[': expected \"+\" or \"-\" (line 2, column 61 (offset: 69))\r\n\"        MATCH (u:User) WHERE u.id = \"Es4vWtRJ4VVq63dtcs8d4CtYD7t2\" -[:HAS_A_SKILL] -> (s:Skill)\"\r\n                                                                     ^","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"error","message":"Mon May 27 2024 11:58:12 GMT+0300 (Eastern European Summer Time), in resolvers.js => updateUserSkills, Neo4jError: Invalid input ',': expected\r\n  \"!=\"\r\n  \"%\"\r\n  \"*\"\r\n  \"+\"\r\n  \"-\"\r\n  \"/\"\r\n  \"::\"\r\n  \"<\"\r\n  \"<=\"\r\n  \"<>\"\r\n  \"=\"\r\n  \"=~\"\r\n  \">\"\r\n  \">=\"\r\n  \"AND\"\r\n  \"AS\"\r\n  \"CONTAINS\"\r\n  \"ENDS\"\r\n  \"IN\"\r\n  \"IS\"\r\n  \"OR\"\r\n  \"STARTS\"\r\n  \"XOR\"\r\n  \"^\" (line 2, column 9 (offset: 17))\r\n\"        UNWIND s,react,g AS skill\"\r\n                 ^","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"error","message":"Mon May 27 2024 12:03:14 GMT+0300 (Eastern European Summer Time), in resolvers.js => updateUserSkills, Neo4jError: Invalid input ',': expected\r\n  \"!=\"\r\n  \"%\"\r\n  \"*\"\r\n  \"+\"\r\n  \"-\"\r\n  \"/\"\r\n  \"::\"\r\n  \"<\"\r\n  \"<=\"\r\n  \"<>\"\r\n  \"=\"\r\n  \"=~\"\r\n  \">\"\r\n  \">=\"\r\n  \"AND\"\r\n  \"AS\"\r\n  \"CONTAINS\"\r\n  \"ENDS\"\r\n  \"IN\"\r\n  \"IS\"\r\n  \"OR\"\r\n  \"STARTS\"\r\n  \"XOR\"\r\n  \"^\" (line 2, column 9 (offset: 17))\r\n\"        UNWIND s,react,g AS skill\"\r\n                 ^","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"error","message":"Mon May 27 2024 13:38:01 GMT+0300 (Eastern European Summer Time), in resolvers.js => updateUserSkills, ReferenceError: addQuery is not defined","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"error","message":"Mon May 27 2024 13:38:47 GMT+0300 (Eastern European Summer Time), in resolvers.js => updateUserSkills, Neo4jError: Can't create node `s` with labels or properties here. The variable is already declared in this context","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"error","message":"Mon May 27 2024 18:22:05 GMT+0300 (Eastern European Summer Time), in resolvers.js => addUserToTeam, Neo4jError: WITH is required between CREATE and MATCH (line 5, column 11 (offset: 203))\r\n\"          MATCH (c) -[tp:TAKE_A_PROJECT]-> (p:Project)\"\r\n           ^","service":"user-service"}
+{"level":"error","message":"Mon May 27 2024 18:22:16 GMT+0300 (Eastern European Summer Time), in resolvers.js => addUserToTeam, Neo4jError: WITH is required between CREATE and MATCH (line 5, column 11 (offset: 203))\r\n\"          MATCH (c) -[tp:TAKE_A_PROJECT]-> (p:Project)\"\r\n           ^","service":"user-service"}
+{"level":"error","message":"Mon May 27 2024 18:22:17 GMT+0300 (Eastern European Summer Time), in resolvers.js => addUserToTeam, Neo4jError: WITH is required between CREATE and MATCH (line 5, column 11 (offset: 203))\r\n\"          MATCH (c) -[tp:TAKE_A_PROJECT]-> (p:Project)\"\r\n           ^","service":"user-service"}
+{"level":"error","message":"Mon May 27 2024 18:22:17 GMT+0300 (Eastern European Summer Time), in resolvers.js => addUserToTeam, Neo4jError: WITH is required between CREATE and MATCH (line 5, column 11 (offset: 203))\r\n\"          MATCH (c) -[tp:TAKE_A_PROJECT]-> (p:Project)\"\r\n           ^","service":"user-service"}
+{"level":"error","message":"Mon May 27 2024 18:22:17 GMT+0300 (Eastern European Summer Time), in resolvers.js => addUserToTeam, Neo4jError: WITH is required between CREATE and MATCH (line 5, column 11 (offset: 203))\r\n\"          MATCH (c) -[tp:TAKE_A_PROJECT]-> (p:Project)\"\r\n           ^","service":"user-service"}
+{"level":"error","message":"Mon May 27 2024 18:22:20 GMT+0300 (Eastern European Summer Time), in resolvers.js => addUserToTeam, Neo4jError: WITH is required between CREATE and MATCH (line 5, column 11 (offset: 203))\r\n\"          MATCH (c) -[tp:TAKE_A_PROJECT]-> (p:Project)\"\r\n           ^","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"error","message":"Mon May 27 2024 18:26:49 GMT+0300 (Eastern European Summer Time), in resolvers.js => addUserToTeam, Neo4jError: This record has no field with key 'teamRelationshipCreated', available key are: [t].","service":"user-service"}
+{"level":"error","message":"Mon May 27 2024 18:26:52 GMT+0300 (Eastern European Summer Time), in resolvers.js => addUserToTeam, Neo4jError: This record has no field with key 'teamRelationshipCreated', available key are: [t].","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 07:58:34 GMT+0300 (Eastern European Summer Time), in resolvers.js => getCompany, Error: Are you send companyId? companyId is required, companyId value is 0. please check companyId value before send","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 07:58:49 GMT+0300 (Eastern European Summer Time), in resolvers.js => getCompany, Error: Are you send companyId? companyId is required, companyId value is 0. please check companyId value before send","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 07:58:56 GMT+0300 (Eastern European Summer Time), in resolvers.js => getCompany, Error: Are you send companyId? companyId is required, companyId value is 0. please check companyId value before send","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 07:58:59 GMT+0300 (Eastern European Summer Time), in resolvers.js => getCompany, Error: Are you send companyId? companyId is required, companyId value is 0. please check companyId value before send","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 07:59:10 GMT+0300 (Eastern European Summer Time), in resolvers.js => getCompany, Error: Are you send companyId? companyId is required, companyId value is 0. please check companyId value before send","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 08:05:42 GMT+0300 (Eastern European Summer Time), in resolvers.js => getCompany, Error: Are you send companyId? companyId is required, companyId value is 0. please check companyId value before send","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 08:06:25 GMT+0300 (Eastern European Summer Time), in resolvers.js => getCompany, Error: Are you send companyId? companyId is required, companyId value is 0. please check companyId value before send","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 08:06:30 GMT+0300 (Eastern European Summer Time), in resolvers.js => getCompany, Error: Are you send companyId? companyId is required, companyId value is 0. please check companyId value before send","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 08:08:15 GMT+0300 (Eastern European Summer Time), in resolvers.js => getCompany, Error: Are you send companyId? companyId is required, companyId value is 0. please check companyId value before send","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 08:08:47 GMT+0300 (Eastern European Summer Time), in resolvers.js => getCompany, Error: Are you send companyId? companyId is required, companyId value is 0. please check companyId value before send","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 08:09:45 GMT+0300 (Eastern European Summer Time), in resolvers.js => deleteCompany, Error: Are you send companyId? companyId is required, companyId value is 0. please check companyId value before send","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 08:09:47 GMT+0300 (Eastern European Summer Time), in resolvers.js => deleteCompany, Error: Are you send companyId? companyId is required, companyId value is 0. please check companyId value before send","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 08:11:26 GMT+0300 (Eastern European Summer Time), in resolvers.js => deleteCompany, Neo4jError: Writing in read access mode not allowed. Attempted write to neo4j","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 08:11:31 GMT+0300 (Eastern European Summer Time), in resolvers.js => deleteCompany, Neo4jError: Writing in read access mode not allowed. Attempted write to neo4j","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 08:11:33 GMT+0300 (Eastern European Summer Time), in resolvers.js => deleteCompany, Neo4jError: Writing in read access mode not allowed. Attempted write to neo4j","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 08:11:34 GMT+0300 (Eastern European Summer Time), in resolvers.js => deleteCompany, Neo4jError: Writing in read access mode not allowed. Attempted write to neo4j","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 08:11:34 GMT+0300 (Eastern European Summer Time), in resolvers.js => deleteCompany, Neo4jError: Writing in read access mode not allowed. Attempted write to neo4j","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 08:11:34 GMT+0300 (Eastern European Summer Time), in resolvers.js => deleteCompany, Neo4jError: Writing in read access mode not allowed. Attempted write to neo4j","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 08:11:35 GMT+0300 (Eastern European Summer Time), in resolvers.js => deleteCompany, Neo4jError: Writing in read access mode not allowed. Attempted write to neo4j","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 08:11:35 GMT+0300 (Eastern European Summer Time), in resolvers.js => deleteCompany, Neo4jError: Writing in read access mode not allowed. Attempted write to neo4j","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 08:11:35 GMT+0300 (Eastern European Summer Time), in resolvers.js => deleteCompany, Neo4jError: Writing in read access mode not allowed. Attempted write to neo4j","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 08:12:12 GMT+0300 (Eastern European Summer Time), in resolvers.js => deleteCompany, Neo4jError: Writing in read access mode not allowed. Attempted write to neo4j","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 08:12:41 GMT+0300 (Eastern European Summer Time), in resolvers.js => deleteCompany, Neo4jError: Writing in read access mode not allowed. Attempted write to neo4j","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 08:50:14 GMT+0300 (Eastern European Summer Time), in resolvers.js => Messages, Neo4jError: Invalid input 'WHERE': expected\r\n  \"(\"\r\n  \",\"\r\n  \"CALL\"\r\n  \"CREATE\"\r\n  \"DELETE\"\r\n  \"DETACH\"\r\n  \"FOREACH\"\r\n  \"LOAD\"\r\n  \"MATCH\"\r\n  \"MERGE\"\r\n  \"OPTIONAL\"\r\n  \"REMOVE\"\r\n  \"RETURN\"\r\n  \"SET\"\r\n  \"UNION\"\r\n  \"UNWIND\"\r\n  \"USE\"\r\n  \"WITH\"\r\n  <EOF> (line 2, column 11 (offset: 81))\r\n\"          WHERE ID(c) = 6 AND ID(p) = 81\"\r\n           ^","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 08:50:39 GMT+0300 (Eastern European Summer Time), in resolvers.js => Messages, Neo4jError: Invalid input 'WHERE': expected\r\n  \"(\"\r\n  \",\"\r\n  \"CALL\"\r\n  \"CREATE\"\r\n  \"DELETE\"\r\n  \"DETACH\"\r\n  \"FOREACH\"\r\n  \"LOAD\"\r\n  \"MATCH\"\r\n  \"MERGE\"\r\n  \"OPTIONAL\"\r\n  \"REMOVE\"\r\n  \"RETURN\"\r\n  \"SET\"\r\n  \"UNION\"\r\n  \"UNWIND\"\r\n  \"USE\"\r\n  \"WITH\"\r\n  <EOF> (line 2, column 11 (offset: 81))\r\n\"          WHERE ID(c) = 6 AND ID(p) = 81\"\r\n           ^","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 08:51:30 GMT+0300 (Eastern European Summer Time), in resolvers.js => Messages, Neo4jError: Invalid input 'WHERE': expected\r\n  \"(\"\r\n  \",\"\r\n  \"CALL\"\r\n  \"CREATE\"\r\n  \"DELETE\"\r\n  \"DETACH\"\r\n  \"FOREACH\"\r\n  \"LOAD\"\r\n  \"MATCH\"\r\n  \"MERGE\"\r\n  \"OPTIONAL\"\r\n  \"REMOVE\"\r\n  \"RETURN\"\r\n  \"SET\"\r\n  \"UNION\"\r\n  \"UNWIND\"\r\n  \"USE\"\r\n  \"WITH\"\r\n  <EOF> (line 2, column 11 (offset: 81))\r\n\"          WHERE ID(c) = 6 AND ID(p) = 81\"\r\n           ^","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 08:52:08 GMT+0300 (Eastern European Summer Time), in resolvers.js => Messages, Neo4jError: Invalid input 'WHERE': expected\r\n  \"(\"\r\n  \",\"\r\n  \"CALL\"\r\n  \"CREATE\"\r\n  \"DELETE\"\r\n  \"DETACH\"\r\n  \"FOREACH\"\r\n  \"LOAD\"\r\n  \"MATCH\"\r\n  \"MERGE\"\r\n  \"OPTIONAL\"\r\n  \"REMOVE\"\r\n  \"RETURN\"\r\n  \"SET\"\r\n  \"UNION\"\r\n  \"UNWIND\"\r\n  \"USE\"\r\n  \"WITH\"\r\n  <EOF> (line 2, column 11 (offset: 81))\r\n\"          WHERE ID(c) = 6 AND ID(p) = 81\"\r\n           ^","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 09:03:59 GMT+0300 (Eastern European Summer Time), in resolvers.js => applyForProject, Error: There is already an active relationship with project ID 81.","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 09:04:04 GMT+0300 (Eastern European Summer Time), in resolvers.js => applyForProject, Error: There is already an active relationship with project ID 81.","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 09:05:56 GMT+0300 (Eastern European Summer Time), in resolvers.js => applyForProject, Error: There is already an active relationship with project ID 81.","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 09:08:23 GMT+0300 (Eastern European Summer Time), in resolvers.js => applyForProject, Error: There is already an active relationship with project ID 81.","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 09:08:59 GMT+0300 (Eastern European Summer Time), in resolvers.js => applyForProject, Error: There is already an active relationship with project ID 81.","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 09:09:02 GMT+0300 (Eastern European Summer Time), in resolvers.js => applyForProject, Error: There is already an active relationship with project ID 81.","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 09:09:08 GMT+0300 (Eastern European Summer Time), in resolvers.js => applyForProject, Error: There is already an active relationship with project ID 81.","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 09:10:13 GMT+0300 (Eastern European Summer Time), in resolvers.js => applyForProject, Error: There is already an active relationship.","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 09:10:19 GMT+0300 (Eastern European Summer Time), in resolvers.js => applyForProject, Error: There is already an active relationship.","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 10:03:27 GMT+0300 (Eastern European Summer Time), in resolvers.js => addUserToTeam, Neo4jError: Variable `p` not defined (line 5, column 18 (offset: 181))\r\n\"          RETURN p\"\r\n                  ^","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 10:03:49 GMT+0300 (Eastern European Summer Time), in resolvers.js => addUserToTeam, Neo4jError: Variable `p` not defined (line 5, column 18 (offset: 181))\r\n\"          RETURN p\"\r\n                  ^","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 11:00:01 GMT+0300 (Eastern European Summer Time), in resolvers.js => company, TypeError: Cannot read properties of undefined (reading 'get')","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 11:26:11 GMT+0300 (Eastern European Summer Time), in resolvers.js => Tasks, Neo4jError: Variable `C8uY41MCw9M96vg4xnVWuySKLwj1` not defined (line 2, column 20 (offset: 30))\r\n\"          MATCH (u:User {id: C8uY41MCw9M96vg4xnVWuySKLwj1})-[:IN_TEAM]->(team:Team)-[:HAS_A_TASK]->(teamTask:Task)\"\r\n                              ^","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 11:26:39 GMT+0300 (Eastern European Summer Time), in resolvers.js => Tasks, Neo4jError: Variable `C8uY41MCw9M96vg4xnVWuySKLwj1` not defined (line 2, column 20 (offset: 30))\r\n\"          MATCH (u:User {id: C8uY41MCw9M96vg4xnVWuySKLwj1})-[:IN_TEAM]->(team:Team)-[:HAS_A_TASK]->(teamTask:Task)\"\r\n                              ^","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 11:27:04 GMT+0300 (Eastern European Summer Time), in resolvers.js => Tasks, Neo4jError: Variable `C8uY41MCw9M96vg4xnVWuySKLwj1` not defined (line 2, column 20 (offset: 30))\r\n\"          MATCH (u:User {id: C8uY41MCw9M96vg4xnVWuySKLwj1})-[:IN_TEAM]->(team:Team)-[:HAS_A_TASK]->(teamTask:Task)\"\r\n                              ^","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 11:27:36 GMT+0300 (Eastern European Summer Time), in resolvers.js => team, Error: TaskID is null","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 11:27:36 GMT+0300 (Eastern European Summer Time), in resolvers.js => team, Error: TaskID is null","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 11:27:36 GMT+0300 (Eastern European Summer Time), in resolvers.js => team, Error: TaskID is null","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 11:29:46 GMT+0300 (Eastern European Summer Time), in resolvers.js => Tasks, Neo4jError: Variable `userTask` not defined (line 6, column 18 (offset: 254))\r\n\"          RETURN userTask AS task, \"user\" AS source\"\r\n                  ^","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 11:30:05 GMT+0300 (Eastern European Summer Time), in resolvers.js => Tasks, Neo4jError: Variable `userTask` not defined (line 6, column 18 (offset: 254))\r\n\"          RETURN userTask AS task, \"user\" AS source\"\r\n                  ^","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 11:34:37 GMT+0300 (Eastern European Summer Time), in resolvers.js => team, Error: TaskID is null","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 11:34:37 GMT+0300 (Eastern European Summer Time), in resolvers.js => team, Error: TaskID is null","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 11:34:37 GMT+0300 (Eastern European Summer Time), in resolvers.js => team, Error: TaskID is null","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 11:34:37 GMT+0300 (Eastern European Summer Time), in resolvers.js => team, Error: TaskID is null","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 11:34:37 GMT+0300 (Eastern European Summer Time), in resolvers.js => team, Error: TaskID is null","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 11:34:37 GMT+0300 (Eastern European Summer Time), in resolvers.js => team, Error: TaskID is null","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"warn","message":"Tue May 28 2024 11:47:27 GMT+0300 (Eastern European Summer Time), in resolvers.js => getUser, User not found in database","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 11:47:27 GMT+0300 (Eastern European Summer Time), in resolvers.js => getUser, Error: User not found","service":"user-service"}
+{"level":"warn","message":"Tue May 28 2024 11:47:27 GMT+0300 (Eastern European Summer Time), in resolvers.js => getUser, User not found in database","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 11:47:27 GMT+0300 (Eastern European Summer Time), in resolvers.js => getUser, Error: User not found","service":"user-service"}
+{"level":"warn","message":"Tue May 28 2024 11:53:59 GMT+0300 (Eastern European Summer Time), in resolvers.js => getUser, User not found in database","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 11:53:59 GMT+0300 (Eastern European Summer Time), in resolvers.js => getUser, Error: User not found","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 12:03:44 GMT+0300 (Eastern European Summer Time), in resolvers.js => createTaskForUser, Neo4jError: Invalid input 'WHERE': expected\r\n  \"(\"\r\n  \",\"\r\n  \"CALL\"\r\n  \"CREATE\"\r\n  \"DELETE\"\r\n  \"DETACH\"\r\n  \"FOREACH\"\r\n  \"LOAD\"\r\n  \"MATCH\"\r\n  \"MERGE\"\r\n  \"OPTIONAL\"\r\n  \"REMOVE\"\r\n  \"RETURN\"\r\n  \"SET\"\r\n  \"UNION\"\r\n  \"UNWIND\"\r\n  \"USE\"\r\n  \"WITH\"\r\n  <EOF> (line 4, column 11 (offset: 140))\r\n\"          WHERE ID(task) = undefined\"\r\n           ^","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 12:04:22 GMT+0300 (Eastern European Summer Time), in resolvers.js => createTaskForUser, Neo4jError: Invalid input 'WHERE': expected\r\n  \"(\"\r\n  \",\"\r\n  \"CALL\"\r\n  \"CREATE\"\r\n  \"DELETE\"\r\n  \"DETACH\"\r\n  \"FOREACH\"\r\n  \"LOAD\"\r\n  \"MATCH\"\r\n  \"MERGE\"\r\n  \"OPTIONAL\"\r\n  \"REMOVE\"\r\n  \"RETURN\"\r\n  \"SET\"\r\n  \"UNION\"\r\n  \"UNWIND\"\r\n  \"USE\"\r\n  \"WITH\"\r\n  <EOF> (line 4, column 11 (offset: 140))\r\n\"          WHERE ID(task) = undefined\"\r\n           ^","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 12:05:01 GMT+0300 (Eastern European Summer Time), in resolvers.js => createTaskForUser, TypeError: taskValue?.toJson is not a function","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 12:05:17 GMT+0300 (Eastern European Summer Time), in resolvers.js => createTaskForUser, Neo4jError: Invalid input 'WHERE': expected\r\n  \"(\"\r\n  \",\"\r\n  \"CALL\"\r\n  \"CREATE\"\r\n  \"DELETE\"\r\n  \"DETACH\"\r\n  \"FOREACH\"\r\n  \"LOAD\"\r\n  \"MATCH\"\r\n  \"MERGE\"\r\n  \"OPTIONAL\"\r\n  \"REMOVE\"\r\n  \"RETURN\"\r\n  \"SET\"\r\n  \"UNION\"\r\n  \"UNWIND\"\r\n  \"USE\"\r\n  \"WITH\"\r\n  <EOF> (line 4, column 11 (offset: 140))\r\n\"          WHERE ID(task) = 28\"\r\n           ^","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 12:05:33 GMT+0300 (Eastern European Summer Time), in resolvers.js => createTaskForUser, Neo4jError: Invalid input 'WHERE': expected\r\n  \"(\"\r\n  \",\"\r\n  \"CALL\"\r\n  \"CREATE\"\r\n  \"DELETE\"\r\n  \"DETACH\"\r\n  \"FOREACH\"\r\n  \"LOAD\"\r\n  \"MATCH\"\r\n  \"MERGE\"\r\n  \"OPTIONAL\"\r\n  \"REMOVE\"\r\n  \"RETURN\"\r\n  \"SET\"\r\n  \"UNION\"\r\n  \"UNWIND\"\r\n  \"USE\"\r\n  \"WITH\"\r\n  <EOF> (line 4, column 11 (offset: 140))\r\n\"          WHERE ID(task) = 29\"\r\n           ^","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 12:07:12 GMT+0300 (Eastern European Summer Time), in resolvers.js => createTaskForUser, Neo4jError: Variable `undefined` not defined (line 3, column 34 (offset: 52))\r\n\"        WHERE ID(task) = undefined\"\r\n                          ^","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 16:08:10 GMT+0300 (Eastern European Summer Time), in resolvers.js => team, TypeError: Cannot read properties of undefined (reading 'get')","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 16:08:14 GMT+0300 (Eastern European Summer Time), in resolvers.js => team, TypeError: Cannot read properties of undefined (reading 'get')","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 16:11:26 GMT+0300 (Eastern European Summer Time), in resolvers.js => team, TypeError: Cannot read properties of undefined (reading 'get')","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 16:11:39 GMT+0300 (Eastern European Summer Time), in resolvers.js => team, TypeError: Cannot read properties of undefined (reading 'get')","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 16:12:01 GMT+0300 (Eastern European Summer Time), in resolvers.js => team, TypeError: Cannot read properties of undefined (reading 'get')","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 16:12:30 GMT+0300 (Eastern European Summer Time), in resolvers.js => team, TypeError: Cannot read properties of undefined (reading 'get')","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 16:19:16 GMT+0300 (Eastern European Summer Time), in resolvers.js => team, Neo4jError: Invalid input 'WHERE': expected\r\n  \"!=\"\r\n  \"%\"\r\n  \"*\"\r\n  \"+\"\r\n  \"-\"\r\n  \"/\"\r\n  \"::\"\r\n  \"<\"\r\n  \"<=\"\r\n  \"<>\"\r\n  \"=\"\r\n  \"=~\"\r\n  \">\"\r\n  \">=\"\r\n  \"AND\"\r\n  \"CALL\"\r\n  \"CONTAINS\"\r\n  \"CREATE\"\r\n  \"DELETE\"\r\n  \"DETACH\"\r\n  \"ENDS\"\r\n  \"FOREACH\"\r\n  \"IN\"\r\n  \"IS\"\r\n  \"LOAD\"\r\n  \"MATCH\"\r\n  \"MERGE\"\r\n  \"OPTIONAL\"\r\n  \"OR\"\r\n  \"REMOVE\"\r\n  \"RETURN\"\r\n  \"SET\"\r\n  \"STARTS\"\r\n  \"UNION\"\r\n  \"UNWIND\"\r\n  \"USE\"\r\n  \"WITH\"\r\n  \"XOR\"\r\n  \"^\"\r\n  <EOF> (line 5, column 12 (offset: 145))\r\n\"           WHERE ID(task) = 58\"\r\n            ^","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 16:19:42 GMT+0300 (Eastern European Summer Time), in resolvers.js => team, Neo4jError: Invalid input 'WHERE': expected\r\n  \"!=\"\r\n  \"%\"\r\n  \"*\"\r\n  \"+\"\r\n  \"-\"\r\n  \"/\"\r\n  \"::\"\r\n  \"<\"\r\n  \"<=\"\r\n  \"<>\"\r\n  \"=\"\r\n  \"=~\"\r\n  \">\"\r\n  \">=\"\r\n  \"AND\"\r\n  \"CALL\"\r\n  \"CONTAINS\"\r\n  \"CREATE\"\r\n  \"DELETE\"\r\n  \"DETACH\"\r\n  \"ENDS\"\r\n  \"FOREACH\"\r\n  \"IN\"\r\n  \"IS\"\r\n  \"LOAD\"\r\n  \"MATCH\"\r\n  \"MERGE\"\r\n  \"OPTIONAL\"\r\n  \"OR\"\r\n  \"REMOVE\"\r\n  \"RETURN\"\r\n  \"SET\"\r\n  \"STARTS\"\r\n  \"UNION\"\r\n  \"UNWIND\"\r\n  \"USE\"\r\n  \"WITH\"\r\n  \"XOR\"\r\n  \"^\"\r\n  <EOF> (line 5, column 12 (offset: 145))\r\n\"           WHERE ID(task) = 58\"\r\n            ^","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 16:19:42 GMT+0300 (Eastern European Summer Time), in resolvers.js => team, Neo4jError: Invalid input 'WHERE': expected\r\n  \"!=\"\r\n  \"%\"\r\n  \"*\"\r\n  \"+\"\r\n  \"-\"\r\n  \"/\"\r\n  \"::\"\r\n  \"<\"\r\n  \"<=\"\r\n  \"<>\"\r\n  \"=\"\r\n  \"=~\"\r\n  \">\"\r\n  \">=\"\r\n  \"AND\"\r\n  \"CALL\"\r\n  \"CONTAINS\"\r\n  \"CREATE\"\r\n  \"DELETE\"\r\n  \"DETACH\"\r\n  \"ENDS\"\r\n  \"FOREACH\"\r\n  \"IN\"\r\n  \"IS\"\r\n  \"LOAD\"\r\n  \"MATCH\"\r\n  \"MERGE\"\r\n  \"OPTIONAL\"\r\n  \"OR\"\r\n  \"REMOVE\"\r\n  \"RETURN\"\r\n  \"SET\"\r\n  \"STARTS\"\r\n  \"UNION\"\r\n  \"UNWIND\"\r\n  \"USE\"\r\n  \"WITH\"\r\n  \"XOR\"\r\n  \"^\"\r\n  <EOF> (line 5, column 12 (offset: 145))\r\n\"           WHERE ID(task) = 58\"\r\n            ^","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 16:19:43 GMT+0300 (Eastern European Summer Time), in resolvers.js => team, Neo4jError: Invalid input 'WHERE': expected\r\n  \"!=\"\r\n  \"%\"\r\n  \"*\"\r\n  \"+\"\r\n  \"-\"\r\n  \"/\"\r\n  \"::\"\r\n  \"<\"\r\n  \"<=\"\r\n  \"<>\"\r\n  \"=\"\r\n  \"=~\"\r\n  \">\"\r\n  \">=\"\r\n  \"AND\"\r\n  \"CALL\"\r\n  \"CONTAINS\"\r\n  \"CREATE\"\r\n  \"DELETE\"\r\n  \"DETACH\"\r\n  \"ENDS\"\r\n  \"FOREACH\"\r\n  \"IN\"\r\n  \"IS\"\r\n  \"LOAD\"\r\n  \"MATCH\"\r\n  \"MERGE\"\r\n  \"OPTIONAL\"\r\n  \"OR\"\r\n  \"REMOVE\"\r\n  \"RETURN\"\r\n  \"SET\"\r\n  \"STARTS\"\r\n  \"UNION\"\r\n  \"UNWIND\"\r\n  \"USE\"\r\n  \"WITH\"\r\n  \"XOR\"\r\n  \"^\"\r\n  <EOF> (line 5, column 12 (offset: 145))\r\n\"           WHERE ID(task) = 58\"\r\n            ^","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 16:20:06 GMT+0300 (Eastern European Summer Time), in resolvers.js => team, Neo4jError: Invalid input 'WHERE': expected\r\n  \"!=\"\r\n  \"%\"\r\n  \"*\"\r\n  \"+\"\r\n  \"-\"\r\n  \"/\"\r\n  \"::\"\r\n  \"<\"\r\n  \"<=\"\r\n  \"<>\"\r\n  \"=\"\r\n  \"=~\"\r\n  \">\"\r\n  \">=\"\r\n  \"AND\"\r\n  \"CALL\"\r\n  \"CONTAINS\"\r\n  \"CREATE\"\r\n  \"DELETE\"\r\n  \"DETACH\"\r\n  \"ENDS\"\r\n  \"FOREACH\"\r\n  \"IN\"\r\n  \"IS\"\r\n  \"LOAD\"\r\n  \"MATCH\"\r\n  \"MERGE\"\r\n  \"OPTIONAL\"\r\n  \"OR\"\r\n  \"REMOVE\"\r\n  \"RETURN\"\r\n  \"SET\"\r\n  \"STARTS\"\r\n  \"UNION\"\r\n  \"UNWIND\"\r\n  \"USE\"\r\n  \"WITH\"\r\n  \"XOR\"\r\n  \"^\"\r\n  <EOF> (line 5, column 12 (offset: 147))\r\n\"           WHERE ID(task) = 58\"\r\n            ^","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 16:21:01 GMT+0300 (Eastern European Summer Time), in resolvers.js => team, Neo4jError: Variable `task` not defined (line 4, column 45 (offset: 141))\r\n\"           WHERE ID(team) = r.teamId and ID(task) = 58\"\r\n                                             ^","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 17:45:39 GMT+0300 (Eastern European Summer Time), in resolvers.js => Messages, Neo4jError: Variable `mlLcXF6Z4UZt9yYExIi9RdF4lBZ2` not defined (line 2, column 40 (offset: 86))\r\n\"          WHERE ID(c) = 47 AND ID(u) = mlLcXF6Z4UZt9yYExIi9RdF4lBZ2\"\r\n                                        ^","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 17:46:06 GMT+0300 (Eastern European Summer Time), in resolvers.js => Messages, Neo4jError: Variable `mlLcXF6Z4UZt9yYExIi9RdF4lBZ2` not defined (line 2, column 40 (offset: 86))\r\n\"          WHERE ID(c) = 47 AND ID(u) = mlLcXF6Z4UZt9yYExIi9RdF4lBZ2\"\r\n                                        ^","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 17:46:42 GMT+0300 (Eastern European Summer Time), in resolvers.js => Messages, Neo4jError: Variable `mlLcXF6Z4UZt9yYExIi9RdF4lBZ2` not defined (line 2, column 40 (offset: 86))\r\n\"          WHERE ID(c) = 47 AND ID(u) = mlLcXF6Z4UZt9yYExIi9RdF4lBZ2\"\r\n                                        ^","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 17:46:47 GMT+0300 (Eastern European Summer Time), in resolvers.js => Messages, Neo4jError: Variable `mlLcXF6Z4UZt9yYExIi9RdF4lBZ2` not defined (line 2, column 40 (offset: 86))\r\n\"          WHERE ID(c) = 47 AND ID(u) = mlLcXF6Z4UZt9yYExIi9RdF4lBZ2\"\r\n                                        ^","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 18:37:45 GMT+0300 (Eastern European Summer Time), in resolvers.js => UserName, TypeError: Cannot read properties of undefined (reading 'get')","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 18:37:45 GMT+0300 (Eastern European Summer Time), in resolvers.js => UserName, TypeError: Cannot read properties of undefined (reading 'get')","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 18:37:45 GMT+0300 (Eastern European Summer Time), in resolvers.js => UserName, TypeError: Cannot read properties of undefined (reading 'get')","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 18:43:32 GMT+0300 (Eastern European Summer Time), in resolvers.js => createCompanyComment, Error: User not found","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"error","message":"Tue May 28 2024 18:44:29 GMT+0300 (Eastern European Summer Time), in resolvers.js => createCompanyComment, Error: Cannot find relationship with type WRITE_COMMENT","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}
+{"level":"info","message":"🚀 Server ready at http://localhost:4000","service":"user-service"}

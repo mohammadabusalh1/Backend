@@ -142,4 +142,11 @@ module.exports = {
     direction: "out",
     eager: true,
   },
+  rated: {
+    type: "relationship",
+    target: "Company",
+    relationship: "RATED",
+    direction: "out",
+    eager: true,
+  },
 };

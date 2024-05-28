@@ -1,6 +1,9 @@
 module.exports = {
   TaskName: "string",
-  TaskStatus: "string",
+  TaskStatus: {
+    type: "string",
+    default: "New",
+  },
   StartDate: "string",
   EndDate: "string",
   Priority: "int",
