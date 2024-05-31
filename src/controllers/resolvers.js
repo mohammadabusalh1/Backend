@@ -444,8 +444,9 @@ const resolvers = {
         // where all users get the project points.
         const numberOfProjects = await NeodeObject?.cypher(
           `
-          MATCH (u:User {id: "${userId}"}) -[:WORK_ON]-> (p:Project)
-          RETURN count(p)
+          MATCH (u:User {id: "${userId}"}) -[:IN_TEAM]-> (team:Team) 
+          <- [:HAS_A_TEAM] - (company:Company) - [:TAKE_A_PROJECT] -> (p:Project)
+          RETURN count(DISTINCT ID(p)) AS projectCount
           `
         );
 
@@ -458,8 +459,12 @@ const resolvers = {
 
         const numberOfTasks = await NeodeObject?.cypher(
           `
-          MATCH (u:User {id: "${userId}"}) -[:IN_TEAM]-> (team:Team) - [:HAS_A_TASK] -> (task:Task)
-          RETURN count(task) as tasks
+          MATCH (u:User {id: "${userId}"})
+          OPTIONAL MATCH (u)-[:IN_TEAM]->(team:Team)-[:HAS_A_TASK]->(teamTask:Task)
+          WITH u, teamTask
+          OPTIONAL MATCH (u)-[:HAS_A_TASK]->(userTask:Task)
+          WITH DISTINCT teamTask, userTask
+          RETURN count(teamTask) + count(userTask) as tasks
           `
         );
 
@@ -471,7 +476,7 @@ const resolvers = {
         );
 
         return {
-          NumberOfProjects: numberOfProjects.records[0].get("count(p)").low,
+          NumberOfProjects: numberOfProjects.records[0].get("projectCount").low,
           NumberOfTeams: numberOfTeams.records[0].get("count(t)").low,
           NumberOfTasks: numberOfTasks.records[0].get("tasks").low,
           NumberOfMyCompanies:
@@ -1329,9 +1334,6 @@ const resolvers = {
       try {
         const { postId, userId } = args;
 
-        console.log(postId);
-        console.log(userId);
-
         if (!postId) {
           throw new Error(
             `Are you send postId? postId is required, postId value is ${postId}. please check postId value before send`
@@ -1350,7 +1352,7 @@ const resolvers = {
           DETACH DELETE r
         `;
 
-        await NeodeObject?.query(query);
+        await NeodeObject?.writeCypher(query);
         await backup.info(query);
 
         return true;
@@ -2331,7 +2333,6 @@ const resolvers = {
         CREATE (user)-[:HAS_A_TASK {teamId: "${teamId}"}]->(task)
         RETURN task
         `;
-        console.log(query);
 
         await NeodeObject?.writeCypher(query);
 
@@ -2916,11 +2917,11 @@ const resolvers = {
         // Check for existing relationships
         const checkQuery = `
           MATCH (p:Project)<-[r:TAKE_A_PROJECT {finished: false}]-(c:Company)
-          WHERE ID(p) = $projectId
+          WHERE ID(p) = ${projectId} AND ID(c) = ${companyId}
           RETURN COUNT(r) AS existingRelationships
         `;
-        const checkParams = { projectId };
-        const result = await NeodeObject.cypher(checkQuery, checkParams);
+
+        const result = await NeodeObject.cypher(checkQuery);
         const existingRelationships = result.records[0]
           .get("existingRelationships")
           .toNumber();
@@ -3054,8 +3055,8 @@ const resolvers = {
         }
 
         await NeodeObject?.writeCypher(
-          `MATCH (u:User) -[r:IN_TEAM]-> (t:Team) <- [cr:HAS_A_TEAM]-(c:Company) -[tp:TAKE_A_PROJECT]-> (p:Project) <- [wr:WORK_ON]-(u) WHERE u.id = "${userId}" AND ID(t) = ${teamId}
-           DETACH DELETE r, wr`
+          `MATCH (u:User) -[r:IN_TEAM]-> (t:Team) WHERE u.id = "${userId}" AND ID(t) = ${teamId}
+           DETACH DELETE r`
         );
 
         await backup.info(`MATCH (u:User) -[r:IN_TEAM]-> (t:Team) WHERE u.id = "${userId}" AND ID(t) = ${teamId}
@@ -3418,24 +3419,50 @@ const resolvers = {
         if (!userId) {
           throw new Error("UserID is null");
         }
+
         const cypherQuery = `
-        MATCH (u:User {id: "${userId}"})
-        OPTIONAL MATCH (u)-[:IN_TEAM]->(team:Team)-[:HAS_A_TASK]->(teamTask:Task)
-        OPTIONAL MATCH (u)-[:HAS_A_TASK]->(userTask:Task)
-        WITH COLLECT(teamTask) AS teamTasks, COLLECT(userTask) AS userTasks
-        UNWIND teamTasks AS teamTask
-        UNWIND userTasks AS userTask
-        WITH COLLECT(DISTINCT { task: teamTask, source: 'team' }) + COLLECT(DISTINCT { task: userTask, source: 'user' }) AS tasks
-        UNWIND tasks AS task
-        RETURN task.task AS task, task.source AS source
-        SKIP ${page} * ${limit} LIMIT ${limit}
+          MATCH (u:User {id: "${userId}"})
+          OPTIONAL MATCH (u)-[:IN_TEAM]->(team:Team)-[:HAS_A_TASK]->(teamTask:Task)
+          WHERE teamTask.TaskStatus <> "Approved"
+          WITH u, teamTask
+          OPTIONAL MATCH (u)-[:HAS_A_TASK]->(userTask:Task)
+          WHERE userTask.TaskStatus <> "Approved"
+          WITH DISTINCT teamTask, userTask
+          SKIP ${page} * ${limit} LIMIT ${limit}
+          RETURN teamTask, userTask
         `;
+
         const result = await NeodeObject.cypher(cypherQuery);
-        return result?.records?.map((record) => ({
-          ...record.get("task").properties,
-          _id: record.get("task").identity.low,
-        }));
+        const tasks = [
+          ...result?.records
+            ?.flatMap((record) => [
+              record?.get("teamTask")?.properties
+                ? {
+                    ...record?.get("teamTask")?.properties,
+                    _id: record?.get("teamTask")?.identity.low,
+                    Priority:
+                      record?.get("teamTask")?.properties?.Priority?.low,
+                  }
+                : null,
+              record?.get("userTask")?.properties
+                ? {
+                    ...record?.get("userTask")?.properties,
+                    _id: record?.get("userTask")?.identity?.low,
+                    Priority:
+                      record?.get("userTask")?.properties?.Priority?.low,
+                  }
+                : null,
+            ])
+            .filter(Boolean),
+        ];
+
+        // Remove duplicates by task ID
+        const uniqueTasks = Array.from(
+          new Map(tasks.map((task) => [task._id, task])).values()
+        );
+        return uniqueTasks;
       } catch (error) {
+        console.log(error);
         Logging.error(`${new Date()}, in resolvers.js => Tasks, ${error}`);
         throw error;
       }
@@ -3919,7 +3946,18 @@ const resolvers = {
 
         const result = await NeodeObject.cypher(cypherQuery);
 
-        return result?.records[0]?.get("company").properties?.CompanyName;
+        const cypherQuery1 = `
+           MATCH (company:Company) - [:HAS_A_TEAM] -> 
+           (team:Team) -[:HAS_A_TASK] -> (task:Task)
+           WHERE ID(task) = ${taskId}
+           RETURN company`;
+
+        const result1 = await NeodeObject.cypher(cypherQuery1);
+
+        return (
+          result?.records[0]?.get("company")?.properties?.CompanyName ||
+          result1?.records[0]?.get("company")?.properties?.CompanyName
+        );
       } catch (error) {
         Logging.error(`${new Date()}, in resolvers.js => company, ${error}`);
         throw error;
@@ -3941,9 +3979,45 @@ const resolvers = {
 
         const result = await NeodeObject.cypher(cypherQuery);
 
-        return result?.records[0]?.get("team").properties?.TeamName;
+        const cypherQuery1 = `
+           MATCH (team:Team) -[:HAS_A_TASK] -> (task:Task)
+           WHERE ID(task) = ${taskId}
+           RETURN team`;
+
+        const result1 = await NeodeObject.cypher(cypherQuery1);
+
+        return (
+          result?.records[0]?.get("team").properties?.TeamName ||
+          result1?.records[0]?.get("team").properties?.TeamName
+        );
       } catch (error) {
         Logging.error(`${new Date()}, in resolvers.js => team, ${error}`);
+        throw error;
+      }
+    },
+    UserCreated: async (parent) => {
+      try {
+        const taskId = parent._id;
+
+        if (!taskId) {
+          throw new Error("TaskID is null");
+        }
+
+        const cypherQuery = `
+           MATCH (u:User)-[r:CREATE_TASK]->(t:Task)
+           WHERE ID(t) = ${taskId}
+           RETURN u`;
+
+        const result = await NeodeObject.cypher(cypherQuery);
+
+        return result?.records?.map((record) => ({
+          ...record.get("u").properties,
+          _id: record.get("u").identity.low,
+        }))[0];
+      } catch (error) {
+        Logging.error(
+          `${new Date()}, in resolvers.js => UserCreated, ${error}`
+        );
         throw error;
       }
     },

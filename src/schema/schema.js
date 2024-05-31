@@ -192,15 +192,16 @@ const typeDefs = gql`
     Steps: [TaskStep]
     CompanyName: String
     TeamName: String
+    UserCreated: User
   }
 
   input TaskInput {
-    TaskName: String!
+    TaskName: String
     TaskStatus: String
-    StartDate: String!
-    EndDate: String!
-    Priority: Int!
-    Comments: String!
+    StartDate: String
+    EndDate: String
+    Priority: Int
+    Comments: String
     IsMarked: Boolean
     CreateDate: String
   }
